@@ -1,3 +1,7 @@
+# ignore root files
+
+*.root
+.nfs0000000005a3807000004686
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

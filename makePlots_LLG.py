@@ -81,10 +81,6 @@ h_m_llg_cut = ROOT.TH1D('h_m_llg_cut', 'h_m_llg_cut', 100, 80., 190)
 npho = ROOT.TH1D('npho', 'npho', 10, 0., 10)
 nlep = ROOT.TH1D('nlep', 'nlep', 10, 0., 10)
 
-nmp = ROOT.TH1D('nmp', 'nmp', 10, 0., 10)
-nmm = ROOT.TH1D('nmm', 'nmm', 10, 0., 10)
-nep = ROOT.TH1D('nep', 'nep', 10, 0., 10)
-nem = ROOT.TH1D('nem', 'nem', 10, 0., 10)
 
 # delta R
 dRl1l2_nocut = ROOT.TH1D('dRl1l2_nocut', 'dRl1l2_nocut', 100, 0., 10.)
@@ -108,6 +104,7 @@ Z_e_lIso_lTight = ROOT.TH1D('Z_e_lIso_lTight', 'Z_e_lIso_lTight', 100, 0, 500)
 Z_mu_lIso_lTight = ROOT.TH1D('Z_mu_lIso_lTight', 'Z_mu_lIso_lTight', 100, 0, 500)
 
 Z_50 = ROOT.TH1D('Z_50', 'Z_50', 100, 0, 500)
+
 ################################################################################################
 phofind_pt = ROOT.TH1D('phofind_pt', 'phofind_pt', 100, 0, 500)
 ################################################################################################
@@ -178,11 +175,6 @@ adtional.SetStats(1)
 h_Z_all.SetStats(1)
 
 h_Z_cut.SetStats(1)
-
-nmp.SetStats(1)
-nmm.SetStats(1)
-nep.SetStats(1)
-nem.SetStats(1)
 
 
 h_gamma_pt.SetStats(1)
@@ -256,10 +248,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
 
     # Loop over all the electrons in an event
-    nmu_m = 0
-    nmu_p = 0
-    ne_m = 0
-    ne_p = 0
 
     # pho parameters
     foundpho = False
@@ -311,14 +299,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
 
     for i in range(Nlep):
-        '''
-        if (abs(event.lep_id[i]) == 13):
-            if (event.lep_id[i] < 0): nmu_m = nmu_m + 1
-            if (event.lep_id[i] > 0): nmu_p = nmu_p + 1
-        if (abs(event.lep_id[i]) == 11):
-            if (event.lep_id[i] < 0): ne_m = ne_m + 1
-            if (event.lep_id[i] > 0): ne_p = ne_p + 1
-        '''
+
         for j in range(i+1,Nlep):
 
             if ((event.lep_id[i] + event.lep_id[j]) != 0): continue
@@ -345,7 +326,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
         # lep j
     # lep i
 
-    #if (not ((ne_m>=1 and ne_p>=1) or (nmu_m>=1 and nmu_p>=1))): continue
     if (not foundZ): continue
 
     # find Z
@@ -355,19 +335,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
             Z_index = i
 
     # find Z end
-    # print type(len(Z_lepindex1))
-    if (len(Z_lepindex1) < Z_index): print 'len(Z_lepindex1) = ' + str(len(Z_lepindex1)) + 'Z_index = '+str(Z_index) + 'event:'+str(ievent)
-    #if (len(Z_lepindex1) < Z_index): print 'len(Z_lepindex1) = ',len(Z_lepindex1),'  Z_index = ', Z_index,' event: ', ievent
-    if (len(Z_lepindex2) < Z_index): print 'len(Z_lepindex2) = ' + str(len(Z_lepindex2)) + 'Z_index = '+str(Z_index)
-    '''
-    if (ievent > 679998):
-       print "\n\n","="*50,"\n\n"
-       print "event.lepFSR_pt.size() = ",event.lepFSR_pt.size(),"\nZ_lepindex1[Z_index]) = ", Z_lepindex1[Z_index]
-       print 'len(lepFSR_pt) = ' + str(event.lepFSR_pt.size()) + '\tZ_lepindex1[Z_index] = '+str(Z_lepindex1[Z_index])
-       print '\n',"*"*5,"\n"
-    '''
-    if (event.lepFSR_pt.size() < Z_lepindex1[Z_index]): print 'len(lepFSR_pt) = ' + str(event.lepFSR_pt.size()) + 'Z_lepindex1[Z_index] = '+str(Z_lepindex1[Z_index])
-
 
     if (event.lepFSR_pt[Z_lepindex1[Z_index]] >= event.lepFSR_pt[Z_lepindex2[Z_index]]):
         lep_leadindex.append(Z_lepindex1[Z_index])

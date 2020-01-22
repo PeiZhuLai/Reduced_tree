@@ -37,7 +37,7 @@ def makedir(dir = []):
     output = processCmd(cmd)
 
     for i in range(len(dir)):
-        filename = dir[i].split("/")[0][5:] + '_' + dir[i].split("/")[2]
+        filename = dir[i].split(".")[0]
 
         cmd = 'mkdir numberCount/' + filename
         output = processCmd(cmd)
@@ -48,29 +48,25 @@ def checkCRABjob():
     global opt, args
     parseOptions()
 
-    # FIXME
-    #base_path = "/cms/data/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG"
 
-    dir_list = [
-    "crab_DoubleEG_Run2016B-03Feb2017_ver2-v2/191228_090221/0000/",
-    "crab_DoubleEG_Run2016B-03Feb2017_ver2-v2/191228_090221/0001/",
-    "crab_DoubleEG_Run2016C-03Feb2017-v1/191228_090417/0000/",
-    "crab_DoubleEG_Run2016D-03Feb2017-v1/191228_090611/0000/",
-    "crab_DoubleEG_Run2016E-03Feb2017-v1/191228_090807/0000/",
-    "crab_DoubleEG_Run2016F-03Feb2017-v1/191228_091004/0000/",
-    "crab_DoubleEG_Run2016G-03Feb2017-v1/191228_091201/0000/",
-    "crab_DoubleEG_Run2016H-03Feb2017_ver2-v1/191228_091420/0000/",
-    "crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/"
-    ]
-    #FIXME
+    cmd = 'ls jobFiles | wc -l'
+    nfiles = processCmd(cmd)
+
+    dir_list = []
+
+    for i in range(int(nfiles)):
+        cmd = 'ls jobFiles | sed -n "' + str(i+1) +'p"'
+        eachline = processCmd(cmd)
+
+        dir_list.append(eachline)
 
     makedir(dir_list)
 
     for i in range(len(dir_list)):
 
-        filename = dir_list[i].split("/")[0][5:] + '_' + dir_list[i].split("/")[2]
+        filename = dir_list[i].split('.')[0]
 
-        initfile = open(filename + '.txt')
+        initfile = open('jobFiles/' + dir_list[i])
         outfile = open('numberCount/' + filename + '/sort.txt','w')
         for line in initfile:
             x = line.split("_")[-1].split(".")[0]
@@ -80,7 +76,7 @@ def checkCRABjob():
         outfile.close()
 
 
-        if (dir_list[i].split("/")[2] == '0000'):
+        if ('0000' in filename):
             cmd = "sort -n " + "numberCount/" + filename + "/sort.txt" + "| awk '{for(i=p+1; i<$1; i++) print i} {p=$1}' > numberCount/" + filename + "/missingJobsID.txt"
             #awk -F ' ' '{print $9}' DoubleEG_Run2016H-03Feb2017_ver2-v1.txt | awk -F '_' '{print $3}' | awk -F '.' '{print $1}' | sort -n | awk '{for(i=p+1; i<$1; i++) print i} {p=$1}'
             output = processCmd(cmd)

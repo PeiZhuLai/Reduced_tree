@@ -1,0 +1,22 @@
+Starting job
+copying proxy file to /tmp area
+copy done...
+start running
+Total number of events: 116879
+events weight: 1
+events : 116879
+Processing entry 0
+Processing entry 10000
+Processing entry 20000
+Processing entry 30000
+Processing entry 40000
+Processing entry 50000
+Processing entry 60000
+Processing entry 70000
+Processing entry 80000
+Processing entry 90000
+Processing entry 100000
+Processing entry 110000
+Real time: 5.35 minutes
+CPU time:  2.11 minutes
+running done

@@ -58,6 +58,9 @@ def checkCRABjob():
         cmd = 'ls jobFiles | sed -n "' + str(i+1) +'p"'
         eachline = processCmd(cmd)
 
+	cmd = "sed -i '/cmsdata            0/d' jobFiles/" + eachline
+        output = processCmd(cmd)
+
         dir_list.append(eachline)
 
     makedir(dir_list)
@@ -75,13 +78,12 @@ def checkCRABjob():
         initfile.close()
         outfile.close()
 
-
         if ('0000' in filename):
             cmd = "sort -n " + "numberCount/" + filename + "/sort.txt" + "| awk '{for(i=p+1; i<$1; i++) print i} {p=$1}' > numberCount/" + filename + "/missingJobsID.txt"
             #awk -F ' ' '{print $9}' DoubleEG_Run2016H-03Feb2017_ver2-v1.txt | awk -F '_' '{print $3}' | awk -F '.' '{print $1}' | sort -n | awk '{for(i=p+1; i<$1; i++) print i} {p=$1}'
             output = processCmd(cmd)
         else:
-            cmd = "sort -n " + "numberCount/" + filename + "/sort.txt" + "| awk '{for(i=p+1000; i<$1; i++) print i} {p=$1}' > numberCount/" + filename + "/missingJobsID.txt"
+            cmd = "sort -n " + "numberCount/" + filename + "/sort.txt" + "| awk '{for(i=p+1; i<$1; i++) if(i>999){print i}} {p=$1}' > numberCount/" + filename + "/missingJobsID.txt"
             #awk -F ' ' '{print $9}' DoubleEG_Run2016H-03Feb2017_ver2-v1.txt | awk -F '_' '{print $3}' | awk -F '.' '{print $1}' | sort -n | awk '{for(i=p+1; i<$1; i++) print i} {p=$1}'
             output = processCmd(cmd)
 

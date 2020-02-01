@@ -27,7 +27,7 @@ def parseOptions():
     parser.add_option('-p', '--proxy', dest='PROXY', type='string',default='x509up_u117617', help='name of the proxy files')
     parser.add_option('-d', '--dataset', dest='DATASET', type='string',default='root://cms-xrd-global.cern.ch//store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/', help='basic path of dataset')
     parser.add_option('-n', '--number', dest='NUM', type='string',default='50', help='number of files per job')
-
+    parser.add_option('--check', dest='CHECK', action='store_true', default=False , help='check the total number of events in al')
 
     # store options and arguments as global variables
     global opt, args
@@ -54,6 +54,7 @@ def makeCondorfile():
     jobFiles = opt.INPUT
     basicPath = opt.DATASET
     NperJob = opt.NUM
+    check = opt.CHECK
 
     cmd = 'ls ' + jobFiles + ' | wc -l'
     nfiles = processCmd(cmd)
@@ -105,12 +106,12 @@ def makeCondorfile():
             rootFileName = basicPath + "crab_" + dir_list[i][:-19] + '/' + dir_list[i][-18:-5] + '/' + dir_list[i].split('_')[-1] + '/' + dir_list[i][:-19] + "_" + index.split('\n')[j] + ".root "
             outJDL.write(rootFileName)
 
-	    
-	    f = TFile.Open(rootFileName)
-            t = f.Get("Ana/passedEvents")
+	    if (check):
+	    	f = TFile.Open(rootFileName)
+            	t = f.Get("Ana/passedEvents")
 
-	    nEvents = nEvents + int(str(t.GetEntries()))
-	    f.Close()
+	    	nEvents = nEvents + int(str(t.GetEntries()))
+	    	f.Close()
 	    
             if ((j+1)%int(NperJob) == 0 or j+1 == int(nFiles)):
                 outJDL.write("-o " + dir_list[i].split('_')[0] + "_$(Cluster)_$(Process).root\n")
@@ -118,7 +119,7 @@ def makeCondorfile():
                 njobs += 1
 
     print 'creat ' + str(njobs) + 'jobs'
-    print 'Total number of events: ' + str(nEvents)
+    if (check): print 'Total number of events: ' + str(nEvents)
 # run the submitAnalyzer() as main()
 if __name__ == "__main__":
     makeCondorfile()

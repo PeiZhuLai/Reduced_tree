@@ -15,7 +15,8 @@ def parseOptions():
     parser = optparse.OptionParser(usage)
 
     # input options
-    parser.add_option('-i', '--input', dest='INPUT', type='string',default='', help='the path of input files')
+    parser.add_option('-i', '--input', dest='INPUT', type='string',default='t2_path.txt', help='the path of input t2_path file')
+    parser.add_option('-r', '--resubmit', dest='RESUBMIT', action='store_true', default=False , help='resubmit the missing ID jobs')
 
     # store options and arguments as global variables
     global opt, args
@@ -33,8 +34,13 @@ def processCmd(cmd, quite = 0):
         return output
 
 def makedir(dir = []):
-    cmd = 'mkdir  numberCount'
-    output = processCmd(cmd)
+
+    if (os.path.exists('./numberCount/')):
+        cmd = 'rm -rf numberCount/*'
+        output = processCmd(cmd)
+    else:
+        cmd = 'mkdir  numberCount'
+        output = processCmd(cmd)
 
     for i in range(len(dir)):
         filename = dir[i].split(".")[0]
@@ -48,6 +54,27 @@ def checkCRABjob():
     global opt, args
     parseOptions()
 
+    t2_path = opt.INPUT
+
+    if (os.path.exists('./jobFiles/')):
+        cmd = 'rm jobFiles/*'
+        output = processCmd(cmd)
+    else:
+        cmd = 'mkdir jobFiles'
+        output = processCmd(cmd)
+
+    in_file = open(t2_path)
+    t2_cfg = []
+    for line in in_file:
+        t2_dir = line.split(' ')[0]
+        t2_cfg.append(line.split(' ')[1])
+
+        cmd = 'xrdfs root://cmsio5.rc.ufl.edu/ ls ' + t2_dir + ' > jobFiles/' + t2_dir.split(' ')[0].split('/')[-3][5:] + '_' + t2_dir.split(' ')[0].split('/')[-2] + '_' + t2_dir.split(' ')[0].split('/')[-1] + '.txt'
+        output = processCmd(cmd)
+
+        cmd = "sed -i '$d' jobFiles/" + t2_dir.split(' ')[0].split('/')[-3][5:] + '_' + t2_dir.split(' ')[0].split('/')[-2] + '_' + t2_dir.split(' ')[0].split('/')[-1] + '.txt'
+        output = processCmd(cmd)
+
 
     cmd = 'ls jobFiles | wc -l'
     nfiles = processCmd(cmd)
@@ -57,9 +84,6 @@ def checkCRABjob():
     for i in range(int(nfiles)):
         cmd = 'ls jobFiles | sed -n "' + str(i+1) +'p"'
         eachline = processCmd(cmd)
-
-	cmd = "sed -i '/cmsdata            0/d' jobFiles/" + eachline
-        output = processCmd(cmd)
 
         dir_list.append(eachline)
 
@@ -102,6 +126,26 @@ def checkCRABjob():
 
         print 'for ' + filename + ' ' + str(len(missingID)) + ' files are missing'
         print 'should have ' + nexp + ' files, but ' + nobs + ' appears.\n'
+
+    # resubmit the missing ID jobs
+    if (opt.RESUBMIT):
+        for i in range(len(dir_list)):
+
+            filename = dir_list[i].split('.')[0]
+
+            cmd_resub = 'crab resubmit -d ' + crabPath + '/crab_' + filename[:-19] + ' --force --jobids='
+
+            missingJobsIDFile = open('numberCount/' + filename + '/missingJobsID.txt')
+
+    	    if (os.path.getsize('numberCount/' + filename + '/missingJobsID.txt') == 0): continue
+
+            for line in missingJobsIDFile:
+                cmd_resub = cmd_resub + line.rstrip('\n') + ','
+
+        	cmd_resub = cmd_resub.rstrip(',')
+            print cmd_resub
+            output = processCmd(cmd_resub)
+            print output + '\n\n'
 
 
 

@@ -1,21 +1,21 @@
--rw-r--r--   1  cms0002  cmsdata      7224207 Dec 29 14:31 DoubleEG_Run2016H-03Feb2017_ver3-v1_1.root
--rw-r--r--   1  cms0002  cmsdata      7790712 Dec 29 16:50 DoubleEG_Run2016H-03Feb2017_ver3-v1_10.root
--rw-r--r--   1  cms0002  cmsdata      7683045 Dec 29 15:57 DoubleEG_Run2016H-03Feb2017_ver3-v1_11.root
--rw-r--r--   1  cms0002  cmsdata      7579946 Dec 29 12:58 DoubleEG_Run2016H-03Feb2017_ver3-v1_12.root
--rw-r--r--   1  cms0002  cmsdata      7814088 Dec 29 14:38 DoubleEG_Run2016H-03Feb2017_ver3-v1_13.root
--rw-r--r--   1  cms0002  cmsdata      7938185 Dec 29 15:46 DoubleEG_Run2016H-03Feb2017_ver3-v1_14.root
--rw-r--r--   1  cms0002  cmsdata      7691280 Dec 29 15:49 DoubleEG_Run2016H-03Feb2017_ver3-v1_15.root
--rw-r--r--   1  cms0002  cmsdata      8061380 Dec 29 12:47 DoubleEG_Run2016H-03Feb2017_ver3-v1_16.root
--rw-r--r--   1  cms0002  cmsdata      8137225 Dec 29 15:39 DoubleEG_Run2016H-03Feb2017_ver3-v1_17.root
--rw-r--r--   1  cms0002  cmsdata      7964980 Dec 29 14:06 DoubleEG_Run2016H-03Feb2017_ver3-v1_18.root
--rw-r--r--   1  cms0002  cmsdata      8405521 Dec 29 12:29 DoubleEG_Run2016H-03Feb2017_ver3-v1_19.root
--rw-r--r--   1  cms0002  cmsdata      7684292 Dec 29 17:29 DoubleEG_Run2016H-03Feb2017_ver3-v1_2.root
--rw-r--r--   1  cms0002  cmsdata      8130374 Dec 29 13:36 DoubleEG_Run2016H-03Feb2017_ver3-v1_20.root
--rw-r--r--   1  cms0002  cmsdata      3056448 Dec 31 04:16 DoubleEG_Run2016H-03Feb2017_ver3-v1_21.root
--rw-r--r--   1  cms0002  cmsdata      7465939 Dec 29 14:02 DoubleEG_Run2016H-03Feb2017_ver3-v1_3.root
--rw-r--r--   1  cms0002  cmsdata      7315776 Dec 29 15:54 DoubleEG_Run2016H-03Feb2017_ver3-v1_4.root
--rw-r--r--   1  cms0002  cmsdata      7158625 Dec 29 15:17 DoubleEG_Run2016H-03Feb2017_ver3-v1_5.root
--rw-r--r--   1  cms0002  cmsdata      7846936 Dec 29 14:31 DoubleEG_Run2016H-03Feb2017_ver3-v1_6.root
--rw-r--r--   1  cms0002  cmsdata      7399183 Dec 29 12:36 DoubleEG_Run2016H-03Feb2017_ver3-v1_7.root
--rw-r--r--   1  cms0002  cmsdata      7381968 Dec 29 12:19 DoubleEG_Run2016H-03Feb2017_ver3-v1_8.root
--rw-r--r--   1  cms0002  cmsdata      7743083 Dec 29 16:23 DoubleEG_Run2016H-03Feb2017_ver3-v1_9.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_1.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_10.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_11.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_12.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_13.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_14.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_15.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_16.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_17.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_18.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_19.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_2.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_20.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_21.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_3.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_4.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_5.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_6.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_7.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_8.root
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000/DoubleEG_Run2016H-03Feb2017_ver3-v1_9.root

@@ -71,12 +71,6 @@ def makeCondorfile():
         dir_list[i] = dir_list[i].split('.')[0]
         #print dir_list[i][-18:-5]
 
-    cmd = 'cp /tmp/' + proxyFile + ' /afs/cern.ch/user/z/zewang/'
-    output = processCmd(cmd)
-
-    cmd = 'export X509_USER_PROXY=/afs/cern.ch/user/z/zewang/' + proxyFile
-    output = processCmd(cmd)
-
     njobs = 0
 
     outJDL = open("./condorFile/" + opt.CONDOR,"w");

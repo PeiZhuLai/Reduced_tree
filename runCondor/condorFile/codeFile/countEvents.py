@@ -28,18 +28,29 @@ def countEvents():
     Nlog = processCmd(cmd)
 
     cmd = 'ls ../out_log/*.out'
-    logFile = processCmd(cmd)
+    outFile = processCmd(cmd)
+
+    cmd = 'ls ../out_log/*.err'
+    errFile = processCmd(cmd)
 
     Nevents = 0
 
     for i in range(int(Nlog)):
-        filename = logFile.split('\n')[i]
+        filename_out = outFile.split('\n')[i]
+        filename_err = errFile.split('\n')[i]
 
-        cmd = 'grep "Total number of events:" ' + filename
+	if (os.path.getsize('../out_log/' + filename_err) != 0): 
+	    print 'job ' + filename_err.split('_')[-1].split('.')[0] + ' failed.'
+	    print '*******************'
+	    cmd = 'cat ../out_log/' + filename_err
+	    output = processCmd(cmd)
+	    print output
+	    print '*******************\n\n'
+
+        cmd = 'grep "Total number of events:" ' + filename_out
         output = processCmd(cmd)
 
         eventsPerJob = int(output.split()[-1])
-        print eventsPerJob
         Nevents = Nevents + eventsPerJob
 
     print 'after framework, there are ' + str(Nevents) + ' events'

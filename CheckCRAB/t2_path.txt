@@ -1,0 +1,9 @@
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016B-03Feb2017_ver2-v2/191228_090221/0000 ../../../resultsAna_HZG_Data16
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016B-03Feb2017_ver2-v2/191228_090221/0001 ../../../resultsAna_HZG_Data16
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016C-03Feb2017-v1/191228_090417/0000 ../../../resultsAna_HZG_Data16
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016D-03Feb2017-v1/191228_090611/0000 ../../../resultsAna_HZG_Data16
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016E-03Feb2017-v1/191228_090807/0000 ../../../resultsAna_HZG_Data16
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016F-03Feb2017-v1/191228_091004/0000 ../../../resultsAna_HZG_Data16
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016G-03Feb2017-v1/191228_091201/0000 ../../../resultsAna_HZG_Data16
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver2-v1/191228_091420/0000 ../../../resultsAna_HZG_Data16
+/store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016H-03Feb2017_ver3-v1/191228_091618/0000 ../../../resultsAna_HZG_Data16

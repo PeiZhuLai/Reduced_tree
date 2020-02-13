@@ -1,3 +1,0 @@
-Error in <TNetXNGFile::ReadBuffer>: error reading all requested bytes, got 0 of 300
-Error in <TNetXNGFile::Init>: root://cms-xrd-global.cern.ch//store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/crab_DoubleEG_Run2016B-03Feb2017_ver2-v2/191228_090221/0001/DoubleEG_Run2016B-03Feb2017_ver2-v2_1173.root failed to read the file type data.
-Error in <TNetXNGFile::TNetXNGFile>: Object is in 'zombie' state

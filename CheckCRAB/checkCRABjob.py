@@ -64,10 +64,10 @@ def checkCRABjob():
         output = processCmd(cmd)
 
     in_file = open(t2_path)
-    t2_cfg = []
+    path_crab = []
     for line in in_file:
         t2_dir = line.split(' ')[0]
-        t2_cfg.append(line.split(' ')[1])
+        path_crab.append(line.split(' ')[1])
 
         cmd = 'xrdfs root://cmsio5.rc.ufl.edu/ ls ' + t2_dir + ' > jobFiles/' + t2_dir.split(' ')[0].split('/')[-3][5:] + '_' + t2_dir.split(' ')[0].split('/')[-2] + '_' + t2_dir.split(' ')[0].split('/')[-1] + '.txt'
         output = processCmd(cmd)
@@ -133,7 +133,7 @@ def checkCRABjob():
 
             filename = dir_list[i].split('.')[0]
 
-            cmd_resub = 'crab resubmit -d ' + crabPath + '/crab_' + filename[:-19] + ' --force --jobids='
+            cmd_resub = 'crab resubmit -d ' + path_crab[i].rstrip('\n') + '/crab_' + filename[:-19] + ' --force --jobids='
 
             missingJobsIDFile = open('numberCount/' + filename + '/missingJobsID.txt')
 

@@ -57,9 +57,6 @@ file_out = ROOT.TFile(args.outputfile, 'recreate')
 
 # Z histograms
 h_Z_all = ROOT.TH1D('Zmass_all', 'Zmass_all', 100, 0, 500)
-h_Z_cut_l1l2 = ROOT.TH1D('Zmass_cut_l1l2', 'Zmass_cut_l1l2', 100, 0, 500)
-h_Z_cut_l1G = ROOT.TH1D('Zmass_cut_l1G', 'Zmass_cut_l1G', 100, 0, 500)
-h_Z_cut_l2G = ROOT.TH1D('Zmass_cut_l2G', 'Zmass_cut_l2G', 100, 0, 500)
 h_Z_cut = ROOT.TH1D('Zmass_cut', 'Zmass_cut', 100, 0, 500)
 
 # Gamma histograms
@@ -67,9 +64,6 @@ h_gamma_pt = ROOT.TH1D('gamma_all_pt', 'gamma_all_pt', 100, 0, 500)
 
 # Higgs histograms
 h_m_llg_nocut = ROOT.TH1D('h_m_llg_nocut', 'h_m_llg_nocut', 100, 80., 190)
-h_m_llg_cut_l1l2 = ROOT.TH1D('h_m_llg_cut_l1l2', 'h_m_llg_cut_l1l2', 100, 80., 190)
-h_m_llg_cut_l1G = ROOT.TH1D('h_m_llg_cut_l1G', 'h_m_llg_cut_l1G', 100, 80., 190)
-h_m_llg_cut_l2G = ROOT.TH1D('h_m_llg_cut_l2G', 'h_m_llg_cut_l2G', 100, 80., 190)
 h_m_llg_cut = ROOT.TH1D('h_m_llg_cut', 'h_m_llg_cut', 100, 80., 190)
 
 
@@ -107,17 +101,17 @@ phofind_pt = ROOT.TH1D('phofind_pt', 'phofind_pt', 100, 0, 500)
 l1_id_Ceta = ROOT.TH1D('l1_id_Ceta', 'l1_id_Ceta', 40, -20., 20.)
 Z_Ceta = ROOT.TH1D('Z_Ceta', 'Z_Ceta', 100, 0, 500)
 H_Ceta = ROOT.TH1D('H_Ceta', 'H_Ceta', 100, 80., 190)
-photon_pt_no = ROOT.TH1D('photon_pt_no', 'photon_pt_no', 200, 0, 200)
 
 l1_id_pho_vote = ROOT.TH1D('l1_id_pho_vote', 'l1_id_pho_vote', 40, -20., 20.)
 Z_pho_vote = ROOT.TH1D('Z_pho_vote', 'Z_pho_vote', 100, 0, 500)
 H_pho_vote = ROOT.TH1D('H_pho_vote', 'H_pho_vote', 100, 80., 190)
-photon_pt_vote = ROOT.TH1D('photon_pt_vote', 'photon_pt_vote', 200, 0, 200)
 
 Z_pho_mva = ROOT.TH1D('Z_pho_mva', 'Z_pho_mva', 100, 0, 500)
 H_pho_mva = ROOT.TH1D('H_pho_mva', 'H_pho_mva', 100, 80., 190)
 photon_pt_vote_mva = ROOT.TH1D('photon_pt_vote_mva', 'photon_pt_vote_mva', 200, 0, 200)
 
+Z_dR = ROOT.TH1D('Z_dR', 'Z_dR', 100, 0, 500)
+H_dR = ROOT.TH1D('H_dR', 'H_dR', 100, 80., 190)
 
 ################################################################################################
 Z_c1 = ROOT.TH1D('Z_c1', 'Z_c1', 100, 0, 500)
@@ -128,9 +122,6 @@ H_c2 = ROOT.TH1D('H_c2', 'H_c2', 100, 80., 190)
 
 Z_c3 = ROOT.TH1D('Z_c3', 'Z_c3', 100, 0, 500)
 H_c3 = ROOT.TH1D('H_c3', 'H_c3', 100, 80., 190)
-
-Z_c4 = ROOT.TH1D('Z_c4', 'Z_c4', 100, 0, 500)
-H_c4 = ROOT.TH1D('H_c4', 'H_c4', 100, 80., 190)
 
 l1_id_Ceta.SetStats(1)
 
@@ -159,10 +150,10 @@ Z_c1.SetStats(1)
 H_c1.SetStats(1)
 Z_c2.SetStats(1)
 H_c2.SetStats(1)
+Z_dR.SetStats(1)
+H_dR.SetStats(1)
 Z_c3.SetStats(1)
 H_c3.SetStats(1)
-Z_c4.SetStats(1)
-H_c4.SetStats(1)
 
 #Z_125.SetStats(1)
 
@@ -177,9 +168,7 @@ h_gamma_pt.SetStats(1)
 
 h_m_llg_nocut.SetStats(1)
 h_m_llg_cut.SetStats(1)
-#dRl1l2.SetStats(1)
-#dRl1G.SetStats(1)
-#dRl2G.SetStats(1)
+
 # Tree
 l1_pt = array('f',[0.])
 l1_eta = array('f',[0.])
@@ -455,7 +444,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
     l1_id_Ceta.Fill(event.lep_id[lep_leadindex[0]])
     Z_Ceta.Fill(Z_find.M())
     H_Ceta.Fill(H_find.M())
-    #photon_pt_no.Fill(pho_find.Pt())
 
     if (not pho_passEleVote): continue
     l1_id_pho_vote.Fill(event.lep_id[lep_leadindex[0]])
@@ -479,6 +467,10 @@ for ievent,event in enumerate(tchain):#, start=650000):
     dRl1G_nocut.Fill(dR_l1G)
     dRl2G_nocut.Fill(dR_l2G)
 
+    if (dR_l1G < 0.4 or dR_l2G < 0.4) : continue
+    Z_dR.Fill(Z_find.M())
+    H_dR.Fill(H_find.M())
+
 #########################################################################################################
     mllg = H_find.M()
     # cut 1
@@ -492,26 +484,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
     H_c2.Fill(H_find.M())
 
     # cut 3
-
-    if (dR_l1l2 >= 0.4):
-        h_Z_cut_l1l2.Fill(Z_find.M())
-        h_m_llg_cut_l1l2.Fill(mllg)
-    if (dR_l1G >= 0.4):
-        h_Z_cut_l1G.Fill(Z_find.M())
-        h_m_llg_cut_l1G.Fill(mllg)
-    if (dR_l2G >= 0.4):
-        h_Z_cut_l2G.Fill(Z_find.M())
-        h_m_llg_cut_l2G.Fill(mllg)
-
-    if (dR_l1l2 < 0.4 or dR_l1G < 0.4 or dR_l2G < 0.4) : continue # 3
-
+    if ((mllg + Z_find.M()) < 185): continue # 4
     Z_c3.Fill(Z_find.M())
     H_c3.Fill(H_find.M())
-
-    # cut 4
-    if ((mllg + Z_find.M()) < 185): continue # 4
-    Z_c4.Fill(Z_find.M())
-    H_c4.Fill(H_find.M())
 
     # end cut
 

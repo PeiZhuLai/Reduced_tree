@@ -44,7 +44,7 @@ def countEvents():
 	    print '*******************'
 	    cmd = 'cat ../out_log/' + filename_err
 	    output = processCmd(cmd)
-	    print output
+	    #print output
 	    print '*******************\n\n'
 
         cmd = 'grep "Total number of events:" ' + filename_out

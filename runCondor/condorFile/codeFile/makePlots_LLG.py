@@ -53,7 +53,9 @@ print 'events : '+str(tchain.GetEntries())
 # Output file and any histograms we want
 file_out = ROOT.TFile(args.outputfile, 'recreate')
 
-
+# pass triger 
+h_n = ROOT.TH1D('nEvents', 'nEvents', 2, 0, 2)
+h_n_trig = ROOT.TH1D('nEvents_trig', 'nEvents_trig', 2, 0, 2)
 
 # Z histograms
 h_Z_all = ROOT.TH1D('Zmass_all', 'Zmass_all', 100, 0, 500)
@@ -122,6 +124,13 @@ H_c2 = ROOT.TH1D('H_c2', 'H_c2', 100, 80., 190)
 
 Z_c3 = ROOT.TH1D('Z_c3', 'Z_c3', 100, 0, 500)
 H_c3 = ROOT.TH1D('H_c3', 'H_c3', 100, 80., 190)
+
+
+
+
+h_n.SetStats(1)
+h_n_trig.SetStats(1)
+
 
 l1_id_Ceta.SetStats(1)
 
@@ -276,6 +285,11 @@ for ievent,event in enumerate(tchain):#, start=650000):
     findj1 = False
     findj2 = False
 
+    # pass trigger
+################################################################################################
+    h_n.Fill(event.passedTrig)
+    if (not event.passedTrig): continue
+    h_n_trig.Fill(event.passedTrig)
 
     # find all Z candidates
 ################################################################################################
@@ -399,7 +413,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
 
     for i in range(event.pho_pt.size()):
-
+        if (event.pho_pt[i] < 15.): continue
         if (event.pho_hasPixelSeed[i] == 1): continue
         h_gamma_pt.Fill(event.pho_pt[i])
 

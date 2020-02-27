@@ -390,7 +390,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
     H_find = (Z_find + ALP_find)
 #######################################################################################################
 
-'''
+    '''
     # Photon Cuts
 #######################################################################################################
     #photon selection
@@ -423,11 +423,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
     H_pho_mva.Fill(H_find.M())
 
 #######################################################################################################
-'''
-
-    dRpho = deltaR(pho1_find.Eta(), pho2_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
-
-
+    '''
 
     # Fill Tree
     l1_pt[0] = event.lepFSR_pt[lep_leadindex[0]]
@@ -448,6 +444,8 @@ for ievent,event in enumerate(tchain):#, start=650000):
     pho2_eta[0] = event.pho_eta[pho2_index]
     pho2_phi[0] = event.pho_phi[pho2_index]
     pho2_mva[0] = event.pho_mva[pho2_index]
+
+    dRpho = deltaR(pho1_find.Eta(), pho1_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
 
     Z_m[0] = Z_find.M()
     H_m[0] = H_find.M()

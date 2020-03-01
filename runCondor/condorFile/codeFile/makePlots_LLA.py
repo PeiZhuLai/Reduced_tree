@@ -225,9 +225,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
     Z_lepindex2 = []
     foundZ = False
     lep_leadindex = [] # lepindex[0] for leading, lepindex[1] for subleading
-    dR_l1l2 = 0
-    dR_l1G = 0
-    dR_l2G = 0
 
     # pass trigger
 ################################################################################################
@@ -375,13 +372,15 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     pho1_find = ROOT.TLorentzVector()
     pho2_find = ROOT.TLorentzVector()
+
+    #pho1_find.SetPtEtaPhiE(event.pho_pt[pho1_index], event.pho_eta[pho1_index], event.pho_phi[pho1_index], event.pho_pt[pho1_index] * np.cosh(event.pho_eta[pho1_index]))
+    #pho2_find.SetPtEtaPhiE(event.pho_pt[pho2_index], event.pho_eta[pho2_index], event.pho_phi[pho2_index], event.pho_pt[pho2_index] * np.cosh(event.pho_eta[pho2_index]))
+
     pho1_find.SetPtEtaPhiM(event.pho_pt[pho1_index], event.pho_eta[pho1_index], event.pho_phi[pho1_index], 0.0)
     pho2_find.SetPtEtaPhiM(event.pho_pt[pho2_index], event.pho_eta[pho2_index], event.pho_phi[pho2_index], 0.0)
 
-
     ALP_find = ROOT.TLorentzVector()
     ALP_find = (pho1_find + pho2_find)
-
 #######################################################################################################
 
     # Higgs Candidates
@@ -396,7 +395,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
     #photon selection
 
     if (event.pho_EleVote[pho1_index] == 0): pho_passEleVote = False
+    
     if (event.pho_mva90[pho1_index] == 0): pho_passMVA = False
+
     #if (event.photonCutBasedIDTight[pho1_index] == 0): pho_passTight = False
 
     # pass photon isolation
@@ -449,8 +450,8 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     Z_m[0] = Z_find.M()
     H_m[0] = H_find.M()
-    ALP_m = ALP_find.M()
-    dR_pho = dRpho
+    ALP_m[0] = ALP_find.M()
+    dR_pho[0] = dRpho
     H_pt[0] = H_find.Pt()
     passedEvents.Fill()
 

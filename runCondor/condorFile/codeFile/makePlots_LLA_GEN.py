@@ -54,8 +54,18 @@ print 'events : '+str(tchain.GetEntries())
 file_out = ROOT.TFile(args.outputfile, 'recreate')
 
 
+#############################################
+x_min = 0.
+x_max = 100.
+pho_dEta = ROOT.TH1D('pho_dEta', 'pho_dEta', int(x_max-x_min), x_min, x_max)
+pho_dEta_2D = ROOT.TH2D('pho_dEta_2D', 'pho_dEta_2D',int(x_max-x_min), x_min, x_max,100,0,5)
+data_dEta = [0.]*int(x_max-x_min)
+data_N = [0.]*int(x_max-x_min)
+
+############################################
+
 # Tree
-l1 = array('f',[0.])
+l1_pt = array('f',[0.])
 l1_eta = array('f',[0.])
 l1_phi = array('f',[0.])
 l1_id = array('i',[0])
@@ -66,12 +76,6 @@ l2_pt = array('f',[0.])
 l2_eta = array('f',[0.])
 l2_phi = array('f',[0.])
 l2_id = array('i',[0])
-
-GENpho_pt
-GENpho_eta
-GENpho_phi
-GENpho_E
-
 
 pho1_pt = array('f',[0.])
 pho1_eta = array('f',[0.])
@@ -84,11 +88,11 @@ pho2_phi = array('f',[0.])
 Z_m = array('f',[0.])
 H_m = array('f',[0.])
 ALP_m = array('f',[0.])
+ALP_Et = array('f',[0.])
 
-H_pt = array('f',[0.])
 dR_pho = array('f',[0.])
-
-event_cat = array('i',[0])
+dEta_pho = array('f',[0.])
+dPhi_pho = array('f',[0.])
 
 passedEvents = ROOT.TTree("passedEvents","passedEvents")
 
@@ -113,9 +117,10 @@ passedEvents.Branch("pho2_phi",pho2_phi,"pho2_phi/F")
 passedEvents.Branch("Z_m",Z_m,"Z_m/F")
 passedEvents.Branch("H_m",H_m,"H_m/F")
 passedEvents.Branch("ALP_m",ALP_m,"ALP_m/F")
+passedEvents.Branch("ALP_Et",ALP_Et,"ALP_Et/F")
 passedEvents.Branch("dR_pho",dR_pho,"dR_pho/F")
-
-
+passedEvents.Branch("dEta_pho",dEta_pho,"dEta_pho/F")
+passedEvents.Branch("dPhi_pho",dPhi_pho,"dPhi_pho/F")
 
 
 
@@ -150,12 +155,14 @@ for ievent,event in enumerate(tchain):#, start=650000):
 ################################################################################################
     for i in range(event.GENpho_pt.size()):
 
-        if (event.GENpho_MomId[i] == 9000005):
+        if (event.GENpho_MomId[i] == 9000005 and event.GENpho_MomMomId[i] == 25):
             pho_index.append(i)
 
 
 
     # Fill Tree
+    if (len(lep_index) < 2): continue
+    if (len(pho_index) < 2): continue
     if (event.GENlep_pt[lep_index[0]] > event.GENlep_pt[lep_index[1]]):
         l1_pt[0] = event.GENlep_pt[lep_index[0]]
         l1_eta[0] = event.GENlep_eta[lep_index[0]]
@@ -186,7 +193,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     Z = (l1 + l2)
 
-
     if (event.GENpho_pt[pho_index[0]] > event.GENpho_pt[pho_index[1]]):
         pho1_pt[0] = event.GENpho_pt[pho_index[0]]
         pho1_eta[0] = event.GENpho_eta[pho_index[0]]
@@ -213,21 +219,30 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     ALP = (pho1 + pho2)
     dRpho = deltaR(event.GENlep_eta[lep_index[0]], event.GENlep_phi[lep_index[0]], event.GENlep_eta[lep_index[1]], event.GENlep_phi[lep_index[1]])
-
+    dEtapho = abs(pho1.Eta() - pho2.Eta())
+    dPhipho = abs(pho1.Phi() - pho2.Phi())
     H = (Z + ALP)
 
 
     Z_m[0] = Z.M()
     H_m[0] = H.M()
     ALP_m[0] = ALP.M()
+    ALP_Et[0] = ALP.Et()
     dR_pho[0] = dRpho
+    dEta_pho[0] = dEtapho
+    dPhi_pho[0] = dPhipho
+    passedEvents.Fill()
 
 
-
-
-
-
-
+    ##########################################
+    if (ALP.Et() < x_max):
+        x_et = int(ALP.Et())
+        data_dEta[x_et] = data_dEta[x_et] + dEtapho
+        data_N[x_et] = data_N[x_et] + 1.
+        pho_dEta_2D.Fill(ALP.Et(),dEtapho)
+for i in range(len(data_N)):
+    data_dEta[i] = data_dEta[i]/data_N[i]
+    pho_dEta.SetBinContent(i,data_dEta[i])    
 
 
 

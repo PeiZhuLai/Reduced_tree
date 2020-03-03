@@ -1,0 +1,240 @@
+#! /usr/bin/env python
+
+import argparse
+parser = argparse.ArgumentParser(description="A simple ttree plotter")
+parser.add_argument("-i", "--inputfiles", dest="inputfiles", default=["Sync_1031_2018_ttH_v2.root"], nargs='*', help="List of input ggNtuplizer files")
+parser.add_argument("-o", "--outputfile", dest="outputfile", default="plots.root", help="Output file containing plots")
+parser.add_argument("-m", "--maxevents", dest="maxevents", type=int, default=-1, help="Maximum number events to loop over")
+parser.add_argument("-t", "--ttree", dest="ttree", default="Ana/passedEvents", help="TTree Name")
+args = parser.parse_args()
+
+import numpy as np
+import ROOT
+import os
+
+###########################
+from deltaR import *
+from array import array
+
+
+###########################
+if os.path.isfile('~/.rootlogon.C'): ROOT.gROOT.Macro(os.path.expanduser('~/.rootlogon.C'))
+ROOT.gROOT.SetBatch()
+ROOT.gROOT.SetStyle("Plain")
+ROOT.gStyle.SetOptStat(000000)
+ROOT.gStyle.SetPalette(ROOT.kRainBow)
+ROOT.gStyle.UseCurrentStyle()
+
+sw = ROOT.TStopwatch()
+sw.Start()
+
+# Input ggNtuple
+tchain = ROOT.TChain(args.ttree)
+for filename in args.inputfiles: tchain.Add(filename)
+print 'Total number of events: ' + str(tchain.GetEntries())
+
+# Event weights
+if (filename == "Sync_2016_SZ_mG_85485.root" or filename == "Sync_2016_SZ_mG_88366.root" ):
+    weight = 140000.0*123.8/tchain.GetEntries()
+if (filename == "Sync_2017_ggHZG_8000.root" ):
+    weight = 35.9*14.31/tchain.GetEntries()
+if (filename == "Sync_2016_ZJet.root" or filename == "Sync_2016_ZJet2.root"):
+    weight = 83174000.0/tchain.GetEntries()
+if (filename == "Sync_2016_ggmumu.root" ):
+    weight = 262.62*600/tchain.GetEntries()
+if (filename == "Sync_2016_ggelel.root" ):
+    weight = 540.69*600/tchain.GetEntries()
+weight = 1
+
+print 'events weight: '+str(weight)
+print 'events : '+str(tchain.GetEntries())
+
+
+# Output file and any histograms we want
+file_out = ROOT.TFile(args.outputfile, 'recreate')
+
+
+# Tree
+l1 = array('f',[0.])
+l1_eta = array('f',[0.])
+l1_phi = array('f',[0.])
+l1_id = array('i',[0])
+
+
+
+l2_pt = array('f',[0.])
+l2_eta = array('f',[0.])
+l2_phi = array('f',[0.])
+l2_id = array('i',[0])
+
+GENpho_pt
+GENpho_eta
+GENpho_phi
+GENpho_E
+
+
+pho1_pt = array('f',[0.])
+pho1_eta = array('f',[0.])
+pho1_phi = array('f',[0.])
+
+pho2_pt = array('f',[0.])
+pho2_eta = array('f',[0.])
+pho2_phi = array('f',[0.])
+
+Z_m = array('f',[0.])
+H_m = array('f',[0.])
+ALP_m = array('f',[0.])
+
+H_pt = array('f',[0.])
+dR_pho = array('f',[0.])
+
+event_cat = array('i',[0])
+
+passedEvents = ROOT.TTree("passedEvents","passedEvents")
+
+passedEvents.Branch("l1_pt",l1_pt,"l1_pt/F")
+passedEvents.Branch("l1_eta",l1_eta,"l1_eta/F")
+passedEvents.Branch("l1_phi",l1_phi,"l1_phi/F")
+passedEvents.Branch("l1_id",l1_id,"l1_id/I")
+
+passedEvents.Branch("l2_pt",l2_pt,"l2_pt/F")
+passedEvents.Branch("l2_eta",l2_eta,"l2_eta/F")
+passedEvents.Branch("l2_phi",l2_phi,"l2_phi/F")
+passedEvents.Branch("l2_id",l2_id,"l2_id/I")
+
+passedEvents.Branch("pho1_pt",pho1_pt,"pho1_pt/F")
+passedEvents.Branch("pho1_eta",pho1_eta,"pho1_eta/F")
+passedEvents.Branch("pho1_phi",pho1_phi,"pho1_phi/F")
+
+passedEvents.Branch("pho2_pt",pho2_pt,"pho2_pt/F")
+passedEvents.Branch("pho2_eta",pho2_eta,"pho2_eta/F")
+passedEvents.Branch("pho2_phi",pho2_phi,"pho2_phi/F")
+
+passedEvents.Branch("Z_m",Z_m,"Z_m/F")
+passedEvents.Branch("H_m",H_m,"H_m/F")
+passedEvents.Branch("ALP_m",ALP_m,"ALP_m/F")
+passedEvents.Branch("dR_pho",dR_pho,"dR_pho/F")
+
+
+
+
+
+#Loop over all the events in the input ntuple
+for ievent,event in enumerate(tchain):#, start=650000):
+    if ievent > args.maxevents and args.maxevents != -1: break
+    #if ievent == 100000: break
+    if ievent % 10000 == 0: print 'Processing entry ' + str(ievent)
+
+
+    # Loop over all the electrons in an event
+    lep_index = []
+
+    pho_index = []
+    dRpho = 0.0
+
+    l1 = ROOT.TLorentzVector()
+    l2 = ROOT.TLorentzVector()
+    Z = ROOT.TLorentzVector()
+
+    pho1 = ROOT.TLorentzVector()
+    pho2 = ROOT.TLorentzVector()
+    ALP = ROOT.TLorentzVector()
+
+    H = ROOT.TLorentzVector()
+
+    for i in range(event.GENlep_pt.size()):
+        if (event.GENlep_MomId[i] == 23 and event.GENlep_MomMomId[i] == 25):
+            lep_index.append(i)
+
+    # pass trigger
+################################################################################################
+    for i in range(event.GENpho_pt.size()):
+
+        if (event.GENpho_MomId[i] == 9000005):
+            pho_index.append(i)
+
+
+
+    # Fill Tree
+    if (event.GENlep_pt[lep_index[0]] > event.GENlep_pt[lep_index[1]]):
+        l1_pt[0] = event.GENlep_pt[lep_index[0]]
+        l1_eta[0] = event.GENlep_eta[lep_index[0]]
+        l1_phi[0] = event.GENlep_phi[lep_index[0]]
+        l1_id[0] = event.GENlep_id[lep_index[0]]
+
+        l2_pt[0] = event.GENlep_pt[lep_index[1]]
+        l2_eta[0] = event.GENlep_eta[lep_index[1]]
+        l2_phi[0] = event.GENlep_phi[lep_index[1]]
+        l2_id[0] = event.GENlep_id[lep_index[1]]
+
+        l1.SetPtEtaPhiM(event.GENlep_pt[lep_index[0]], event.GENlep_eta[lep_index[0]], event.GENlep_phi[lep_index[0]], event.GENlep_mass[lep_index[0]])
+        l2.SetPtEtaPhiM(event.GENlep_pt[lep_index[1]], event.GENlep_eta[lep_index[1]], event.GENlep_phi[lep_index[1]], event.GENlep_mass[lep_index[1]])
+
+    else:
+        l1_pt[0] = event.GENlep_pt[lep_index[1]]
+        l1_eta[0] = event.GENlep_eta[lep_index[1]]
+        l1_phi[0] = event.GENlep_phi[lep_index[1]]
+        l1_id[0] = event.GENlep_id[lep_index[1]]
+
+        l2_pt[0] = event.GENlep_pt[lep_index[0]]
+        l2_eta[0] = event.GENlep_eta[lep_index[0]]
+        l2_phi[0] = event.GENlep_phi[lep_index[0]]
+        l2_id[0] = event.GENlep_id[lep_index[0]]
+
+        l1.SetPtEtaPhiM(event.GENlep_pt[lep_index[1]], event.GENlep_eta[lep_index[1]], event.GENlep_phi[lep_index[1]], event.GENlep_mass[lep_index[1]])
+        l2.SetPtEtaPhiM(event.GENlep_pt[lep_index[0]], event.GENlep_eta[lep_index[0]], event.GENlep_phi[lep_index[0]], event.GENlep_mass[lep_index[0]])
+
+    Z = (l1 + l2)
+
+
+    if (event.GENpho_pt[pho_index[0]] > event.GENpho_pt[pho_index[1]]):
+        pho1_pt[0] = event.GENpho_pt[pho_index[0]]
+        pho1_eta[0] = event.GENpho_eta[pho_index[0]]
+        pho1_phi[0] = event.GENpho_phi[pho_index[0]]
+
+        pho2_pt[0] = event.GENpho_pt[pho_index[1]]
+        pho2_eta[0] = event.GENpho_eta[pho_index[1]]
+        pho2_phi[0] = event.GENpho_phi[pho_index[1]]
+
+        pho1.SetPtEtaPhiM(event.GENpho_pt[lep_index[0]], event.GENpho_eta[lep_index[0]], event.GENpho_phi[lep_index[0]], 0.)
+        pho2.SetPtEtaPhiM(event.GENpho_pt[lep_index[1]], event.GENpho_eta[lep_index[1]], event.GENpho_phi[lep_index[1]], 0.)
+
+    else:
+        pho1_pt[0] = event.GENpho_pt[pho_index[1]]
+        pho1_eta[0] = event.GENpho_eta[pho_index[1]]
+        pho1_phi[0] = event.GENpho_phi[pho_index[1]]
+
+        pho2_pt[0] = event.GENpho_pt[pho_index[0]]
+        pho2_eta[0] = event.GENpho_eta[pho_index[0]]
+        pho2_phi[0] = event.GENpho_phi[pho_index[0]]
+
+        pho1.SetPtEtaPhiM(event.GENpho_pt[lep_index[1]], event.GENpho_eta[lep_index[1]], event.GENpho_phi[lep_index[1]], 0.)
+        pho2.SetPtEtaPhiM(event.GENpho_pt[lep_index[0]], event.GENpho_eta[lep_index[0]], event.GENpho_phi[lep_index[0]], 0.)
+
+    ALP = (pho1 + pho2)
+    dRpho = deltaR(event.GENlep_eta[lep_index[0]], event.GENlep_phi[lep_index[0]], event.GENlep_eta[lep_index[1]], event.GENlep_phi[lep_index[1]])
+
+    H = (Z + ALP)
+
+
+    Z_m[0] = Z.M()
+    H_m[0] = H.M()
+    ALP_m[0] = ALP.M()
+    dR_pho[0] = dRpho
+
+
+
+
+
+
+
+
+
+
+
+file_out.Write()
+file_out.Close()
+
+sw.Stop()
+print 'Real time: ' + str(round(sw.RealTime() / 60.0,2)) + ' minutes'
+print 'CPU time:  ' + str(round(sw.CpuTime() / 60.0,2)) + ' minutes'

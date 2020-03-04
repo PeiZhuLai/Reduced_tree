@@ -61,7 +61,7 @@ pho_dEta = ROOT.TH1D('pho_dEta', 'pho_dEta', int(x_max-x_min), x_min, x_max)
 pho_dEta_2D = ROOT.TH2D('pho_dEta_2D', 'pho_dEta_2D',int(x_max-x_min), x_min, x_max,100,0,5)
 data_dEta = [0.]*int(x_max-x_min)
 data_N = [0.]*int(x_max-x_min)
-
+pho_dEtadPhi = ROOT.TH2D('pho_dEtadPhi', 'pho_dEtadPhi',6, 0, 0.1,6,0,0.1)
 #############################################
 
 # cut varibles
@@ -169,7 +169,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     for i in range(event.GENpho_pt.size()):
         if (event.GENpho_pt[i] < cut_pt): continue
-        if (event.GENpho_eta[i] > cut_eta): continue
+        if (abs(event.GENpho_eta[i]) > cut_eta): continue
         if (event.GENpho_MomId[i] == 9000005 and event.GENpho_MomMomId[i] == 25):
             pho_index.append(i)
 
@@ -246,7 +246,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
     dR_pho[0] = dRpho
     dEta_pho[0] = dEtapho
     dPhi_pho[0] = dPhipho
-    passedEvents.Fill()
 
 
     ##########################################
@@ -255,28 +254,30 @@ for ievent,event in enumerate(tchain):#, start=650000):
         data_dEta[x_et] = data_dEta[x_et] + dEtapho
         data_N[x_et] = data_N[x_et] + 1.
         pho_dEta_2D.Fill(ALP.Et(),dEtapho)
+    pho_dEtadPhi.Fill(dPhipho,dEtapho)
     ##########################################
 
 
     # match particles
     ##########################################
-    dR_min = 0.1
+    dR_min = 0.035
     index_reco1 = 0
     index_reco2 = 0
     n_match = 0
+    delta_pho1 = 9999.0
+    delta_pho2 = 9999.0
+
 
     for i in range(event.pho_pt.size()):
-        if (event.pho_pt[i] < cut_pt and event.pho_eta[i] > cut_eta): continue
-        delta_pho1 = 9999.0
+        if (event.pho_pt[i] < cut_pt or abs(event.pho_eta[i]) > cut_eta): continue
         dR1 = deltaR(pho1.Eta(), pho1.Phi(), event.pho_eta[i], event.pho_phi[i])
         if (dR1 < delta_pho1):
             delta_pho1 = dR1
             index_reco1 = i
 
     for j in range(event.pho_pt.size()):
-        if (event.pho_pt[i] < cut_pt and event.pho_eta[i] > cut_eta): continue
+        if (event.pho_pt[i] < cut_pt or abs(event.pho_eta[i]) > cut_eta): continue
         if (j == index_reco1): continue
-        delta_pho2 = 9999.0
         dR2 = deltaR(pho2.Eta(), pho2.Phi(), event.pho_eta[j], event.pho_phi[j])
         if (dR2 < delta_pho2):
             delta_pho2 = dR2
@@ -294,9 +295,10 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     ##########################################
     # end match
-
+    passedEvents.Fill()
 for i in range(len(data_N)):
-    data_dEta[i] = data_dEta[i]/data_N[i]
+    if data_N[i] != 0:
+        data_dEta[i] = data_dEta[i]/data_N[i]
     pho_dEta.SetBinContent(i,data_dEta[i])
 
 

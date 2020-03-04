@@ -218,7 +218,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         pho2.SetPtEtaPhiM(event.GENpho_pt[lep_index[0]], event.GENpho_eta[lep_index[0]], event.GENpho_phi[lep_index[0]], 0.)
 
     ALP = (pho1 + pho2)
-    dRpho = deltaR(event.GENlep_eta[lep_index[0]], event.GENlep_phi[lep_index[0]], event.GENlep_eta[lep_index[1]], event.GENlep_phi[lep_index[1]])
+    dRpho = deltaR(pho1.Eta(), pho1.Phi(), pho2.Eta(), pho2.Phi())
     dEtapho = abs(pho1.Eta() - pho2.Eta())
     dPhipho = abs(pho1.Phi() - pho2.Phi())
     H = (Z + ALP)

@@ -53,7 +53,7 @@ print 'events : '+str(tchain.GetEntries())
 # Output file and any histograms we want
 file_out = ROOT.TFile(args.outputfile, 'recreate')
 
-
+# delta eta as a function of Et
 #############################################
 x_min = 0.
 x_max = 100.
@@ -62,7 +62,13 @@ pho_dEta_2D = ROOT.TH2D('pho_dEta_2D', 'pho_dEta_2D',int(x_max-x_min), x_min, x_
 data_dEta = [0.]*int(x_max-x_min)
 data_N = [0.]*int(x_max-x_min)
 
-############################################
+#############################################
+
+# cut varibles
+#############################################
+cut_pt = 10.
+cut_eta = 1.4442
+#############################################
 
 # Tree
 l1_pt = array('f',[0.])
@@ -122,12 +128,22 @@ passedEvents.Branch("dR_pho",dR_pho,"dR_pho/F")
 passedEvents.Branch("dEta_pho",dEta_pho,"dEta_pho/F")
 passedEvents.Branch("dPhi_pho",dPhi_pho,"dPhi_pho/F")
 
+###############################################
+pho1_matchratio = array('f',[0.])
+pho2_matchratio = array('f',[0.])
+Nmatch = array('i',[0])
+
+passedEvents.Branch("pho1_matchratio",pho1_matchratio,"pho1_matchratio/F")
+passedEvents.Branch("pho2_matchratio",pho2_matchratio,"pho2_matchratio/F")
+passedEvents.Branch("Nmatch",Nmatch,"Nmatch/I")
+###############################################
+
+
 
 
 #Loop over all the events in the input ntuple
 for ievent,event in enumerate(tchain):#, start=650000):
     if ievent > args.maxevents and args.maxevents != -1: break
-    #if ievent == 100000: break
     if ievent % 10000 == 0: print 'Processing entry ' + str(ievent)
 
 
@@ -151,10 +167,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
         if (event.GENlep_MomId[i] == 23 and event.GENlep_MomMomId[i] == 25):
             lep_index.append(i)
 
-    # pass trigger
-################################################################################################
     for i in range(event.GENpho_pt.size()):
-
+        if (event.GENpho_pt[i] < cut_pt): continue
+        if (event.GENpho_eta[i] > cut_eta): continue
         if (event.GENpho_MomId[i] == 9000005 and event.GENpho_MomMomId[i] == 25):
             pho_index.append(i)
 
@@ -240,9 +255,49 @@ for ievent,event in enumerate(tchain):#, start=650000):
         data_dEta[x_et] = data_dEta[x_et] + dEtapho
         data_N[x_et] = data_N[x_et] + 1.
         pho_dEta_2D.Fill(ALP.Et(),dEtapho)
+    ##########################################
+
+
+    # match particles
+    ##########################################
+    dR_min = 0.1
+    index_reco1 = 0
+    index_reco2 = 0
+    n_match = 0
+
+    for i in range(event.pho_pt.size()):
+        if (event.pho_pt[i] < cut_pt and event.pho_eta[i] > cut_eta): continue
+        delta_pho1 = 9999.0
+        dR1 = deltaR(pho1.Eta(), pho1.Phi(), event.pho_eta[i], event.pho_phi[i])
+        if (dR1 < delta_pho1):
+            delta_pho1 = dR1
+            index_reco1 = i
+
+    for j in range(event.pho_pt.size()):
+        if (event.pho_pt[i] < cut_pt and event.pho_eta[i] > cut_eta): continue
+        if (j == index_reco1): continue
+        delta_pho2 = 9999.0
+        dR2 = deltaR(pho2.Eta(), pho2.Phi(), event.pho_eta[j], event.pho_phi[j])
+        if (dR2 < delta_pho2):
+            delta_pho2 = dR2
+            index_reco2 = j
+
+    if (delta_pho1 < dR_min):
+        n_match = n_match + 1
+        pho1_matchratio[0] = event.pho_pt[index_reco1]/pho1.Pt()
+
+    if (delta_pho2 < dR_min):
+        n_match = n_match + 1
+        pho2_matchratio[0] = event.pho_pt[index_reco2]/pho2.Pt()
+
+    Nmatch[0] = n_match
+
+    ##########################################
+    # end match
+
 for i in range(len(data_N)):
     data_dEta[i] = data_dEta[i]/data_N[i]
-    pho_dEta.SetBinContent(i,data_dEta[i])    
+    pho_dEta.SetBinContent(i,data_dEta[i])
 
 
 

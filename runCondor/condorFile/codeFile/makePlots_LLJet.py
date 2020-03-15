@@ -477,13 +477,11 @@ for ievent,event in enumerate(tchain):#, start=650000):
     l1_id_Ceta.Fill(event.lep_id[lep_leadindex[0]])
     Z_Ceta.Fill(Z_find.M())
     H_Ceta.Fill(H_find.M())
-    ALP_Ceta.Fill(ALP_find.M())
 
     if (not pho_passEleVeto): continue
     l1_id_pho_veto.Fill(event.lep_id[lep_leadindex[0]])
     Z_pho_veto.Fill(Z_find.M())
     H_pho_veto.Fill(H_find.M())
-    ALP_pho_veto.Fill(ALP_find.M())
     if (abs(event.pho_eta[pho1_index]) < 1.4442):
         phoEB_IetaIeta.Fill(event.pho_full5x5_sigmaIetaIeta[pho1_index])
     else:
@@ -502,7 +500,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
     if (not pho_passIeIe): continue
     Z_pho_veto_IeIe.Fill(Z_find.M())
     H_pho_veto_IeIe.Fill(H_find.M())
-    ALP_pho_veto_IeIe.Fill(ALP_find.M())
     if (abs(event.pho_eta[pho1_index]) < 1.4442):
         phoEB_IetaIeta_cut.Fill(event.pho_full5x5_sigmaIetaIeta[pho1_index])
     else:
@@ -511,22 +508,18 @@ for ievent,event in enumerate(tchain):#, start=650000):
     if (not pho_passHOverE): continue
     Z_pho_veto_IeIe_HOE.Fill(Z_find.M())
     H_pho_veto_IeIe_HOE.Fill(H_find.M())
-    ALP_pho_veto_IeIe_HOE.Fill(ALP_find.M())
 
     if (not pho_passChaHadIso): continue
     Z_pho_veto_IeIe_HOE_CIso.Fill(Z_find.M())
     H_pho_veto_IeIe_HOE_CIso.Fill(H_find.M())
-    ALP_pho_veto_IeIe_HOE_CIso.Fill(ALP_find.M())
 
     if (not pho_passNeuHadIso): continue
     Z_pho_veto_IeIe_HOE_CIso_NIso.Fill(Z_find.M())
     H_pho_veto_IeIe_HOE_CIso_NIso.Fill(H_find.M())
-    ALP_pho_veto_IeIe_HOE_CIso_NIso.Fill(ALP_find.M())
 
     #if (not passedPhoIso): continue
     Z_pho_veto_IeIe_HOE_CIso_NIso_PIso.Fill(Z_find.M())
     H_pho_veto_IeIe_HOE_CIso_NIso_PIso.Fill(H_find.M())
-    ALP_pho_veto_IeIe_HOE_CIso_NIso_PIso.Fill(ALP_find.M())
 
     dR_l1g1 = deltaR(l1_find.Eta(), l1_find.Phi(), pho1_find.Eta(), pho1_find.Phi())
     dR_l2g1 = deltaR(l2_find.Eta(), l2_find.Phi(), pho1_find.Eta(), pho1_find.Phi())
@@ -536,7 +529,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     Z_dR.Fill(Z_find.M())
     H_dR.Fill(H_find.M())
-    ALP_dR.Fill(ALP_find.M())
 
     Z_dR_pho.Fill(Z_find.M())
     H_dR_pho.Fill(H_find.M())

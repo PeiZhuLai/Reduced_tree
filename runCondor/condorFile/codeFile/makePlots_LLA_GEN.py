@@ -53,6 +53,49 @@ print 'events : '+str(tchain.GetEntries())
 # Output file and any histograms we want
 file_out = ROOT.TFile(args.outputfile, 'recreate')
 
+accetpance_lep = ROOT.TH1D('accetpance_lep', 'accetpance_lep', 3, 0, 3)
+accetpance_lep.SetStats(1)
+
+Pt_pho1 = ROOT.TH1D('Pt_pho1', 'Pt_pho1', 100, 0, 200)
+Pt_pho2 = ROOT.TH1D('Pt_pho2', 'Pt_pho2', 100, 0, 200)
+Pt_l1 = ROOT.TH1D('Pt_l1', 'Pt_l1', 100, 0, 200)
+Pt_l2 = ROOT.TH1D('Pt_l2', 'Pt_l2', 100, 0, 200)
+
+Pt_pho1_Peta = ROOT.TH1D('Pt_pho1_Peta', 'Pt_pho1_Peta', 100, 0, 200)
+Pt_pho2_Peta = ROOT.TH1D('Pt_pho2_Peta', 'Pt_pho2_Peta', 100, 0, 200)
+Pt_l1_Peta = ROOT.TH1D('Pt_l1_Peta', 'Pt_l1_Peta', 100, 0, 200)
+Pt_l2_Peta = ROOT.TH1D('Pt_l2_Peta', 'Pt_l2_Peta', 100, 0, 200)
+
+Pt_pho1_Peta_Leta = ROOT.TH1D('Pt_pho1_Peta_Leta', 'Pt_pho1_Peta_Leta', 100, 0, 200)
+Pt_pho2_Peta_Leta = ROOT.TH1D('Pt_pho2_Peta_Leta', 'Pt_pho2_Peta_Leta', 100, 0, 200)
+Pt_l1_Peta_Leta = ROOT.TH1D('Pt_l1_Peta_Leta', 'Pt_l1_Peta_Leta', 100, 0, 200)
+Pt_l2_Peta_Leta = ROOT.TH1D('Pt_l2_Peta_Leta', 'Pt_l2_Peta_Leta', 100, 0, 200)
+
+Pt_pho1_Peta_Leta_Ppt = ROOT.TH1D('Pt_pho1_Peta_Leta_Ppt', 'Pt_pho1_Peta_Leta_Ppt', 100, 0, 200)
+Pt_pho2_Peta_Leta_Ppt = ROOT.TH1D('Pt_pho2_Peta_Leta_Ppt', 'Pt_pho2_Peta_Leta_Ppt', 100, 0, 200)
+Pt_l1_Peta_Leta_Ppt = ROOT.TH1D('Pt_l1_Peta_Leta_Ppt', 'Pt_l1_Peta_Leta_Ppt', 100, 0, 200)
+Pt_l2_Peta_Leta_Ppt = ROOT.TH1D('Pt_l2_Peta_Leta_Ppt', 'Pt_l2_Peta_Leta_Ppt', 100, 0, 200)
+
+Pt_pho1.SetStats(1)
+Pt_pho2.SetStats(1)
+Pt_l1.SetStats(1)
+Pt_l2.SetStats(1)
+
+Pt_pho1_Peta.SetStats(1)
+Pt_pho2_Peta.SetStats(1)
+Pt_l1_Peta.SetStats(1)
+Pt_l2_Peta.SetStats(1)
+
+Pt_pho1_Peta_Leta.SetStats(1)
+Pt_pho2_Peta_Leta.SetStats(1)
+Pt_l1_Peta_Leta.SetStats(1)
+Pt_l2_Peta_Leta.SetStats(1)
+
+Pt_pho1_Peta_Leta_Ppt.SetStats(1)
+Pt_pho2_Peta_Leta_Ppt.SetStats(1)
+Pt_l1_Peta_Leta_Ppt.SetStats(1)
+Pt_l2_Peta_Leta_Ppt.SetStats(1)
+
 # delta eta as a function of Et
 #############################################
 x_min = 0.
@@ -67,21 +110,21 @@ pho_dEtadPhi = ROOT.TH2D('pho_dEtadPhi', 'pho_dEtadPhi',6, 0, 0.1,6,0,0.1)
 # cut varibles
 #############################################
 cut_pt = 10.
-cut_eta = 1.4442
+cut_eta = 2.5
 #############################################
 
 # Tree
 l1_pt = array('f',[0.])
 l1_eta = array('f',[0.])
 l1_phi = array('f',[0.])
-l1_id = array('i',[0])
+l1_mass = array('f',[0])
 
 
 
 l2_pt = array('f',[0.])
 l2_eta = array('f',[0.])
 l2_phi = array('f',[0.])
-l2_id = array('i',[0])
+l2_mass = array('f',[0])
 
 pho1_pt = array('f',[0.])
 pho1_eta = array('f',[0.])
@@ -105,12 +148,12 @@ passedEvents = ROOT.TTree("passedEvents","passedEvents")
 passedEvents.Branch("l1_pt",l1_pt,"l1_pt/F")
 passedEvents.Branch("l1_eta",l1_eta,"l1_eta/F")
 passedEvents.Branch("l1_phi",l1_phi,"l1_phi/F")
-passedEvents.Branch("l1_id",l1_id,"l1_id/I")
+passedEvents.Branch("l1_mass",l1_mass,"l1_mass/I")
 
 passedEvents.Branch("l2_pt",l2_pt,"l2_pt/F")
 passedEvents.Branch("l2_eta",l2_eta,"l2_eta/F")
 passedEvents.Branch("l2_phi",l2_phi,"l2_phi/F")
-passedEvents.Branch("l2_id",l2_id,"l2_id/I")
+passedEvents.Branch("l2_mass",l2_mass,"l2_mass/I")
 
 passedEvents.Branch("pho1_pt",pho1_pt,"pho1_pt/F")
 passedEvents.Branch("pho1_eta",pho1_eta,"pho1_eta/F")
@@ -164,12 +207,13 @@ for ievent,event in enumerate(tchain):#, start=650000):
     H = ROOT.TLorentzVector()
 
     for i in range(event.GENlep_pt.size()):
+	    #if (abs(event.GENlep_eta[i]) > 2.5): continue
         if (event.GENlep_MomId[i] == 23 and event.GENlep_MomMomId[i] == 25):
             lep_index.append(i)
 
     for i in range(event.GENpho_pt.size()):
-        if (event.GENpho_pt[i] < cut_pt): continue
-        if (abs(event.GENpho_eta[i]) > cut_eta): continue
+        #if (event.GENpho_pt[i] < cut_pt): continue
+        #if (abs(event.GENpho_eta[i]) > cut_eta): continue
         if (event.GENpho_MomId[i] == 9000005 and event.GENpho_MomMomId[i] == 25):
             pho_index.append(i)
 
@@ -177,62 +221,75 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     # Fill Tree
     if (len(lep_index) < 2): continue
+    accetpance_lep.Fill(event.passedTrig)
     if (len(pho_index) < 2): continue
     if (event.GENlep_pt[lep_index[0]] > event.GENlep_pt[lep_index[1]]):
-        l1_pt[0] = event.GENlep_pt[lep_index[0]]
-        l1_eta[0] = event.GENlep_eta[lep_index[0]]
-        l1_phi[0] = event.GENlep_phi[lep_index[0]]
-        l1_id[0] = event.GENlep_id[lep_index[0]]
-
-        l2_pt[0] = event.GENlep_pt[lep_index[1]]
-        l2_eta[0] = event.GENlep_eta[lep_index[1]]
-        l2_phi[0] = event.GENlep_phi[lep_index[1]]
-        l2_id[0] = event.GENlep_id[lep_index[1]]
-
         l1.SetPtEtaPhiM(event.GENlep_pt[lep_index[0]], event.GENlep_eta[lep_index[0]], event.GENlep_phi[lep_index[0]], event.GENlep_mass[lep_index[0]])
         l2.SetPtEtaPhiM(event.GENlep_pt[lep_index[1]], event.GENlep_eta[lep_index[1]], event.GENlep_phi[lep_index[1]], event.GENlep_mass[lep_index[1]])
 
     else:
-        l1_pt[0] = event.GENlep_pt[lep_index[1]]
-        l1_eta[0] = event.GENlep_eta[lep_index[1]]
-        l1_phi[0] = event.GENlep_phi[lep_index[1]]
-        l1_id[0] = event.GENlep_id[lep_index[1]]
-
-        l2_pt[0] = event.GENlep_pt[lep_index[0]]
-        l2_eta[0] = event.GENlep_eta[lep_index[0]]
-        l2_phi[0] = event.GENlep_phi[lep_index[0]]
-        l2_id[0] = event.GENlep_id[lep_index[0]]
-
         l1.SetPtEtaPhiM(event.GENlep_pt[lep_index[1]], event.GENlep_eta[lep_index[1]], event.GENlep_phi[lep_index[1]], event.GENlep_mass[lep_index[1]])
         l2.SetPtEtaPhiM(event.GENlep_pt[lep_index[0]], event.GENlep_eta[lep_index[0]], event.GENlep_phi[lep_index[0]], event.GENlep_mass[lep_index[0]])
 
-    Z = (l1 + l2)
-
     if (event.GENpho_pt[pho_index[0]] > event.GENpho_pt[pho_index[1]]):
-        pho1_pt[0] = event.GENpho_pt[pho_index[0]]
-        pho1_eta[0] = event.GENpho_eta[pho_index[0]]
-        pho1_phi[0] = event.GENpho_phi[pho_index[0]]
-
-        pho2_pt[0] = event.GENpho_pt[pho_index[1]]
-        pho2_eta[0] = event.GENpho_eta[pho_index[1]]
-        pho2_phi[0] = event.GENpho_phi[pho_index[1]]
-
         pho1.SetPtEtaPhiM(event.GENpho_pt[lep_index[0]], event.GENpho_eta[lep_index[0]], event.GENpho_phi[lep_index[0]], 0.)
         pho2.SetPtEtaPhiM(event.GENpho_pt[lep_index[1]], event.GENpho_eta[lep_index[1]], event.GENpho_phi[lep_index[1]], 0.)
 
     else:
-        pho1_pt[0] = event.GENpho_pt[pho_index[1]]
-        pho1_eta[0] = event.GENpho_eta[pho_index[1]]
-        pho1_phi[0] = event.GENpho_phi[pho_index[1]]
-
-        pho2_pt[0] = event.GENpho_pt[pho_index[0]]
-        pho2_eta[0] = event.GENpho_eta[pho_index[0]]
-        pho2_phi[0] = event.GENpho_phi[pho_index[0]]
-
         pho1.SetPtEtaPhiM(event.GENpho_pt[lep_index[1]], event.GENpho_eta[lep_index[1]], event.GENpho_phi[lep_index[1]], 0.)
         pho2.SetPtEtaPhiM(event.GENpho_pt[lep_index[0]], event.GENpho_eta[lep_index[0]], event.GENpho_phi[lep_index[0]], 0.)
 
+    # Cuts
+    #####################################################################
+    Pt_pho1.Fill(pho1.Pt())
+    Pt_pho2.Fill(pho2.Pt())
+    Pt_l1.Fill(l1.Pt())
+    Pt_l2.Fill(l2.Pt())
+
+    if (abs(pho1.Eta()) > cut_eta): continue
+    if (abs(pho2.Eta()) > cut_eta): continue
+    Pt_pho1_Peta.Fill(pho1.Pt())
+    Pt_pho2_Peta.Fill(pho2.Pt())
+    Pt_l1_Peta.Fill(l1.Pt())
+    Pt_l2_Peta.Fill(l2.Pt())
+
+    if (abs(l1.Eta()) > cut_eta): continue
+    if (abs(l2.Eta()) > cut_eta): continue
+    Pt_pho1_Peta_Leta.Fill(pho1.Pt())
+    Pt_pho2_Peta_Leta.Fill(pho2.Pt())
+    Pt_l1_Peta_Leta.Fill(l1.Pt())
+    Pt_l2_Peta_Leta.Fill(l2.Pt())
+
+    if (pho1.Pt() < cut_pt): continue
+    if (pho2.Pt() < cut_pt): continue
+    Pt_pho1_Peta_Leta_Ppt.Fill(pho1.Pt())
+    Pt_pho2_Peta_Leta_Ppt.Fill(pho2.Pt())
+    Pt_l1_Peta_Leta_Ppt.Fill(l1.Pt())
+    Pt_l2_Peta_Leta_Ppt.Fill(l2.Pt())
+
+
+    #####################################################################
+    l1_pt[0] = l1.Pt()
+    l1_eta[0] = l1.Eta()
+    l1_phi[0] = l1.Phi()
+    l1_mass[0] = l1.M()
+
+    l2_pt[0] = l2.Pt()
+    l2_eta[0] = l2.Eta()
+    l2_phi[0] = l2.Phi()
+    l2_mass[0] = l2.M()
+
+    pho1_pt[0] = pho1.Pt()
+    pho1_eta[0] = pho1.Eta()
+    pho1_phi[0] = pho1.Phi()
+
+    pho2_pt[0] = pho2.Pt()
+    pho2_eta[0] = pho2.Eta()
+    pho2_phi[0] = pho1.Phi()
+
+
     ALP = (pho1 + pho2)
+    Z = (l1 + l2)
     dRpho = deltaR(pho1.Eta(), pho1.Phi(), pho2.Eta(), pho2.Phi())
     dEtapho = abs(pho1.Eta() - pho2.Eta())
     dPhipho = abs(pho1.Phi() - pho2.Phi())
@@ -260,7 +317,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     # match particles
     ##########################################
-    dR_min = 0.035
+    dR_min = 0.1
     index_reco1 = 0
     index_reco2 = 0
     n_match = 0
@@ -270,13 +327,15 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     for i in range(event.pho_pt.size()):
         if (event.pho_pt[i] < cut_pt or abs(event.pho_eta[i]) > cut_eta): continue
-        dR1 = deltaR(pho1.Eta(), pho1.Phi(), event.pho_eta[i], event.pho_phi[i])
+        if (event.pho_hasPixelSeed[i] == 1): continue
+	dR1 = deltaR(pho1.Eta(), pho1.Phi(), event.pho_eta[i], event.pho_phi[i])
         if (dR1 < delta_pho1):
             delta_pho1 = dR1
             index_reco1 = i
 
     for j in range(event.pho_pt.size()):
-        if (event.pho_pt[i] < cut_pt or abs(event.pho_eta[i]) > cut_eta): continue
+        if (event.pho_pt[j] < cut_pt or abs(event.pho_eta[j]) > cut_eta): continue
+	if (event.pho_hasPixelSeed[j] == 1): continue
         if (j == index_reco1): continue
         dR2 = deltaR(pho2.Eta(), pho2.Phi(), event.pho_eta[j], event.pho_phi[j])
         if (dR2 < delta_pho2):

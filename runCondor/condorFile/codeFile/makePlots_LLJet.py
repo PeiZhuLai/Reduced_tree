@@ -94,14 +94,23 @@ ALP_pho_veto = ROOT.TH1D('ALP_pho_veto', 'ALP_pho_veto', 100, 0., 30)
 phoEB_IetaIeta = ROOT.TH1D('phoEB_IetaIeta', 'phoEB_IetaIeta', 100, 0., 0.08)
 phoEE_IetaIeta = ROOT.TH1D('phoEE_IetaIeta', 'phoEE_IetaIeta', 100, 0., 0.08)
 
-pho1Pt = ROOT.TH1D('pho1Pt', 'pho1Pt', 100, 0, 200)
-pho1R9 = ROOT.TH1D('pho1R9', 'pho1R9', 100, 0., 1.5)
-pho1IetaIeta = ROOT.TH1D('pho1IetaIeta', 'pho1IetaIeta', 100, 0., 0.08)
-pho1IetaIeta55 = ROOT.TH1D('pho1IetaIeta55', 'pho1IetaIeta55', 100, 0., 0.08)
-pho1HOE = ROOT.TH1D('pho1HOE', 'pho1HOE', 100, 0., 0.4)
-pho1CIso = ROOT.TH1D('pho1CIso', 'pho1CIso', 100, 0., 20)
-pho1NIso = ROOT.TH1D('pho1NIso', 'pho1NIso', 100, 0., 10)
-pho1PIso = ROOT.TH1D('pho1PIso', 'pho1PIso', 100, 0., 40)
+pho1Pt_EB = ROOT.TH1D('pho1Pt_EB', 'pho1Pt_EB', 100, 0, 200)
+pho1R9_EB = ROOT.TH1D('pho1R9_EB', 'pho1R9_EB', 100, 0., 1.5)
+pho1IetaIeta_EB = ROOT.TH1D('pho1IetaIeta_EB', 'pho1IetaIeta_EB', 100, 0., 0.08)
+pho1IetaIeta55_EB = ROOT.TH1D('pho1IetaIeta55_EB', 'pho1IetaIeta55_EB', 100, 0., 0.08)
+pho1HOE_EB = ROOT.TH1D('pho1HOE_EB', 'pho1HOE_EB', 100, 0., 0.4)
+pho1CIso_EB = ROOT.TH1D('pho1CIso_EB', 'pho1CIso_EB', 100, 0., 20)
+pho1NIso_EB = ROOT.TH1D('pho1NIso_EB', 'pho1NIso_EB', 100, 0., 10)
+pho1PIso_EB = ROOT.TH1D('pho1PIso_EB', 'pho1PIso_EB', 100, 0., 40)
+
+pho1Pt_EE = ROOT.TH1D('pho1Pt_EE', 'pho1Pt_EE', 100, 0, 200)
+pho1R9_EE = ROOT.TH1D('pho1R9_EE', 'pho1R9_EE', 100, 0., 1.5)
+pho1IetaIeta_EE = ROOT.TH1D('pho1IetaIeta_EE', 'pho1IetaIeta_EE', 100, 0., 0.08)
+pho1IetaIeta55_EE = ROOT.TH1D('pho1IetaIeta55_EE', 'pho1IetaIeta55_EE', 100, 0., 0.08)
+pho1HOE_EE = ROOT.TH1D('pho1HOE_EE', 'pho1HOE_EE', 100, 0., 0.4)
+pho1CIso_EE = ROOT.TH1D('pho1CIso_EE', 'pho1CIso_EE', 100, 0., 20)
+pho1NIso_EE = ROOT.TH1D('pho1NIso_EE', 'pho1NIso_EE', 100, 0., 10)
+pho1PIso_EE = ROOT.TH1D('pho1PIso_EE', 'pho1PIso_EE', 100, 0., 40)
 
 
 Z_pho_veto_IeIe = ROOT.TH1D('Z_pho_veto_IeIe', 'Z_pho_veto_IeIe', 100, 0, 500)
@@ -423,7 +432,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
 
     npho.Fill(event.pho_pt.size())
-    if (event.pho_pt.size() < 2): continue
+    if (event.pho_pt.size() < 1): continue
 
 
     for i in range(event.pho_pt.size()):
@@ -482,19 +491,30 @@ for ievent,event in enumerate(tchain):#, start=650000):
     l1_id_pho_veto.Fill(event.lep_id[lep_leadindex[0]])
     Z_pho_veto.Fill(Z_find.M())
     H_pho_veto.Fill(H_find.M())
+
     if (abs(event.pho_eta[pho1_index]) < 1.4442):
         phoEB_IetaIeta.Fill(event.pho_full5x5_sigmaIetaIeta[pho1_index])
+
+        pho1Pt_EB.Fill(event.pho_pt[pho1_index])
+        pho1R9_EB.Fill(event.pho_R9[pho1_index])
+        pho1IetaIeta_EB.Fill(event.pho_sigmaIetaIeta[pho1_index])
+        pho1IetaIeta55_EB.Fill(event.pho_full5x5_sigmaIetaIeta[pho1_index])
+        pho1HOE_EB.Fill(event.pho_hadronicOverEm[pho1_index])
+        pho1CIso_EB.Fill(event.pho_chargedHadronIso[pho1_index])
+        pho1NIso_EB.Fill(event.pho_neutralHadronIso[pho1_index])
+        pho1PIso_EB.Fill(event.pho_photonIso[pho1_index])
     else:
         phoEE_IetaIeta.Fill(event.pho_full5x5_sigmaIetaIeta[pho1_index])
 
-    pho1Pt.Fill(event.pho_pt[pho1_index])
-    pho1R9.Fill(event.pho_R9[pho1_index])
-    pho1IetaIeta.Fill(event.pho_sigmaIetaIeta[pho1_index])
-    pho1IetaIeta55.Fill(event.pho_full5x5_sigmaIetaIeta[pho1_index])
-    pho1HOE.Fill(event.pho_hadronicOverEm[pho1_index])
-    pho1CIso.Fill(event.pho_chargedHadronIso[pho1_index])
-    pho1NIso.Fill(event.pho_neutralHadronIso[pho1_index])
-    pho1PIso.Fill(event.pho_photonIso[pho1_index])
+        pho1Pt_EE.Fill(event.pho_pt[pho1_index])
+        pho1R9_EE.Fill(event.pho_R9[pho1_index])
+        pho1IetaIeta_EE.Fill(event.pho_sigmaIetaIeta[pho1_index])
+        pho1IetaIeta55_EE.Fill(event.pho_full5x5_sigmaIetaIeta[pho1_index])
+        pho1HOE_EE.Fill(event.pho_hadronicOverEm[pho1_index])
+        pho1CIso_EE.Fill(event.pho_chargedHadronIso[pho1_index])
+        pho1NIso_EE.Fill(event.pho_neutralHadronIso[pho1_index])
+        pho1PIso_EE.Fill(event.pho_photonIso[pho1_index])
+
 
 
     if (not pho_passIeIe): continue

@@ -233,7 +233,7 @@ ALP_m = array('f',[0.])
 H_pt = array('f',[0.])
 dR_pho = array('f',[0.])
 
-event_cat = array('i',[0])
+pho_matchID = array('i',[0])
 
 passedEvents = ROOT.TTree("passedEvents","passedEvents")
 
@@ -264,7 +264,7 @@ passedEvents.Branch("H_pt",H_pt,"H_pt/F")
 passedEvents.Branch("dR_pho",dR_pho,"dR_pho/F")
 
 
-passedEvents.Branch("event_cat",event_cat,"event_cat/I")
+passedEvents.Branch("pho_matchID",pho_matchID,"pho_matchID/I")
 
 
 
@@ -554,11 +554,18 @@ for ievent,event in enumerate(tchain):#, start=650000):
     H_dR_pho.Fill(H_find.M())
 
 #######################################################################################################
+    # photon match
+    dR_match = 0.
+    dR_min = 9999.
+    index_match = 0
+    for i in range(event.GENpho_pt.size()):
+        dR_match = deltaR(pho1_find.Eta(),pho1_find.Phi(),event.GENpho_eta[i],event.GENpho_phi[i])
+        if (dR_match < dR_min):
+            dR_min = dR_match
+            index_match = i
 
 
-
-
-
+#######################################################################################################
     # Fill Tree
     l1_pt[0] = event.lepFSR_pt[lep_leadindex[0]]
     l2_pt[0] = event.lepFSR_pt[lep_leadindex[1]]
@@ -578,6 +585,8 @@ for ievent,event in enumerate(tchain):#, start=650000):
     Z_m[0] = Z_find.M()
     H_m[0] = H_find.M()
     H_pt[0] = H_find.Pt()
+
+    pho_matchID[0] = event.GENpho_id[index_match]
     passedEvents.Fill()
 
 

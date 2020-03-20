@@ -498,6 +498,15 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     if (event.pho_EleVote[pho1_index] == 0 ): pho_passEleVeto = False
     if (event.pho_EleVote[pho2_index] == 0 ): pho_passEleVeto = False
+
+    if deltaR(pho1_find.Eta(),pho1_find.Phi(),pho2_find.Eta(),pho2_find.Phi()) < 0.3:
+        pho1_phoIso = event.pho_photonIso[pho1_index] - pho2_find.Pt()
+        pho2_phoIso = event.pho_photonIso[pho2_index] - pho1_find.Pt()
+    else:
+        pho1_phoIso = event.pho_photonIso[pho1_index]
+        pho2_phoIso = event.pho_photonIso[pho2_index]
+
+
     # photon 1
     # barrel
     if (abs(event.pho_eta[pho1_index]) < 1.4442):
@@ -505,7 +514,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         if (event.pho_hadronicOverEm[pho1_index] > 0.02148): pho_passHOverE = False
         if (event.pho_chargedHadronIso[pho1_index] > 0.65 ): pho_passChaHadIso = False
         if (event.pho_neutralHadronIso[pho1_index] > (0.317 + event.pho_pt[pho1_index]*0.01512 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.00002259)): pho_passNeuHadIso = False
-        if (event.pho_photonIso[pho1_index] > (2.044 + event.pho_pt[pho1_index]*0.004017)): passedPhoIso = False
+        if (pho1_phoIso > (2.044 + event.pho_pt[pho1_index]*0.004017)): passedPhoIso = False
 
     # endcap
     else:
@@ -513,7 +522,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         if (event.pho_hadronicOverEm[pho1_index] > 0.0321): pho_passHOverE = False
         if (event.pho_chargedHadronIso[pho1_index] > 0.517 ): pho_passChaHadIso = False
         if (event.pho_neutralHadronIso[pho1_index] > (2.716 + event.pho_pt[pho1_index]*0.0117 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.000023)): pho_passNeuHadIso = False
-        if (event.pho_photonIso[pho1_index] > (3.032 + event.pho_pt[pho1_index]*0.0037)): passedPhoIso = False
+        if (pho1_phoIso > (3.032 + event.pho_pt[pho1_index]*0.0037)): passedPhoIso = False
     # photon 2
     # barrel
     if (abs(event.pho_eta[pho2_index]) < 1.4442):
@@ -521,7 +530,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         if (event.pho_hadronicOverEm[pho2_index] > 0.02148): pho_passHOverE = False
         if (event.pho_chargedHadronIso[pho2_index] > 0.65 ): pho_passChaHadIso = False
         if (event.pho_neutralHadronIso[pho2_index] > (0.317 + event.pho_pt[pho1_index]*0.01512 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.00002259)): pho_passNeuHadIso = False
-        if (event.pho_photonIso[pho2_index] > (2.044 + event.pho_pt[pho1_index]*0.004017)): passedPhoIso = False
+        if (pho2_phoIso > (2.044 + event.pho_pt[pho1_index]*0.004017)): passedPhoIso = False
 
     # endcap
     else:
@@ -529,7 +538,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         if (event.pho_hadronicOverEm[pho2_index] > 0.0321): pho_passHOverE = False
         if (event.pho_chargedHadronIso[pho2_index] > 0.517 ): pho_passChaHadIso = False
         if (event.pho_neutralHadronIso[pho2_index] > (2.716 + event.pho_pt[pho1_index]*0.0117 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.000023)): pho_passNeuHadIso = False
-        if (event.pho_photonIso[pho2_index] > (3.032 + event.pho_pt[pho1_index]*0.0037)): passedPhoIso = False
+        if (pho2_phoIso > (3.032 + event.pho_pt[pho1_index]*0.0037)): passedPhoIso = False
 
 
     # no Cuts
@@ -553,7 +562,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         pho1HOE_EB.Fill(event.pho_hadronicOverEm[pho1_index])
         pho1CIso_EB.Fill(event.pho_chargedHadronIso[pho1_index])
         pho1NIso_EB.Fill(event.pho_neutralHadronIso[pho1_index])
-        pho1PIso_EB.Fill(event.pho_photonIso[pho1_index])
+        pho1PIso_EB.Fill(pho1_phoIso)
     else:
         phoEE_IetaIeta.Fill(event.pho_full5x5_sigmaIetaIeta[pho1_index])
 
@@ -564,7 +573,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         pho1HOE_EE.Fill(event.pho_hadronicOverEm[pho1_index])
         pho1CIso_EE.Fill(event.pho_chargedHadronIso[pho1_index])
         pho1NIso_EE.Fill(event.pho_neutralHadronIso[pho1_index])
-        pho1PIso_EE.Fill(event.pho_photonIso[pho1_index])
+        pho1PIso_EE.Fill(pho1_phoIso)
 
     if (abs(event.pho_eta[pho2_index]) < 1.4442):
         phoEB_IetaIeta.Fill(event.pho_full5x5_sigmaIetaIeta[pho2_index])
@@ -576,7 +585,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         pho2HOE_EB.Fill(event.pho_hadronicOverEm[pho2_index])
         pho2CIso_EB.Fill(event.pho_chargedHadronIso[pho2_index])
         pho2NIso_EB.Fill(event.pho_neutralHadronIso[pho2_index])
-        pho2PIso_EB.Fill(event.pho_photonIso[pho2_index])
+        pho2PIso_EB.Fill(pho2_phoIso)
     else:
         phoEE_IetaIeta.Fill(event.pho_full5x5_sigmaIetaIeta[pho2_index])
 
@@ -587,7 +596,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         pho2HOE_EE.Fill(event.pho_hadronicOverEm[pho2_index])
         pho2CIso_EE.Fill(event.pho_chargedHadronIso[pho2_index])
         pho2NIso_EE.Fill(event.pho_neutralHadronIso[pho2_index])
-        pho2PIso_EE.Fill(event.pho_photonIso[pho2_index])
+        pho2PIso_EE.Fill(pho2_phoIso)
 
 
 

@@ -57,22 +57,22 @@ accetpance_lep = ROOT.TH1D('accetpance_lep', 'accetpance_lep', 3, 0, 3)
 accetpance_lep.SetStats(1)
 
 Pt_pho1 = ROOT.TH1D('Pt_pho1', 'Pt_pho1', 100, 0, 200)
-Pt_pho2 = ROOT.TH1D('Pt_pho2', 'Pt_pho2', 100, 0, 200)
+Pt_pho2 = ROOT.TH1D('Pt_pho2', 'Pt_pho2', 100, 0, 50)
 Pt_l1 = ROOT.TH1D('Pt_l1', 'Pt_l1', 100, 0, 200)
 Pt_l2 = ROOT.TH1D('Pt_l2', 'Pt_l2', 100, 0, 200)
 
 Pt_pho1_Peta = ROOT.TH1D('Pt_pho1_Peta', 'Pt_pho1_Peta', 100, 0, 200)
-Pt_pho2_Peta = ROOT.TH1D('Pt_pho2_Peta', 'Pt_pho2_Peta', 100, 0, 200)
+Pt_pho2_Peta = ROOT.TH1D('Pt_pho2_Peta', 'Pt_pho2_Peta', 100, 0, 50)
 Pt_l1_Peta = ROOT.TH1D('Pt_l1_Peta', 'Pt_l1_Peta', 100, 0, 200)
 Pt_l2_Peta = ROOT.TH1D('Pt_l2_Peta', 'Pt_l2_Peta', 100, 0, 200)
 
 Pt_pho1_Peta_Leta = ROOT.TH1D('Pt_pho1_Peta_Leta', 'Pt_pho1_Peta_Leta', 100, 0, 200)
-Pt_pho2_Peta_Leta = ROOT.TH1D('Pt_pho2_Peta_Leta', 'Pt_pho2_Peta_Leta', 100, 0, 200)
+Pt_pho2_Peta_Leta = ROOT.TH1D('Pt_pho2_Peta_Leta', 'Pt_pho2_Peta_Leta', 100, 0, 50)
 Pt_l1_Peta_Leta = ROOT.TH1D('Pt_l1_Peta_Leta', 'Pt_l1_Peta_Leta', 100, 0, 200)
 Pt_l2_Peta_Leta = ROOT.TH1D('Pt_l2_Peta_Leta', 'Pt_l2_Peta_Leta', 100, 0, 200)
 
 Pt_pho1_Peta_Leta_Ppt = ROOT.TH1D('Pt_pho1_Peta_Leta_Ppt', 'Pt_pho1_Peta_Leta_Ppt', 100, 0, 200)
-Pt_pho2_Peta_Leta_Ppt = ROOT.TH1D('Pt_pho2_Peta_Leta_Ppt', 'Pt_pho2_Peta_Leta_Ppt', 100, 0, 200)
+Pt_pho2_Peta_Leta_Ppt = ROOT.TH1D('Pt_pho2_Peta_Leta_Ppt', 'Pt_pho2_Peta_Leta_Ppt', 100, 0, 50)
 Pt_l1_Peta_Leta_Ppt = ROOT.TH1D('Pt_l1_Peta_Leta_Ppt', 'Pt_l1_Peta_Leta_Ppt', 100, 0, 200)
 Pt_l2_Peta_Leta_Ppt = ROOT.TH1D('Pt_l2_Peta_Leta_Ppt', 'Pt_l2_Peta_Leta_Ppt', 100, 0, 200)
 

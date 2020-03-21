@@ -234,6 +234,8 @@ H_pt = array('f',[0.])
 dR_pho = array('f',[0.])
 
 pho_matchID = array('i',[0])
+pho_matchmomID = array('i',[0])
+pho_matchmommomID = array('i',[0])
 
 passedEvents = ROOT.TTree("passedEvents","passedEvents")
 
@@ -265,6 +267,8 @@ passedEvents.Branch("dR_pho",dR_pho,"dR_pho/F")
 
 
 passedEvents.Branch("pho_matchID",pho_matchID,"pho_matchID/I")
+passedEvents.Branch("pho_matchmomID",pho_matchmomID,"pho_matchmomID/I")
+passedEvents.Branch("pho_matchmommomID",pho_matchmommomID,"pho_matchmommomID/I")
 
 
 
@@ -515,8 +519,11 @@ for ievent,event in enumerate(tchain):#, start=650000):
         pho1NIso_EE.Fill(event.pho_neutralHadronIso[pho1_index])
         pho1PIso_EE.Fill(event.pho_photonIso[pho1_index])
 
+#######################################################################################################
 
+#######################################################################################################
 
+    '''
     if (not pho_passIeIe): continue
     Z_pho_veto_IeIe.Fill(Z_find.M())
     H_pho_veto_IeIe.Fill(H_find.M())
@@ -552,17 +559,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     Z_dR_pho.Fill(Z_find.M())
     H_dR_pho.Fill(H_find.M())
-
+    '''
 #######################################################################################################
-    # photon match
-    dR_match = 0.
-    dR_min = 9999.
-    index_match = 0
-    for i in range(event.GENpho_pt.size()):
-        dR_match = deltaR(pho1_find.Eta(),pho1_find.Phi(),event.GENpho_eta[i],event.GENpho_phi[i])
-        if (dR_match < dR_min):
-            dR_min = dR_match
-            index_match = i
+
 
 
 #######################################################################################################
@@ -586,7 +585,10 @@ for ievent,event in enumerate(tchain):#, start=650000):
     H_m[0] = H_find.M()
     H_pt[0] = H_find.Pt()
 
-    pho_matchID[0] = event.GENpho_id[index_match]
+    pho_matchID[0] = event.pho_matchedR03_PdgId[pho1_index]
+    pho_matchmomID[0] = event.pho_matchedR03_MomId[pho1_index]
+    pho_matchmommomID[0] = event.pho_matchedR03_MomMomId[pho1_index]
+
     passedEvents.Fill()
 
 

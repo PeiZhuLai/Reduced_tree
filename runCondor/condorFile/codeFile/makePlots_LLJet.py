@@ -271,8 +271,8 @@ passedEvents.Branch("dR_pho",dR_pho,"dR_pho/F")
 passedEvents.Branch("pho_matcheID",pho_matcheID,"pho_matcheID/I")
 passedEvents.Branch("pho_matchemomID",pho_matchemomID,"pho_matchemomID/I")
 passedEvents.Branch("pho_matchemommomID",pho_matchemommomID,"pho_matchemommomID/I")
-pho_matchedR.Branch("pho_matchedR",pho_matchedR,"pho_matchedR/F")
-pho_matchedPt.Branch("pho_matchedPt",pho_matchedPt,"pho_matchedPt/F")
+passedEvents.Branch("pho_matchedR",pho_matchedR,"pho_matchedR/F")
+passedEvents.Branch("pho_matchedPt",pho_matchedPt,"pho_matchedPt/F")
 
 
 

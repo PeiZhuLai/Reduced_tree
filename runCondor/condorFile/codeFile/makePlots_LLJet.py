@@ -592,8 +592,8 @@ for ievent,event in enumerate(tchain):#, start=650000):
     pho_matcheID[0] = event.pho_matchedR03_PdgId[pho1_index]
     pho_matchemomID[0] = event.pho_matchedR03_MomId[pho1_index]
     pho_matchemommomID[0] = event.pho_matchedR03_MomMomId[pho1_index]
-    pho_matchedR[0] = float(pho_matchedR[pho1_index])
-    pho_matchedPt[0] = float(pho_matchedPt[pho1_index])
+    pho_matchedR[0] = float(event.pho_matchedR[pho1_index])
+    pho_matchedPt[0] = float(event.pho_matchedPt[pho1_index])
 
     passedEvents.Fill()
 

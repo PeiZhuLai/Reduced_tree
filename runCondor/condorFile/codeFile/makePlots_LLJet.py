@@ -233,9 +233,11 @@ ALP_m = array('f',[0.])
 H_pt = array('f',[0.])
 dR_pho = array('f',[0.])
 
-pho_matchID = array('i',[0])
-pho_matchmomID = array('i',[0])
-pho_matchmommomID = array('i',[0])
+pho_matcheID = array('i',[0])
+pho_matchemomID = array('i',[0])
+pho_matchemommomID = array('i',[0])
+pho_matchedR = array('f',[0.])
+pho_matchedPt = array('f',[0.])
 
 passedEvents = ROOT.TTree("passedEvents","passedEvents")
 
@@ -266,9 +268,11 @@ passedEvents.Branch("H_pt",H_pt,"H_pt/F")
 passedEvents.Branch("dR_pho",dR_pho,"dR_pho/F")
 
 
-passedEvents.Branch("pho_matchID",pho_matchID,"pho_matchID/I")
-passedEvents.Branch("pho_matchmomID",pho_matchmomID,"pho_matchmomID/I")
-passedEvents.Branch("pho_matchmommomID",pho_matchmommomID,"pho_matchmommomID/I")
+passedEvents.Branch("pho_matcheID",pho_matcheID,"pho_matcheID/I")
+passedEvents.Branch("pho_matchemomID",pho_matchemomID,"pho_matchemomID/I")
+passedEvents.Branch("pho_matchemommomID",pho_matchemommomID,"pho_matchemommomID/I")
+pho_matchedR.Branch("pho_matchedR",pho_matchedR,"pho_matchedR/F")
+pho_matchedPt.Branch("pho_matchedPt",pho_matchedPt,"pho_matchedPt/F")
 
 
 
@@ -585,9 +589,11 @@ for ievent,event in enumerate(tchain):#, start=650000):
     H_m[0] = H_find.M()
     H_pt[0] = H_find.Pt()
 
-    pho_matchID[0] = event.pho_matchedR03_PdgId[pho1_index]
-    pho_matchmomID[0] = event.pho_matchedR03_MomId[pho1_index]
-    pho_matchmommomID[0] = event.pho_matchedR03_MomMomId[pho1_index]
+    pho_matcheID[0] = event.pho_matchedR03_PdgId[pho1_index]
+    pho_matchemomID[0] = event.pho_matchedR03_MomId[pho1_index]
+    pho_matchemommomID[0] = event.pho_matchedR03_MomMomId[pho1_index]
+    pho_matchedR[0] = float(pho_matchedR[pho1_index])
+    pho_matchedPt[0] = float(pho_matchedPt[pho1_index])
 
     passedEvents.Fill()
 

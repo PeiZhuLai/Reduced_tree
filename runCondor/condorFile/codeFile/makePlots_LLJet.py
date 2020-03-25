@@ -143,7 +143,7 @@ Z_dR_pho = ROOT.TH1D('Z_dR_pho', 'Z_dR_pho', 100, 0, 500)
 H_dR_pho = ROOT.TH1D('H_dR_pho', 'H_dR_pho', 100, 80., 190)
 ALP_dR_pho = ROOT.TH1D('ALP_dR_pho', 'ALP_dR_pho', 100, 0., 30)
 ################################################################################################
-pho_matchedRdPt_2D = ROOT.TH2D('pho_matchedRdPt_2D', 'pho_matchedRdPt_2D',100, 0, 0.5,400,-200,200)
+pho_matchedRdPt_2D = ROOT.TH2D('pho_matchedRdPt_2D', 'pho_matchedRdPt_2D',50, 0, 0.5,200,-200,200)
 
 
 

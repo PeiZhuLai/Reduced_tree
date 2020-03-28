@@ -33,19 +33,19 @@ def processCmd(cmd, quite = 0):
     else:
         return output
 
-def makedir(dir = []):
+def makedir(baseDir , dir = []):
 
-    if (os.path.exists('./numberCount/')):
-        cmd = 'rm -rf numberCount/*'
+    if (os.path.exists('.' + baseDir + '/numberCount/')):
+        cmd = 'rm -rf ' + baseDir + '/numberCount/*'
         output = processCmd(cmd)
     else:
-        cmd = 'mkdir  numberCount'
+        cmd = 'mkdir ' + baseDir + '/numberCount'
         output = processCmd(cmd)
 
     for i in range(len(dir)):
         filename = dir[i].split(".")[0]
 
-        cmd = 'mkdir numberCount/' + filename
+        cmd = 'mkdir ' + baseDir + '/numberCount/' + filename
         output = processCmd(cmd)
 
 def checkCRABjob():
@@ -55,12 +55,13 @@ def checkCRABjob():
     parseOptions()
 
     t2_path = opt.INPUT
+    t2_jobFiles = str(t2_path).split('.')[0]
 
-    if (os.path.exists('./jobFiles/')):
-        cmd = 'rm jobFiles/*'
+    if (os.path.exists('./' + t2_jobFiles + '/')):
+        cmd = 'rm ' + t2_jobFiles + '/*'
         output = processCmd(cmd)
     else:
-        cmd = 'mkdir jobFiles'
+        cmd = 'mkdir ' + t2_jobFiles
         output = processCmd(cmd)
 
     in_file = open(t2_path)
@@ -68,33 +69,34 @@ def checkCRABjob():
     for line in in_file:
         t2_dir = line.split(' ')[0]
         path_crab.append(line.split(' ')[1])
+        countFileName = t2_dir.split(' ')[0].split('/')[-3][5:] + '_' + t2_dir.split(' ')[0].split('/')[-2] + '_' + t2_dir.split(' ')[0].split('/')[-1] + '.txt'
 
-        cmd = 'xrdfs root://cmsio5.rc.ufl.edu/ ls ' + t2_dir + ' > jobFiles/' + t2_dir.split(' ')[0].split('/')[-3][5:] + '_' + t2_dir.split(' ')[0].split('/')[-2] + '_' + t2_dir.split(' ')[0].split('/')[-1] + '.txt'
+        cmd = 'xrdfs root://cmsio5.rc.ufl.edu/ ls ' + t2_dir + ' > ' + t2_jobFiles + '/' + countFileName
         output = processCmd(cmd)
 
-        cmd = "sed -i '$d' jobFiles/" + t2_dir.split(' ')[0].split('/')[-3][5:] + '_' + t2_dir.split(' ')[0].split('/')[-2] + '_' + t2_dir.split(' ')[0].split('/')[-1] + '.txt'
+        cmd = "sed -i '$d' " + t2_jobFiles + "/" + countFileName
         output = processCmd(cmd)
 
 
-    cmd = 'ls jobFiles | wc -l'
+    cmd = 'ls ' + t2_jobFiles + ' | wc -l'
     nfiles = processCmd(cmd)
 
     dir_list = []
 
     for i in range(int(nfiles)):
-        cmd = 'ls jobFiles | sed -n "' + str(i+1) +'p"'
+        cmd = 'ls ' + t2_jobFiles + ' | sed -n "' + str(i+1) +'p"'
         eachline = processCmd(cmd)
 
         dir_list.append(eachline)
 
-    makedir(dir_list)
+    makedir(t2_jobFiles , dir_list)
 
     for i in range(len(dir_list)):
 
         filename = dir_list[i].split('.')[0]
 
-        initfile = open('jobFiles/' + dir_list[i])
-        outfile = open('numberCount/' + filename + '/sort.txt','w')
+        initfile = open(t2_jobFiles + '/' + dir_list[i])
+        outfile = open(t2_jobFiles + '/numberCount/' + filename + '/sort.txt','w')
         for line in initfile:
             x = line.split("_")[-1].split(".")[0]
             outfile.write(x + "\n")
@@ -102,24 +104,26 @@ def checkCRABjob():
         initfile.close()
         outfile.close()
 
+        path_numberCount = t2_jobFiles + "/numberCount/"
+
         if ('0000' in filename):
-            cmd = "sort -n " + "numberCount/" + filename + "/sort.txt" + "| awk '{for(i=p+1; i<$1; i++) print i} {p=$1}' > numberCount/" + filename + "/missingJobsID.txt"
+            cmd = "sort -n " + path_numberCount + filename + "/sort.txt" + "| awk '{for(i=p+1; i<$1; i++) print i} {p=$1}' > " + path_numberCount + filename + "/missingJobsID.txt"
             #awk -F ' ' '{print $9}' DoubleEG_Run2016H-03Feb2017_ver2-v1.txt | awk -F '_' '{print $3}' | awk -F '.' '{print $1}' | sort -n | awk '{for(i=p+1; i<$1; i++) print i} {p=$1}'
             output = processCmd(cmd)
         else:
-            cmd = "sort -n " + "numberCount/" + filename + "/sort.txt" + "| awk '{for(i=p+1; i<$1; i++) if(i>999){print i}} {p=$1}' > numberCount/" + filename + "/missingJobsID.txt"
+            cmd = "sort -n " + path_numberCount + filename + "/sort.txt" + "| awk '{for(i=p+1; i<$1; i++) if(i>999){print i}} {p=$1}' > " + t2_jobFiles + "numberCount/" + filename + "/missingJobsID.txt"
             #awk -F ' ' '{print $9}' DoubleEG_Run2016H-03Feb2017_ver2-v1.txt | awk -F '_' '{print $3}' | awk -F '.' '{print $1}' | sort -n | awk '{for(i=p+1; i<$1; i++) print i} {p=$1}'
             output = processCmd(cmd)
 
-        cmd = "sort -n " + "numberCount/" + filename + "/sort.txt" + "| awk 'END {print}' "
+        cmd = "sort -n " + path_numberCount + filename + "/sort.txt" + "| awk 'END {print}' "
         nexp = processCmd(cmd)
 
-        cmd = "awk 'END{print NR}' " + "numberCount/" + filename + "/sort.txt"
+        cmd = "awk 'END{print NR}' " + path_numberCount + filename + "/sort.txt"
         nobs = processCmd(cmd)
 
         missingID = []
 
-        file = open("numberCount/" + filename + "/missingJobsID.txt")
+        file = open(path_numberCount + filename + "/missingJobsID.txt")
         for line in file:
             missingID.append(line[:-1])
         file.close()
@@ -135,9 +139,9 @@ def checkCRABjob():
 
             cmd_resub = 'crab resubmit -d ' + path_crab[i].rstrip('\n') + '/crab_' + filename[:-19] + ' --force --jobids='
 
-            missingJobsIDFile = open('numberCount/' + filename + '/missingJobsID.txt')
+            missingJobsIDFile = open(t2_jobFiles + '/numberCount/' + filename + '/missingJobsID.txt')
 
-    	    if (os.path.getsize('numberCount/' + filename + '/missingJobsID.txt') == 0): continue
+    	    if (os.path.getsize(t2_jobFiles + '/numberCount/' + filename + '/missingJobsID.txt') == 0): continue
 
             for line in missingJobsIDFile:
                 cmd_resub = cmd_resub + line.rstrip('\n') + ','

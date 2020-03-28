@@ -111,7 +111,7 @@ def checkCRABjob():
             #awk -F ' ' '{print $9}' DoubleEG_Run2016H-03Feb2017_ver2-v1.txt | awk -F '_' '{print $3}' | awk -F '.' '{print $1}' | sort -n | awk '{for(i=p+1; i<$1; i++) print i} {p=$1}'
             output = processCmd(cmd)
         else:
-            cmd = "sort -n " + path_numberCount + filename + "/sort.txt" + "| awk '{for(i=p+1; i<$1; i++) if(i>999){print i}} {p=$1}' > " + t2_jobFiles + "numberCount/" + filename + "/missingJobsID.txt"
+            cmd = "sort -n " + path_numberCount + filename + "/sort.txt" + "| awk '{for(i=p+1; i<$1; i++) if(i>999){print i}} {p=$1}' > " + path_numberCount + filename + "/missingJobsID.txt"
             #awk -F ' ' '{print $9}' DoubleEG_Run2016H-03Feb2017_ver2-v1.txt | awk -F '_' '{print $3}' | awk -F '.' '{print $1}' | sort -n | awk '{for(i=p+1; i<$1; i++) print i} {p=$1}'
             output = processCmd(cmd)
 

@@ -170,6 +170,68 @@ passedEvents.Branch("ALP_Et",ALP_Et,"ALP_Et/F")
 passedEvents.Branch("dR_pho",dR_pho,"dR_pho/F")
 passedEvents.Branch("dEta_pho",dEta_pho,"dEta_pho/F")
 passedEvents.Branch("dPhi_pho",dPhi_pho,"dPhi_pho/F")
+##############################################################################################
+
+pho1_pt_less10 = array('f',[0.])
+pho1_eta_less10 = array('f',[0.])
+pho1_phi_less10 = array('f',[0.])
+pho1_photonIso_less10 = array('f',[0.])
+
+pho2_pt_less10 = array('f',[0.])
+pho2_eta_less10 = array('f',[0.])
+pho2_phi_less10 = array('f',[0.])
+pho2_photonIso_less10 = array('f',[0.])
+
+H_m_less10 = array('f',[0.])
+ALP_m_less10 = array('f',[0.])
+ALP_Et_less10 = array('f',[0.])
+
+subpholessthan10 = ROOT.TTree("subpholessthan10","subpholessthan10")
+
+subpholessthan10.Branch("pho1_pt_less10",pho1_pt_less10,"pho1_pt_less10/F")
+subpholessthan10.Branch("pho1_eta_less10",pho1_eta_less10,"pho1_eta_less10/F")
+subpholessthan10.Branch("pho1_phi_less10",pho1_phi_less10,"pho1_phi_less10/F")
+subpholessthan10.Branch("pho1_photonIso_less10",pho1_photonIso_less10,"pho1_photonIso_less10/F")
+
+subpholessthan10.Branch("pho2_pt_less10",pho2_pt_less10,"pho2_pt_less10/F")
+subpholessthan10.Branch("pho2_eta_less10",pho2_eta_less10,"pho2_eta_less10/F")
+subpholessthan10.Branch("pho2_phi_less10",pho2_phi_less10,"pho2_phi_less10/F")
+subpholessthan10.Branch("pho2_photonIso_less10",pho2_photonIso_less10,"pho2_photonIso_less10/F")
+
+subpholessthan10.Branch("H_m_less10",H_m_less10,"H_m_less10/F")
+subpholessthan10.Branch("ALP_m_less10",ALP_m_less10,"ALP_m_less10/F")
+subpholessthan10.Branch("ALP_Et_less10",ALP_Et_less10,"ALP_Et_less10/F")
+##############################################################################################
+
+pho1_pt_large10 = array('f',[0.])
+pho1_eta_large10 = array('f',[0.])
+pho1_phi_large10 = array('f',[0.])
+pho1_photonIso_large10 = array('f',[0.])
+
+pho2_pt_large10 = array('f',[0.])
+pho2_eta_large10 = array('f',[0.])
+pho2_phi_large10 = array('f',[0.])
+pho2_photonIso_large10 = array('f',[0.])
+
+H_m_large10 = array('f',[0.])
+ALP_m_large10 = array('f',[0.])
+ALP_Et_large10 = array('f',[0.])
+
+subpholargethan10 = ROOT.TTree("subpholargethan10","subpholargethan10")
+
+subpholargethan10.Branch("pho1_pt_large10",pho1_pt_large10,"pho1_pt_large10/F")
+subpholargethan10.Branch("pho1_eta_large10",pho1_eta_large10,"pho1_eta_large10/F")
+subpholargethan10.Branch("pho1_phi_large10",pho1_phi_large10,"pho1_phi_large10/F")
+subpholargethan10.Branch("pho1_photonIso_large10",pho1_photonIso_large10,"pho1_photonIso_large10/F")
+
+subpholargethan10.Branch("pho2_pt_large10",pho2_pt_large10,"pho2_pt_large10/F")
+subpholargethan10.Branch("pho2_eta_large10",pho2_eta_large10,"pho2_eta_large10/F")
+subpholargethan10.Branch("pho2_phi_large10",pho2_phi_large10,"pho2_phi_large10/F")
+subpholargethan10.Branch("pho2_photonIso_large10",pho2_photonIso_large10,"pho2_photonIso_large10/F")
+
+subpholargethan10.Branch("H_m_large10",H_m_large10,"H_m_large10/F")
+subpholargethan10.Branch("ALP_m_large10",ALP_m_large10,"ALP_m_large10/F")
+subpholargethan10.Branch("ALP_Et_large10",ALP_Et_large10,"ALP_Et_large10/F")
 
 ###############################################
 pho1_matchratio = array('f',[0.])
@@ -195,6 +257,11 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     pho_index = []
     dRpho = 0.0
+
+    lep_leadingIndex = -1
+    lep_subleadingIndex = -1
+    pho_leadingIndex = -1
+    pho_subleadingIndex = -1
 
     l1 = ROOT.TLorentzVector()
     l2 = ROOT.TLorentzVector()
@@ -224,20 +291,26 @@ for ievent,event in enumerate(tchain):#, start=650000):
     accetpance_lep.Fill(event.passedTrig)
     if (len(pho_index) < 2): continue
     if (event.GENlep_pt[lep_index[0]] > event.GENlep_pt[lep_index[1]]):
-        l1.SetPtEtaPhiM(event.GENlep_pt[lep_index[0]], event.GENlep_eta[lep_index[0]], event.GENlep_phi[lep_index[0]], event.GENlep_mass[lep_index[0]])
-        l2.SetPtEtaPhiM(event.GENlep_pt[lep_index[1]], event.GENlep_eta[lep_index[1]], event.GENlep_phi[lep_index[1]], event.GENlep_mass[lep_index[1]])
+        lep_leadingIndex = lep_index[0]
+        lep_subleadingIndex = lep_index[1]
 
     else:
-        l1.SetPtEtaPhiM(event.GENlep_pt[lep_index[1]], event.GENlep_eta[lep_index[1]], event.GENlep_phi[lep_index[1]], event.GENlep_mass[lep_index[1]])
-        l2.SetPtEtaPhiM(event.GENlep_pt[lep_index[0]], event.GENlep_eta[lep_index[0]], event.GENlep_phi[lep_index[0]], event.GENlep_mass[lep_index[0]])
+        lep_leadingIndex = lep_index[1]
+        lep_subleadingIndex = lep_index[0]
 
     if (event.GENpho_pt[pho_index[0]] > event.GENpho_pt[pho_index[1]]):
-        pho1.SetPtEtaPhiM(event.GENpho_pt[lep_index[0]], event.GENpho_eta[lep_index[0]], event.GENpho_phi[lep_index[0]], 0.)
-        pho2.SetPtEtaPhiM(event.GENpho_pt[lep_index[1]], event.GENpho_eta[lep_index[1]], event.GENpho_phi[lep_index[1]], 0.)
+        pho_leadingIndex = pho_index[0]
+        pho_subleadingIndex = pho_index[1]
 
     else:
-        pho1.SetPtEtaPhiM(event.GENpho_pt[lep_index[1]], event.GENpho_eta[lep_index[1]], event.GENpho_phi[lep_index[1]], 0.)
-        pho2.SetPtEtaPhiM(event.GENpho_pt[lep_index[0]], event.GENpho_eta[lep_index[0]], event.GENpho_phi[lep_index[0]], 0.)
+        pho_leadingIndex = pho_index[1]
+        pho_subleadingIndex = pho_index[0]
+
+    l1.SetPtEtaPhiM(event.GENlep_pt[lep_leadingIndex], event.GENlep_eta[lep_leadingIndex], event.GENlep_phi[lep_leadingIndex], event.GENlep_mass[lep_leadingIndex])
+    l2.SetPtEtaPhiM(event.GENlep_pt[lep_subleadingIndex], event.GENlep_eta[lep_subleadingIndex], event.GENlep_phi[lep_subleadingIndex], event.GENlep_mass[lep_subleadingIndex])
+
+    pho1.SetPtEtaPhiM(event.GENpho_pt[pho_leadingIndex], event.GENpho_eta[pho_leadingIndex], event.GENpho_phi[pho_leadingIndex], 0.)
+    pho2.SetPtEtaPhiM(event.GENpho_pt[pho_subleadingIndex], event.GENpho_eta[pho_subleadingIndex], event.GENpho_phi[pho_subleadingIndex], 0.)
 
     # Cuts
     #####################################################################
@@ -261,7 +334,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
     Pt_l2_Peta_Leta.Fill(l2.Pt())
 
     if (pho1.Pt() < cut_pt): continue
-    if (pho2.Pt() < cut_pt): continue
+    #if (pho2.Pt() < cut_pt): continue
     Pt_pho1_Peta_Leta_Ppt.Fill(pho1.Pt())
     Pt_pho2_Peta_Leta_Ppt.Fill(pho2.Pt())
     Pt_l1_Peta_Leta_Ppt.Fill(l1.Pt())
@@ -269,6 +342,55 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
 
     #####################################################################
+
+    ALP = (pho1 + pho2)
+    Z = (l1 + l2)
+    dRpho = deltaR(pho1.Eta(), pho1.Phi(), pho2.Eta(), pho2.Phi())
+    dEtapho = abs(pho1.Eta() - pho2.Eta())
+    dPhipho = abs(pho1.Phi() - pho2.Phi())
+    H = (Z + ALP)
+
+    #####################################################################
+    # sub-leading photon pt < 10 GeV
+    if (pho2.Pt() < 10):
+        pho1_pt_less10[0] = pho1.Pt()
+        pho1_eta_less10[0] = pho1.Eta()
+        pho1_phi_less10[0] = pho1.Phi()
+        pho1_photonIso_less10[0] = event.GENpho_phoIso[pho_leadingIndex]
+
+        pho2_pt_less10[0] = pho2.Pt()
+        pho2_eta_less10[0] = pho2.Eta()
+        pho2_phi_less10[0] = pho1.Phi()
+        pho2_photonIso_less10[0] = event.GENpho_phoIso[pho_subleadingIndex]
+
+
+        H_m_less10[0] = (Z + pho1).M()
+        ALP_m_less10[0] = ALP.M()
+        ALP_Et_less10[0] = ALP.Et()
+        subpholessthan10.Fill()
+    #####################################################################
+    # sub-leading photon pt > 10 GeV
+    if (pho2.Pt() > 10):
+        pho1_pt_large10[0] = pho1.Pt()
+        pho1_eta_large10[0] = pho1.Eta()
+        pho1_phi_large10[0] = pho1.Phi()
+        pho1_photonIso_large10[0] = event.GENpho_phoIso[pho_leadingIndex] - pho2.Pt()
+
+        pho2_pt_large10[0] = pho2.Pt()
+        pho2_eta_large10[0] = pho2.Eta()
+        pho2_phi_large10[0] = pho1.Phi()
+        pho2_photonIso_large10[0] = event.GENpho_phoIso[pho_subleadingIndex] - pho1.Pt()
+
+
+        H_m_large10[0] = H.M()
+        ALP_m_large10[0] = ALP.M()
+        ALP_Et_large10[0] = ALP.Et()
+        subpholargethan10.Fill()
+
+
+
+    #####################################################################
+
     l1_pt[0] = l1.Pt()
     l1_eta[0] = l1.Eta()
     l1_phi[0] = l1.Phi()
@@ -286,14 +408,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
     pho2_pt[0] = pho2.Pt()
     pho2_eta[0] = pho2.Eta()
     pho2_phi[0] = pho1.Phi()
-
-
-    ALP = (pho1 + pho2)
-    Z = (l1 + l2)
-    dRpho = deltaR(pho1.Eta(), pho1.Phi(), pho2.Eta(), pho2.Phi())
-    dEtapho = abs(pho1.Eta() - pho2.Eta())
-    dPhipho = abs(pho1.Phi() - pho2.Phi())
-    H = (Z + ALP)
 
 
     Z_m[0] = Z.M()

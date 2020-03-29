@@ -59,12 +59,12 @@ def makeCondorfile():
 
     basicPath = output.split(' ')[0].replace(output.split(' ')[0].split('/')[-1],'').replace(output.split(' ')[0].split('/')[-2],'').replace(output.split(' ')[0].split('/')[-3],'').rstrip('/')
     jobFiles = inputs.replace('.txt','')
-    
+
     cmd = 'ls ' + jobFiles +'/*.txt' + ' | wc -l'
     nfiles = processCmd(cmd)
 
     dir_list = []
-    
+
     for i in range(int(nfiles)):
         cmd = 'ls ' + jobFiles + '/*.txt' + ' | sed -n "' + str(i+1) +'p"'
         eachline = processCmd(cmd)
@@ -72,7 +72,7 @@ def makeCondorfile():
         dir_list.append(eachline)
 
     for i in range(len(dir_list)):
-	
+
         dir_list[i] = dir_list[i].split('/')[3].split('.')[0]
         #print dir_list[i]
 
@@ -104,13 +104,6 @@ def makeCondorfile():
 
             rootFileName = basicPath + "/crab_" + dir_list[i][:-19] + '/' + dir_list[i][-18:-5] + '/' + dir_list[i].split('_')[-1] + '/' + dir_list[i][:-19] + "_" + index.split('\n')[j] + ".root "
             outJDL.write(rootFileName)
-
-	    if (check):
-	    	f = TFile.Open(rootFileName)
-            	t = f.Get("Ana/passedEvents")
-
-	    	nEvents = nEvents + int(str(t.GetEntries()))
-	    	f.Close()
 
             if ((j+1)%int(NperJob) == 0 or j+1 == int(nFiles)):
                 outJDL.write("-o " + dir_list[i].split('_')[0] + "_$(Cluster)_$(Process).root\n")

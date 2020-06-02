@@ -101,7 +101,7 @@ Pt_l2_Peta_Leta_Ppt.SetStats(1)
 x_min = 0.
 x_max = 100.
 pho_dEta = ROOT.TH1D('pho_dEta', 'pho_dEta', int(x_max-x_min), x_min, x_max)
-pho_dEta_2D = ROOT.TH2D('pho_dEta_2D', 'pho_dEta_2D',int(x_max-x_min), x_min, x_max,100,0,5)
+pho_dEta_2D = ROOT.TH2D('pho_dEta_2D', 'pho_dEta_2D',int(x_max-x_min), x_min, x_max,100,0,0.5)
 data_dEta = [0.]*int(x_max-x_min)
 data_N = [0.]*int(x_max-x_min)
 pho_dEtadPhi = ROOT.TH2D('pho_dEtadPhi', 'pho_dEtadPhi',6, 0, 0.1,6,0,0.1)
@@ -358,7 +358,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
 for i in range(len(data_N)):
     if data_N[i] != 0:
         data_dEta[i] = data_dEta[i]/data_N[i]
-    pho_dEta.SetBinContent(i,data_dEta[i])
+    pho_dEta.SetBinContent(i+1,data_dEta[i])
 
 
 

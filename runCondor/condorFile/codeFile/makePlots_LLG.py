@@ -6,6 +6,8 @@ parser.add_argument("-i", "--inputfiles", dest="inputfiles", default=["Sync_1031
 parser.add_argument("-o", "--outputfile", dest="outputfile", default="plots.root", help="Output file containing plots")
 parser.add_argument("-m", "--maxevents", dest="maxevents", type=int, default=-1, help="Maximum number events to loop over")
 parser.add_argument("-t", "--ttree", dest="ttree", default="Ana/passedEvents", help="TTree Name")
+parser.add_argument("-xs", "--cross_section", dest="cross_section", default="1.0", help="the cross section of samples")
+parser.add_argument("-L", "--Lumi", dest="Lumi", default="35.9", help="the luminosities to normalized")
 args = parser.parse_args()
 
 import numpy as np
@@ -34,17 +36,32 @@ for filename in args.inputfiles: tchain.Add(filename)
 print 'Total number of events: ' + str(tchain.GetEntries())
 
 # Event weights
-if (filename == "Sync_2016_SZ_mG_85485.root" or filename == "Sync_2016_SZ_mG_88366.root" ):
-    weight = 140000.0*123.8/tchain.GetEntries()
-if (filename == "Sync_2017_ggHZG_8000.root" ):
-    weight = 35.9*14.31/tchain.GetEntries()
-if (filename == "Sync_2016_ZJet.root" or filename == "Sync_2016_ZJet2.root"):
-    weight = 83174000.0/tchain.GetEntries()
-if (filename == "Sync_2016_ggmumu.root" ):
-    weight = 262.62*600/tchain.GetEntries()
-if (filename == "Sync_2016_ggelel.root" ):
-    weight = 540.69*600/tchain.GetEntries()
-weight = 1
+isMC = True
+if 'Run2018' in filename:
+    isMC = False
+elif 'Run2017' in filename:
+    isMC = False
+elif 'Run2016' in filename:
+    isMC = False
+else:
+    isMC = True
+
+# get nEvents
+nEvents = 0
+for filename in args.inputfiles:
+
+    files = ROOT.TFile(filename)
+    n_his = files.Ana.Get('sumWeights')
+    nEvents = nEvents + n_his.GetBinContent(1)
+
+
+if isMC:
+    cross_section = float(args.cross_section)
+    lumi = float(args.Lumi)
+    weight = cross_section * lumi * 1000.0 / nEvents
+else:
+    cross_section = 1.0
+    weight = 1.0
 
 print 'events weight: '+str(weight)
 print 'events : '+str(tchain.GetEntries())
@@ -53,7 +70,15 @@ print 'events : '+str(tchain.GetEntries())
 # Output file and any histograms we want
 file_out = ROOT.TFile(args.outputfile, 'recreate')
 
-# pass triger 
+nEvents_total = ROOT.TH1D('nEvents_total', 'nEvents_total', 2, 0, 2)
+nEvents_total.SetBinContent(1,nEvents)
+h_weight = ROOT.TH1D('Events_weight', 'Events_weight', 2, 0, 2)
+h_weight.SetBinContent(1,weight)
+h_cross_section = ROOT.TH1D('cross_section', 'cross_section', 2, 0, 2)
+h_cross_section.SetBinContent(1,cross_section)
+
+
+# pass triger
 h_n = ROOT.TH1D('nEvents', 'nEvents', 2, 0, 2)
 h_n_trig = ROOT.TH1D('nEvents_trig', 'nEvents_trig', 2, 0, 2)
 

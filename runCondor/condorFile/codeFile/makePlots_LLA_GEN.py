@@ -135,13 +135,19 @@ pho2_eta = array('f',[0.])
 pho2_phi = array('f',[0.])
 
 Z_m = array('f',[0.])
+Z_phi = array('f',[0.])
 H_m = array('f',[0.])
+H_pt = array('f',[0.])
 ALP_m = array('f',[0.])
 ALP_Et = array('f',[0.])
 
 dR_pho = array('f',[0.])
 dEta_pho = array('f',[0.])
 dPhi_pho = array('f',[0.])
+
+dR_g1Z = array('f',[0.])
+dPhi_g1Z = array('f',[0.])
+dEta_g1Z = array('f',[0.])
 
 passedEvents = ROOT.TTree("passedEvents","passedEvents")
 
@@ -164,12 +170,18 @@ passedEvents.Branch("pho2_eta",pho2_eta,"pho2_eta/F")
 passedEvents.Branch("pho2_phi",pho2_phi,"pho2_phi/F")
 
 passedEvents.Branch("Z_m",Z_m,"Z_m/F")
+passedEvents.Branch("Z_phi",Z_phi,"Z_phi/F")
 passedEvents.Branch("H_m",H_m,"H_m/F")
+passedEvents.Branch("H_pt",H_pt,"H_pt/F")
 passedEvents.Branch("ALP_m",ALP_m,"ALP_m/F")
 passedEvents.Branch("ALP_Et",ALP_Et,"ALP_Et/F")
 passedEvents.Branch("dR_pho",dR_pho,"dR_pho/F")
 passedEvents.Branch("dEta_pho",dEta_pho,"dEta_pho/F")
 passedEvents.Branch("dPhi_pho",dPhi_pho,"dPhi_pho/F")
+
+passedEvents.Branch("dR_g1Z",dR_g1Z,"dR_g1Z/F")
+passedEvents.Branch("dPhi_g1Z",dPhi_g1Z,"dPhi_g1Z/F")
+passedEvents.Branch("dEta_g1Z",dEta_g1Z,"dEta_g1Z/F")
 
 ###############################################
 pho1_matchratio = array('f',[0.])
@@ -297,12 +309,18 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
 
     Z_m[0] = Z.M()
+    Z_phi[0] = Z.Phi()
     H_m[0] = H.M()
+    H_pt[0] = H.Pt()
     ALP_m[0] = ALP.M()
     ALP_Et[0] = ALP.Et()
     dR_pho[0] = dRpho
     dEta_pho[0] = dEtapho
     dPhi_pho[0] = dPhipho
+
+    dR_g1Z[0] = deltaR(pho1.Eta(), pho1.Phi(), Z.Eta(), Z.Phi())
+    dPhi_g1Z[0] = pho1.Phi()-Z.Phi()
+    dEta_g1Z[0] = pho1.Eta()-Z.Eta()
 
 
     ##########################################

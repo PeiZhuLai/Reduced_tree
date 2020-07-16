@@ -57,7 +57,7 @@ accetpance_lep = ROOT.TH1D('accetpance_lep', 'accetpance_lep', 3, 0, 3)
 accetpance_lep.SetStats(1)
 
 Pt_pho1 = ROOT.TH1D('Pt_pho1', 'Pt_pho1', 100, 0, 200)
-Pt_pho2 = ROOT.TH1D('Pt_pho2', 'Pt_pho2', 100, 0, 50)
+Pt_pho2 = ROOT.TH1D('Pt_pho2', 'Pt_pho2', 100, 0, 25)
 Pt_l1 = ROOT.TH1D('Pt_l1', 'Pt_l1', 100, 0, 200)
 Pt_l2 = ROOT.TH1D('Pt_l2', 'Pt_l2', 100, 0, 200)
 

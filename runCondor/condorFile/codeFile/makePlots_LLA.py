@@ -777,7 +777,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
                     if (event.pho_EleVote[singlePho_index] == 0 ): singlePho_passEleVeto = False
                     # barrel
                     if (abs(event.pho_eta[singlePho_index]) < 1.4442):
-                        if (event.pho_full5x5_sigmaIetaIeta[singlePho_index] > 0.00996): singlePho_passIeIe = False
+                        if (event.pho_sigmaIetaIeta[singlePho_index] > 0.00996): singlePho_passIeIe = False
                         if (event.pho_hadronicOverEm[singlePho_index] > 0.02148): singlePho_passHOverE = False
                         if (event.pho_chargedHadronIso[singlePho_index] > 0.65 ): singlePho_passChaHadIso = False
                         if (event.pho_neutralHadronIso[singlePho_index] > (0.317 + event.pho_pt[singlePho_index]*0.01512 + event.pho_pt[singlePho_index]*event.pho_pt[singlePho_index]*0.00002259)): singlePho_passNeuHadIso = False
@@ -785,13 +785,14 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
                     # endcap
                     else:
-                        if (event.pho_full5x5_sigmaIetaIeta[singlePho_index] > 0.0271): pho_passIeIe = False
+                        if (event.pho_sigmaIetaIeta[singlePho_index] > 0.0271): pho_passIeIe = False
                         if (event.pho_hadronicOverEm[singlePho_index] > 0.0321): pho_passHOverE = False
                         if (event.pho_chargedHadronIso[singlePho_index] > 0.517 ): pho_passChaHadIso = False
                         if (event.pho_neutralHadronIso[singlePho_index] > (2.716 + event.pho_pt[singlePho_index]*0.0117 + event.pho_pt[singlePho_index]*event.pho_pt[singlePho_index]*0.000023)): pho_passNeuHadIso = False
                         if (event.pho_photonIso[singlePho_index] > (3.032 + event.pho_pt[singlePho_index]*0.0037)): singlePho_passedPhoIso = False
 
-                    if (pho_passEleVeto):
+                    #if (pho_passEleVeto and pho_passIeIe and pho_passHOverE and pho_passChaHadIso and pho_passNeuHadIso and singlePho_passedPhoIso):
+                    if (event.pho_mva90[singlePho_index] == 1):
                         # Fill Tree
                         singlel1_pt[0] = event.lepFSR_pt[lep_leadindex[0]]
                         singlel2_pt[0] = event.lepFSR_pt[lep_leadindex[1]]

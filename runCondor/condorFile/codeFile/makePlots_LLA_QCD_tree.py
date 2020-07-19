@@ -435,10 +435,15 @@ for ievent,event in enumerate(tchain):#, start=650000):
     pho2_index = 0
     pho_passEleVeto = True
     pho_passIeIe = True
-    pho_passHOverE = True
-    pho_passChaHadIso = True
-    pho_passNeuHadIso = True
+    pho1_passHOverE = True
+    pho1_passChaHadIso = True
+    pho1_passNeuHadIso = True
     passedPhoIso = True
+
+    pho2_passHOverE = True
+    pho2_passChaHadIso = True
+    pho2_passNeuHadIso = True
+
 
     mva_value = -999.0
 
@@ -558,9 +563,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
     if (abs(event.lep_id[lep_leadindex[0]]) == 13):
         Z_mu_lIso.Fill(Z_find.M())
 
-    # lep Tight ID Cut
-    if (not (event.lep_tightId[lep_leadindex[0]])): continue
-    if (not (event.lep_tightId[lep_leadindex[1]])): continue
+    # only one lep pass Tight ID Cut
+    if not (( (event.lep_tightId[lep_leadindex[0]]) and (not event.lep_tightId[lep_leadindex[1]]) ) or ( (not event.lep_tightId[lep_leadindex[0]]) and (event.lep_tightId[lep_leadindex[1]]) )): continue
+
 
     if (abs(event.lep_id[lep_leadindex[0]]) == 11):
         Z_e_lIso_lTight.Fill(Z_find.M())
@@ -609,6 +614,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         else:
             lep_dataMC = 1.0
         factor[0] = event.genWeight * event.pileupWeight * lep_dataMC * weight
+        event_weight[0] = weight
         event_weight[0] = weight
     ################################################################################################
         Z_Ceta[0] = -99.0
@@ -776,33 +782,33 @@ for ievent,event in enumerate(tchain):#, start=650000):
             # barrel
             if (abs(event.pho_eta[pho1_index]) < 1.4442):
                 if (event.pho_sigmaIetaIeta[pho1_index] > 0.00996): pho_passIeIe = False
-                if (event.pho_hadronicOverEm[pho1_index] > 0.02148): pho_passHOverE = False
-                if (event.pho_chargedHadronIso[pho1_index] > 0.65 ): pho_passChaHadIso = False
-                if (event.pho_neutralHadronIso[pho1_index] > (0.317 + event.pho_pt[pho1_index]*0.01512 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.00002259)): pho_passNeuHadIso = False
+                if (event.pho_hadronicOverEm[pho1_index] > 0.02148): pho1_passHOverE = False
+                if (event.pho_chargedHadronIso[pho1_index] > 0.65 ): pho1_passChaHadIso = False
+                if (event.pho_neutralHadronIso[pho1_index] > (0.317 + event.pho_pt[pho1_index]*0.01512 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.00002259)): pho1_passNeuHadIso = False
                 if (pho1_phoIso > (2.044 + event.pho_pt[pho1_index]*0.004017)): passedPhoIso = False
 
             # endcap
             else:
                 if (event.pho_sigmaIetaIeta[pho1_index] > 0.0271): pho_passIeIe = False
-                if (event.pho_hadronicOverEm[pho1_index] > 0.0321): pho_passHOverE = False
-                if (event.pho_chargedHadronIso[pho1_index] > 0.517 ): pho_passChaHadIso = False
-                if (event.pho_neutralHadronIso[pho1_index] > (2.716 + event.pho_pt[pho1_index]*0.0117 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.000023)): pho_passNeuHadIso = False
+                if (event.pho_hadronicOverEm[pho1_index] > 0.0321): pho1_passHOverE = False
+                if (event.pho_chargedHadronIso[pho1_index] > 0.517 ): pho1_passChaHadIso = False
+                if (event.pho_neutralHadronIso[pho1_index] > (2.716 + event.pho_pt[pho1_index]*0.0117 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.000023)): pho1_passNeuHadIso = False
                 if (pho1_phoIso > (3.032 + event.pho_pt[pho1_index]*0.0037)): passedPhoIso = False
             # photon 2
             # barrel
             if (abs(event.pho_eta[pho2_index]) < 1.4442):
                 if (event.pho_full5x5_sigmaIetaIeta[pho2_index] > 0.00996): pho_passIeIe = False
-                if (event.pho_hadronicOverEm[pho2_index] > 0.02148): pho_passHOverE = False
-                if (event.pho_chargedHadronIso[pho2_index] > 0.65 ): pho_passChaHadIso = False
-                if (event.pho_neutralHadronIso[pho2_index] > (0.317 + event.pho_pt[pho1_index]*0.01512 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.00002259)): pho_passNeuHadIso = False
+                if (event.pho_hadronicOverEm[pho2_index] > 0.02148): pho2_passHOverE = False
+                if (event.pho_chargedHadronIso[pho2_index] > 0.65 ): pho2_passChaHadIso = False
+                if (event.pho_neutralHadronIso[pho2_index] > (0.317 + event.pho_pt[pho1_index]*0.01512 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.00002259)): pho2_passNeuHadIso = False
                 if (pho2_phoIso > (2.044 + event.pho_pt[pho1_index]*0.004017)): passedPhoIso = False
 
             # endcap
             else:
                 if (event.pho_full5x5_sigmaIetaIeta[pho2_index] > 0.0271): pho_passIeIe = False
-                if (event.pho_hadronicOverEm[pho2_index] > 0.0321): pho_passHOverE = False
-                if (event.pho_chargedHadronIso[pho2_index] > 0.517 ): pho_passChaHadIso = False
-                if (event.pho_neutralHadronIso[pho2_index] > (2.716 + event.pho_pt[pho1_index]*0.0117 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.000023)): pho_passNeuHadIso = False
+                if (event.pho_hadronicOverEm[pho2_index] > 0.0321): pho2_passHOverE = False
+                if (event.pho_chargedHadronIso[pho2_index] > 0.517 ): pho2_passChaHadIso = False
+                if (event.pho_neutralHadronIso[pho2_index] > (2.716 + event.pho_pt[pho1_index]*0.0117 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.000023)): pho2_passNeuHadIso = False
                 if (pho2_phoIso > (3.032 + event.pho_pt[pho1_index]*0.0037)): passedPhoIso = False
 
 
@@ -887,18 +893,18 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
                 if cutBased:
 
-                    if pho_passHOverE:
+                    if (pho1_passHOverE and (not pho2_passHOverE)) or ((not pho1_passHOverE) and pho2_passHOverE):
                         Z_pho_veto_HOE[0] = Z_find.M()
                         H_pho_veto_HOE[0] = H_find.M()
                         ALP_pho_veto_HOE[0] = ALP_find.M()
 
 
-                        if pho_passChaHadIso:
+                        if (pho1_passChaHadIso and (not pho2_passChaHadIso)) or ((not pho1_passChaHadIso) and pho2_passChaHadIso):
                             Z_pho_veto_HOE_CIso[0] = Z_find.M()
                             H_pho_veto_HOE_CIso[0] = H_find.M()
                             ALP_pho_veto_HOE_CIso[0] = ALP_find.M()
 
-                            if pho_passNeuHadIso:
+                            if (pho1_passNeuHadIso and (not pho2_passNeuHadIso)) or ((not pho1_passNeuHadIso) and pho2_passNeuHadIso):
                                 Z_pho_veto_HOE_CIso_NIso[0] = Z_find.M()
                                 H_pho_veto_HOE_CIso_NIso[0] = H_find.M()
                                 ALP_pho_veto_HOE_CIso_NIso[0] = ALP_find.M()

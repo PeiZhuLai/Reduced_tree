@@ -314,6 +314,7 @@ singlePho_eta = array('f',[0.])
 singlePho_phi = array('f',[0.])
 singlePho_mva = array('f',[0.])
 singlePho_photonIso = array('f',[0.])
+singlePho_tightCut = array('f',[0.])
 
 singlePho_matcheID = array('i',[0])
 singlePho_matcheMomID = array('i',[0])
@@ -339,6 +340,7 @@ singlePho_passedEvents.Branch("singlePho_eta",singlePho_eta,"singlePho_eta/F")
 singlePho_passedEvents.Branch("singlePho_phi",singlePho_phi,"singlePho_phi/F")
 singlePho_passedEvents.Branch("singlePho_mva",singlePho_mva,"singlePho_mva/F")
 singlePho_passedEvents.Branch("singlePho_photonIso",singlePho_photonIso,"singlePho_photonIso/F")
+singlePho_passedEvents.Branch("singlePho_tightCut",singlePho_tightCut,"singlePho_tightCut/F")
 
 singlePho_passedEvents.Branch("singlePho_matcheID",singlePho_matcheID,"singlePho_matcheID/I")
 singlePho_passedEvents.Branch("singlePho_matcheMomID",singlePho_matcheMomID,"singlePho_matcheMomID/I")
@@ -762,6 +764,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         if (event.pho_pt.size() >= 1):
             for i in range(event.pho_pt.size()):
                 if (event.pho_hasPixelSeed[i] == 1): continue
+                if (event.pho_EleVote[singlePho_index] == 0 ): continue
                 if (event.pho_pt[i] > pho1_maxPt):
                     singlePho_maxPt = event.pho_pt[i]
                     singlePho_index = i
@@ -774,10 +777,10 @@ for ievent,event in enumerate(tchain):#, start=650000):
                 singlePho_H_find = ROOT.TLorentzVector()
                 singlePho_H_find = (Z_find + singlePho_find)
                 if (((abs(event.pho_eta[singlePho_index]) >1.566) and (abs(event.pho_eta[singlePho_index]) < 2.5)) or (abs(event.pho_eta[singlePho_index]) <1.4442)):
-                    if (event.pho_EleVote[singlePho_index] == 0 ): singlePho_passEleVeto = False
+                    #if (event.pho_EleVote[singlePho_index] == 0 ): singlePho_passEleVeto = False
                     # barrel
-                    if (abs(event.pho_eta[singlePho_index]) < 1.4442):
-                        if (event.pho_sigmaIetaIeta[singlePho_index] > 0.00996): singlePho_passIeIe = False
+                    if (abs(event.pho_scEta[singlePho_index]) < 1.479):
+                        if (event.pho_full5x5_sigmaIetaIeta[singlePho_index] > 0.00996): singlePho_passIeIe = False
                         if (event.pho_hadronicOverEm[singlePho_index] > 0.02148): singlePho_passHOverE = False
                         if (event.pho_chargedHadronIso[singlePho_index] > 0.65 ): singlePho_passChaHadIso = False
                         if (event.pho_neutralHadronIso[singlePho_index] > (0.317 + event.pho_pt[singlePho_index]*0.01512 + event.pho_pt[singlePho_index]*event.pho_pt[singlePho_index]*0.00002259)): singlePho_passNeuHadIso = False
@@ -785,14 +788,14 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
                     # endcap
                     else:
-                        if (event.pho_sigmaIetaIeta[singlePho_index] > 0.0271): pho_passIeIe = False
+                        if (event.pho_full5x5_sigmaIetaIeta[singlePho_index] > 0.0271): pho_passIeIe = False
                         if (event.pho_hadronicOverEm[singlePho_index] > 0.0321): pho_passHOverE = False
                         if (event.pho_chargedHadronIso[singlePho_index] > 0.517 ): pho_passChaHadIso = False
                         if (event.pho_neutralHadronIso[singlePho_index] > (2.716 + event.pho_pt[singlePho_index]*0.0117 + event.pho_pt[singlePho_index]*event.pho_pt[singlePho_index]*0.000023)): pho_passNeuHadIso = False
                         if (event.pho_photonIso[singlePho_index] > (3.032 + event.pho_pt[singlePho_index]*0.0037)): singlePho_passedPhoIso = False
 
-                    #if (pho_passEleVeto and pho_passIeIe and pho_passHOverE and pho_passChaHadIso and pho_passNeuHadIso and singlePho_passedPhoIso):
-                    if (event.pho_mva90[singlePho_index] == 1):
+                    if (singlePho_passEleVeto and singlePho_passIeIe and singlePho_passHOverE and singlePho_passChaHadIso and singlePho_passNeuHadIso and singlePho_passedPhoIso):
+                    #if (event.pho_mva90[singlePho_index] == 1):
                         # Fill Tree
                         singlel1_pt[0] = event.lepFSR_pt[lep_leadindex[0]]
                         singlel2_pt[0] = event.lepFSR_pt[lep_leadindex[1]]
@@ -803,11 +806,13 @@ for ievent,event in enumerate(tchain):#, start=650000):
                         singlel1_id[0] = event.lep_id[lep_leadindex[0]]
                         singlel2_id[0] = event.lep_id[lep_leadindex[1]]
 
-                        singlePho_pt[0] = event.pho_pt[singlePho_index]
+                        singlePho_pt[0] = event.pho_scEta[singlePho_index]
                         singlePho_eta[0] = event.pho_eta[singlePho_index]
                         singlePho_phi[0] = event.pho_phi[singlePho_index]
                         singlePho_mva[0] = event.pho_mva[singlePho_index]
                         singlePho_photonIso[0] = event.pho_photonIso[singlePho_index]
+
+                        singlePho_tightCut[0] = event.photonCutBasedIDTight[singlePho_index]
 
                         singlePho_matcheID[0] = event.pho_matchedR03_PdgId[singlePho_index]
                         singlePho_matcheMomID[0] = event.pho_matchedR03_MomId[singlePho_index]

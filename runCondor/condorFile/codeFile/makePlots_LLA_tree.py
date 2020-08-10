@@ -138,6 +138,7 @@ pho1HOE = array('f',[0.])
 pho1CIso = array('f',[0.])
 pho1NIso = array('f',[0.])
 pho1PIso = array('f',[0.])
+pho1PIso_noCorr = array('f',[0.])
 
 pho2eta = array('f',[0.])
 pho2Pt = array('f',[0.])
@@ -148,6 +149,18 @@ pho2HOE = array('f',[0.])
 pho2CIso = array('f',[0.])
 pho2NIso = array('f',[0.])
 pho2PIso = array('f',[0.])
+pho2PIso_noCorr = array('f',[0.])
+
+passEleVeto = array('f',[0.])
+passIeIe = array('f',[0.])
+passHOverE = array('f',[0.])
+passChaHadIso = array('f',[0.])
+passNeuHadIso = array('f',[0.])
+passPhoIso = array('f',[0.])
+passdR_gl = array('f',[0.])
+passdR_gg = array('f',[0.])
+passH_m = array('f',[0.])
+
 
 
 # photon cut
@@ -161,25 +174,25 @@ Z_pho_veto = array('f',[-1.])
 H_pho_veto = array('f',[-1.])
 ALP_pho_veto = array('f',[-1.])
 
-Z_pho_veto_HOE = array('f',[-1.])
-H_pho_veto_HOE = array('f',[-1.])
-ALP_pho_veto_HOE = array('f',[-1.])
+Z_CIso = array('f',[-1.])
+H_CIso = array('f',[-1.])
+ALP_CIso = array('f',[-1.])
 
-Z_pho_veto_HOE_CIso = array('f',[-1.])
-H_pho_veto_HOE_CIso = array('f',[-1.])
-ALP_pho_veto_HOE_CIso = array('f',[-1.])
+Z_NIso = array('f',[-1.])
+H_NIso = array('f',[-1.])
+ALP_NIso = array('f',[-1.])
 
-Z_pho_veto_HOE_CIso_NIso = array('f',[-1.])
-H_pho_veto_HOE_CIso_NIso = array('f',[-1.])
-ALP_pho_veto_HOE_CIso_NIso = array('f',[-1.])
+Z_IeIe = array('f',[-1.])
+H_IeIe = array('f',[-1.])
+ALP_IeIe = array('f',[-1.])
 
-Z_pho_veto_HOE_CIso_NIso_IeIe = array('f',[-1.])
-H_pho_veto_HOE_CIso_NIso_IeIe = array('f',[-1.])
-ALP_pho_veto_HOE_CIso_NIso_IeIe = array('f',[-1.])
+Z_HOE = array('f',[-1.])
+H_HOE = array('f',[-1.])
+ALP_HOE = array('f',[-1.])
 
-Z_pho_veto_HOE_CIso_NIso_IeIe_PIso = array('f',[-1.])
-H_pho_veto_HOE_CIso_NIso_IeIe_PIso = array('f',[-1.])
-ALP_pho_veto_HOE_CIso_NIso_IeIe_PIso = array('f',[-1.])
+Z_PIso = array('f',[-1.])
+H_PIso = array('f',[-1.])
+ALP_PIso = array('f',[-1.])
 
 dR_g1l1 = array('f',[-1.])
 dR_g1l2 = array('f',[-1.])
@@ -281,6 +294,7 @@ passedEvents.Branch("pho1HOE",pho1HOE,"pho1HOE/F")
 passedEvents.Branch("pho1CIso",pho1CIso,"pho1CIso/F")
 passedEvents.Branch("pho1NIso",pho1NIso,"pho1NIso/F")
 passedEvents.Branch("pho1PIso",pho1PIso,"pho1PIso/F")
+passedEvents.Branch("pho1PIso_noCorr",pho1PIso_noCorr,"pho1PIso_noCorr/F")
 
 
 passedEvents.Branch("pho2eta",pho2eta,"pho2eta/F")
@@ -292,8 +306,17 @@ passedEvents.Branch("pho2HOE",pho2HOE,"pho2HOE/F")
 passedEvents.Branch("pho2CIso",pho2CIso,"pho2CIso/F")
 passedEvents.Branch("pho2NIso",pho2NIso,"pho2NIso/F")
 passedEvents.Branch("pho2PIso",pho2PIso,"pho2PIso/F")
+passedEvents.Branch("pho2PIso_noCorr",pho2PIso_noCorr,"pho2PIso_noCorr/F")
 
 
+passedEvents.Branch("passIeIe",passIeIe,"passIeIe/F")
+passedEvents.Branch("passHOverE",passHOverE,"passHOverE/F")
+passedEvents.Branch("passChaHadIso",passChaHadIso,"passChaHadIso/F")
+passedEvents.Branch("passNeuHadIso",passNeuHadIso,"passNeuHadIso/F")
+passedEvents.Branch("passPhoIso",passPhoIso,"passPhoIso/F")
+passedEvents.Branch("passdR_gl",passdR_gl,"passdR_gl/F")
+passedEvents.Branch("passdR_gg",passdR_gg,"passdR_gg/F")
+passedEvents.Branch("passH_m",passH_m,"passH_m/F")
 
 
 passedEvents.Branch("H_twopho",H_twopho,"H_twopho/F")
@@ -306,25 +329,25 @@ passedEvents.Branch("Z_pho_veto",Z_pho_veto,"Z_pho_veto/F")
 passedEvents.Branch("H_pho_veto",H_pho_veto,"H_pho_veto/F")
 passedEvents.Branch("ALP_pho_veto",ALP_pho_veto,"ALP_pho_veto/F")
 
-passedEvents.Branch("Z_pho_veto_HOE",Z_pho_veto_HOE,"Z_pho_veto_HOE/F")
-passedEvents.Branch("H_pho_veto_HOE",H_pho_veto_HOE,"H_pho_veto_HOE/F")
-passedEvents.Branch("ALP_pho_veto_HOE",ALP_pho_veto_HOE,"ALP_pho_veto_HOE/F")
+passedEvents.Branch("Z_CIso",Z_CIso,"Z_CIso/F")
+passedEvents.Branch("H_CIso",H_CIso,"H_CIso/F")
+passedEvents.Branch("ALP_CIso",ALP_CIso,"ALP_CIso/F")
 
-passedEvents.Branch("Z_pho_veto_HOE_CIso",Z_pho_veto_HOE_CIso,"Z_pho_veto_HOE_CIso/F")
-passedEvents.Branch("H_pho_veto_HOE_CIso",H_pho_veto_HOE_CIso,"H_pho_veto_HOE_CIso/F")
-passedEvents.Branch("ALP_pho_veto_HOE_CIso",ALP_pho_veto_HOE_CIso,"ALP_pho_veto_HOE_CIso/F")
+passedEvents.Branch("Z_NIso",Z_NIso,"Z_NIso/F")
+passedEvents.Branch("H_NIso",H_NIso,"H_NIso/F")
+passedEvents.Branch("ALP_NIso",ALP_NIso,"ALP_NIso/F")
 
-passedEvents.Branch("Z_pho_veto_HOE_CIso_NIso",Z_pho_veto_HOE_CIso_NIso,"Z_pho_veto_HOE_CIso_NIso/F")
-passedEvents.Branch("H_pho_veto_HOE_CIso_NIso",H_pho_veto_HOE_CIso_NIso,"H_pho_veto_HOE_CIso_NIso/F")
-passedEvents.Branch("ALP_pho_veto_HOE_CIso_NIso",ALP_pho_veto_HOE_CIso_NIso,"ALP_pho_veto_HOE_CIso_NIso/F")
+passedEvents.Branch("Z_IeIe",Z_IeIe,"Z_IeIe/F")
+passedEvents.Branch("H_IeIe",H_IeIe,"H_IeIe/F")
+passedEvents.Branch("ALP_IeIe",ALP_IeIe,"ALP_IeIe/F")
 
-passedEvents.Branch("Z_pho_veto_HOE_CIso_NIso_IeIe",Z_pho_veto_HOE_CIso_NIso_IeIe,"Z_pho_veto_HOE_CIso_NIso_IeIe/F")
-passedEvents.Branch("H_pho_veto_HOE_CIso_NIso_IeIe",H_pho_veto_HOE_CIso_NIso_IeIe,"H_pho_veto_HOE_CIso_NIso_IeIe/F")
-passedEvents.Branch("ALP_pho_veto_HOE_CIso_NIso_IeIe",ALP_pho_veto_HOE_CIso_NIso_IeIe,"ALP_pho_veto_HOE_CIso_NIso_IeIe/F")
+passedEvents.Branch("Z_HOE",Z_HOE,"Z_HOE/F")
+passedEvents.Branch("H_HOE",H_HOE,"H_HOE/F")
+passedEvents.Branch("ALP_HOE",ALP_HOE,"ALP_HOE/F")
 
-passedEvents.Branch("Z_pho_veto_HOE_CIso_NIso_IeIe_PIso",Z_pho_veto_HOE_CIso_NIso_IeIe_PIso,"Z_pho_veto_HOE_CIso_NIso_IeIe_PIso/F")
-passedEvents.Branch("H_pho_veto_HOE_CIso_NIso_IeIe_PIso",H_pho_veto_HOE_CIso_NIso_IeIe_PIso,"H_pho_veto_HOE_CIso_NIso_IeIe_PIso/F")
-passedEvents.Branch("ALP_pho_veto_HOE_CIso_NIso_IeIe_PIso",ALP_pho_veto_HOE_CIso_NIso_IeIe_PIso,"ALP_pho_veto_HOE_CIso_NIso_IeIe_PIso/F")
+passedEvents.Branch("Z_PIso",Z_PIso,"Z_PIso/F")
+passedEvents.Branch("H_PIso",H_PIso,"H_PIso/F")
+passedEvents.Branch("ALP_PIso",ALP_PIso,"ALP_PIso/F")
 
 
 passedEvents.Branch("dR_g1l1",dR_g1l1,"dR_g1l1/F")
@@ -610,6 +633,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
             lep_dataMC = 1.0
         factor[0] = event.genWeight * event.pileupWeight * lep_dataMC * weight
         event_weight[0] = weight
+
+        l1_id[0] = event.lep_id[lep_leadindex[0]]
+        l2_id[0] = event.lep_id[lep_leadindex[1]]
     ################################################################################################
         Z_Ceta[0] = -99.0
         H_Ceta[0] = -99.0
@@ -628,6 +654,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
         pho1CIso[0] = -99.0
         pho1NIso[0] = -99.0
         pho1PIso[0] = -99.0
+        pho1PIso_noCorr[0] = -99.0
 
 
         pho2eta[0] = -99.0
@@ -639,26 +666,36 @@ for ievent,event in enumerate(tchain):#, start=650000):
         pho2CIso[0] = -99.0
         pho2NIso[0] = -99.0
         pho2PIso[0] = -99.0
+        pho2PIso_noCorr[0] = -99.0
 
-        Z_pho_veto_HOE[0] = -99.0
-        H_pho_veto_HOE[0] = -99.0
-        ALP_pho_veto_HOE[0] = -99.0
+        passIeIe[0] = -99.0
+        passHOverE[0] = -99.0
+        passChaHadIso[0] = -99.0
+        passNeuHadIso[0] = -99.0
+        passPhoIso[0] = -99.0
+        passdR_gl[0] = -99.0
+        passdR_gg[0] = -99.0
+        passH_m[0] = -99.0
 
-        Z_pho_veto_HOE_CIso[0] = -99.0
-        H_pho_veto_HOE_CIso[0] = -99.0
-        ALP_pho_veto_HOE_CIso[0] = -99.0
+        Z_HOE[0] = -99.0
+        H_HOE[0] = -99.0
+        ALP_HOE[0] = -99.0
 
-        Z_pho_veto_HOE_CIso_NIso[0] = -99.0
-        H_pho_veto_HOE_CIso_NIso[0] = -99.0
-        ALP_pho_veto_HOE_CIso_NIso[0] = -99.0
+        Z_CIso[0] = -99.0
+        H_CIso[0] = -99.0
+        ALP_CIso[0] = -99.0
 
-        Z_pho_veto_HOE_CIso_NIso_IeIe[0] = -99.0
-        H_pho_veto_HOE_CIso_NIso_IeIe[0] = -99.0
-        ALP_pho_veto_HOE_CIso_NIso_IeIe[0] = -99.0
+        Z_NIso[0] = -99.0
+        H_NIso[0] = -99.0
+        ALP_NIso[0] = -99.0
 
-        Z_pho_veto_HOE_CIso_NIso_IeIe_PIso[0] = -99.0
-        H_pho_veto_HOE_CIso_NIso_IeIe_PIso[0] = -99.0
-        ALP_pho_veto_HOE_CIso_NIso_IeIe_PIso[0] = -99.0
+        Z_IeIe[0] = -99.0
+        H_IeIe[0] = -99.0
+        ALP_IeIe[0] = -99.0
+
+        Z_PIso[0] = -99.0
+        H_PIso[0] = -99.0
+        ALP_PIso[0] = -99.0
 
         dR_g1l1[0] = -99.0
         dR_g1l2[0] = -99.0
@@ -706,8 +743,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
         l2_eta[0] = -99.0
         l1_phi[0] = -99.0
         l2_phi[0] = -99.0
-        l1_id[0] = -99
-        l2_id[0] = -99
 
         pho1_pt[0] = -99.0
         pho1_eta[0] = -99.0
@@ -847,10 +882,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
                 dR_l2g1 = deltaR(l2_find.Eta(), l2_find.Phi(), pho1_find.Eta(), pho1_find.Phi())
                 dR_l2g2 = deltaR(l2_find.Eta(), l2_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
 
-                dR_g1l1[0] = dR_l1g1
-                dR_g1l2[0] = dR_l1g2
-                dR_g2l1[0] = dR_l2g1
-                dR_g2l2[0] = dR_l2g2
+
                 var_dR_g1Z_beforMVA[0] = deltaR(pho1_find.Eta(), pho1_find.Phi(), Z_find.Eta(), Z_find.Phi())
                 var_dPhi_g1Z_beforMVA[0] =  pho1_find.Phi()-Z_find.Phi()
 
@@ -885,87 +917,117 @@ for ievent,event in enumerate(tchain):#, start=650000):
                 ################################################################ End MVA ################################################################
 
 
+                dR_g1l1[0] = dR_l1g1
+                dR_g1l2[0] = dR_l1g2
+                dR_g2l1[0] = dR_l2g1
+                dR_g2l2[0] = dR_l2g2
+
+                dR_pho[0] = dR_g1g2
+
+                pho1eta[0] = event.pho_eta[pho1_index]
+                pho1Pt[0] = event.pho_pt[pho1_index]
+                pho1R9[0] = event.pho_R9[pho1_index]
+                pho1IetaIeta[0] = event.pho_sigmaIetaIeta[pho1_index]
+                pho1IetaIeta55[0] = event.pho_full5x5_sigmaIetaIeta[pho1_index]
+                pho1HOE[0] = event.pho_hadronicOverEm[pho1_index]
+                pho1CIso[0] = event.pho_chargedHadronIso[pho1_index]
+                pho1NIso[0] = event.pho_neutralHadronIso[pho1_index]
+                pho1PIso[0] = pho1_phoIso
+                pho1PIso_noCorr[0] = event.pho_photonIso[pho1_index]
+
+
+                pho2eta[0] = event.pho_eta[pho2_index]
+                pho2Pt[0] = event.pho_pt[pho2_index]
+                pho2R9[0] = event.pho_R9[pho2_index]
+                pho2IetaIeta[0] = event.pho_sigmaIetaIeta[pho2_index]
+                pho2IetaIeta55[0] = event.pho_full5x5_sigmaIetaIeta[pho2_index]
+                pho2HOE[0] = event.pho_hadronicOverEm[pho2_index]
+                pho2CIso[0] = event.pho_chargedHadronIso[pho2_index]
+                pho2NIso[0] = event.pho_neutralHadronIso[pho2_index]
+                pho2PIso[0] = pho2_phoIso
+                pho2PIso_noCorr[0] = event.pho_photonIso[pho2_index]
+
+
+                l1_pt[0] = event.lepFSR_pt[lep_leadindex[0]]
+                l2_pt[0] = event.lepFSR_pt[lep_leadindex[1]]
+                l1_eta[0] = event.lepFSR_eta[lep_leadindex[0]]
+                l2_eta[0] = event.lepFSR_eta[lep_leadindex[1]]
+                l1_phi[0] = event.lepFSR_phi[lep_leadindex[0]]
+                l2_phi[0] = event.lepFSR_phi[lep_leadindex[1]]
+
+                ################# define cut flow #################
+                cutFlow = {}
+
+                cutdR_gl = (dR_l1g1 > 0.4) and (dR_l1g2 > 0.4) and (dR_l2g1 > 0.4) and (dR_l2g2 > 0.4)
+                cutdR_gg = dR_g1g2 < 0.15
+                cutH_m = (H_find.M()>100) and (H_find.M()<180)
+
+                cutFlow['cut1'] = pho_passChaHadIso
+                cutFlow['cut2'] = pho_passNeuHadIso
+                cutFlow['cut3'] = cutdR_gl
+                cutFlow['cut4'] = cutdR_gg
+                cutFlow['cut5'] = pho_passIeIe
+                cutFlow['cut6'] = pho_passHOverE
+                cutFlow['cut7'] = passedPhoIso
+                cutFlow['cut8'] = cutH_m
+
+                passIeIe[0] = pho_passIeIe
+                passHOverE[0] = pho_passHOverE
+                passChaHadIso[0] = pho_passChaHadIso
+                passNeuHadIso[0] = pho_passNeuHadIso
+                passPhoIso[0] = passedPhoIso
+                passdR_gl[0] = cutdR_gl
+                passdR_gg[0] = cutdR_gg
+                passH_m[0] = cutH_m
+
+                ###################################################
+
                 if cutBased:
 
-                    if pho_passHOverE:
-                        Z_pho_veto_HOE[0] = Z_find.M()
-                        H_pho_veto_HOE[0] = H_find.M()
-                        ALP_pho_veto_HOE[0] = ALP_find.M()
+                    if cutFlow['cut1']:
+                        Z_CIso[0] = Z_find.M()
+                        H_CIso[0] = H_find.M()
+                        ALP_CIso[0] = ALP_find.M()
 
+                        if cutFlow['cut2']:
+                            Z_NIso[0] = Z_find.M()
+                            H_NIso[0] = H_find.M()
+                            ALP_NIso[0] = ALP_find.M()
 
-                        if pho_passChaHadIso:
-                            Z_pho_veto_HOE_CIso[0] = Z_find.M()
-                            H_pho_veto_HOE_CIso[0] = H_find.M()
-                            ALP_pho_veto_HOE_CIso[0] = ALP_find.M()
+                            if cutFlow['cut3']:
 
-                            if pho_passNeuHadIso:
-                                Z_pho_veto_HOE_CIso_NIso[0] = Z_find.M()
-                                H_pho_veto_HOE_CIso_NIso[0] = H_find.M()
-                                ALP_pho_veto_HOE_CIso_NIso[0] = ALP_find.M()
+                                Z_dR[0] = Z_find.M()
+                                H_dR[0] = H_find.M()
+                                ALP_dR[0] = ALP_find.M()
 
-                                pho1eta[0] = event.pho_eta[pho1_index]
-                                pho1Pt[0] = event.pho_pt[pho1_index]
-                                pho1R9[0] = event.pho_R9[pho1_index]
-                                pho1IetaIeta[0] = event.pho_sigmaIetaIeta[pho1_index]
-                                pho1IetaIeta55[0] = event.pho_full5x5_sigmaIetaIeta[pho1_index]
-                                pho1HOE[0] = event.pho_hadronicOverEm[pho1_index]
-                                pho1CIso[0] = event.pho_chargedHadronIso[pho1_index]
-                                pho1NIso[0] = event.pho_neutralHadronIso[pho1_index]
-                                pho1PIso[0] = pho1_phoIso
+                                if cutFlow['cut4']:
+                                    Z_dR_pho[0] = Z_find.M()
+                                    H_dR_pho[0] = H_find.M()
+                                    ALP_dR_pho[0] = ALP_find.M()
 
+                                    if cutFlow['cut5']:
+                                        Z_IeIe[0] = Z_find.M()
+                                        H_IeIe[0] = H_find.M()
+                                        ALP_IeIe[0] = ALP_find.M()
 
-                                pho2eta[0] = event.pho_eta[pho2_index]
-                                pho2Pt[0] = event.pho_pt[pho2_index]
-                                pho2R9[0] = event.pho_R9[pho2_index]
-                                pho2IetaIeta[0] = event.pho_sigmaIetaIeta[pho2_index]
-                                pho2IetaIeta55[0] = event.pho_full5x5_sigmaIetaIeta[pho2_index]
-                                pho2HOE[0] = event.pho_hadronicOverEm[pho2_index]
-                                pho2CIso[0] = event.pho_chargedHadronIso[pho2_index]
-                                pho2NIso[0] = event.pho_neutralHadronIso[pho2_index]
-                                pho2PIso[0] = pho2_phoIso
+                                        if cutFlow['cut6']:
+                                            Z_HOE[0] = Z_find.M()
+                                            H_HOE[0] = H_find.M()
+                                            ALP_HOE[0] = ALP_find.M()
 
-                                if pho_passIeIe:
-                                    Z_pho_veto_HOE_CIso_NIso_IeIe[0] = Z_find.M()
-                                    H_pho_veto_HOE_CIso_NIso_IeIe[0] = H_find.M()
-                                    ALP_pho_veto_HOE_CIso_NIso_IeIe[0] = ALP_find.M()
+                                            if cutFlow['cut7']:
+                                                Z_PIso[0] = Z_find.M()
+                                                H_PIso[0] = H_find.M()
+                                                ALP_PIso[0] = ALP_find.M()
 
-                                    if passedPhoIso:
-                                        Z_pho_veto_HOE_CIso_NIso_IeIe_PIso[0] = Z_find.M()
-                                        H_pho_veto_HOE_CIso_NIso_IeIe_PIso[0] = H_find.M()
-                                        ALP_pho_veto_HOE_CIso_NIso_IeIe_PIso[0] = ALP_find.M()
-
-
-                                        dR_l1g1 = deltaR(l1_find.Eta(), l1_find.Phi(), pho1_find.Eta(), pho1_find.Phi())
-                                        dR_l1g2 = deltaR(l1_find.Eta(), l1_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
-                                        dR_l2g1 = deltaR(l2_find.Eta(), l2_find.Phi(), pho1_find.Eta(), pho1_find.Phi())
-                                        dR_l2g2 = deltaR(l2_find.Eta(), l2_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
-
-                                        if (dR_l1g1 > 0.4) and (dR_l1g2 > 0.4) and (dR_l2g1 > 0.4) and (dR_l2g2 > 0.4):
-
-                                            Z_dR[0] = Z_find.M()
-                                            H_dR[0] = H_find.M()
-                                            ALP_dR[0] = ALP_find.M()
-
-                                            dR_g1g2 = deltaR(pho1_find.Eta(), pho1_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
-                                            if dR_g1g2 < 1:
-                                                Z_dR_pho[0] = Z_find.M()
-                                                H_dR_pho[0] = H_find.M()
-                                                ALP_dR_pho[0] = ALP_find.M()
-
-                                                if (H_find.M()>100) and (H_find.M()<180) :
+                                                if cutFlow['cut8'] :
                                                     Z_dR_pho_Cmh[0] = Z_find.M()
                                                     H_dR_pho_Cmh[0] = H_find.M()
                                                     ALP_dR_pho_Cmh[0] = ALP_find.M()
 
                                                     # Fill Tree
-                                                    l1_pt[0] = event.lepFSR_pt[lep_leadindex[0]]
-                                                    l2_pt[0] = event.lepFSR_pt[lep_leadindex[1]]
-                                                    l1_eta[0] = event.lepFSR_eta[lep_leadindex[0]]
-                                                    l2_eta[0] = event.lepFSR_eta[lep_leadindex[1]]
-                                                    l1_phi[0] = event.lepFSR_phi[lep_leadindex[0]]
-                                                    l2_phi[0] = event.lepFSR_phi[lep_leadindex[1]]
-                                                    l1_id[0] = event.lep_id[lep_leadindex[0]]
-                                                    l2_id[0] = event.lep_id[lep_leadindex[1]]
+
+
 
                                                     pho1_pt[0] = event.pho_pt[pho1_index]
                                                     pho1_eta[0] = event.pho_eta[pho1_index]
@@ -985,11 +1047,21 @@ for ievent,event in enumerate(tchain):#, start=650000):
                                                     #pho2_matche_MomMomId[0] = event.pho_matchedR03_MomMomId[pho2_index]
                                                     #pho2_matchedR[0] = event.pho_matchedR[pho2_index]
 
+                                                    var_dR_Za[0] = deltaR(Z_find.Eta(), Z_find.Phi(), ALP_find.Eta(), ALP_find.Phi())
+                                                    var_dR_g1g2[0] = dR_g1g2
+                                                    var_dR_g1Z[0] = deltaR(pho1_find.Eta(), pho1_find.Phi(), Z_find.Eta(), Z_find.Phi())
+                                                    var_dEta_g1Z[0] = pho1_find.Eta() - Z_find.Eta()
+                                                    var_dPhi_g1Z[0] = pho1_find.Phi() - Z_find.Phi()
+                                                    var_PtaOverMa[0] = ALP_find.Pt()/ALP_find.M()
+                                                    var_PtaOverMh[0] = ALP_find.Pt()/H_find.M()
+                                                    var_Pta[0] = ALP_find.Pt()
+                                                    var_MhMa[0] = ALP_find.M()+H_find.M()
+                                                    var_MhMZ[0] = Z_find.M()+H_find.M()
+
 
                                                     Z_m[0] = Z_find.M()
                                                     H_m[0] = H_find.M()
                                                     ALP_m[0] = ALP_find.M()
-                                                    dR_pho[0] = dR_g1g2
                                                     H_pt[0] = H_find.Pt()
                                                 # Higgs mass cut
                                             # dR(pho1 , pho2)
@@ -1050,14 +1122,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
                                         ALP_dR_pho_Cmh[0] = ALP_find.M()
 
                                         # Fill Tree
-                                        l1_pt[0] = event.lepFSR_pt[lep_leadindex[0]]
-                                        l2_pt[0] = event.lepFSR_pt[lep_leadindex[1]]
-                                        l1_eta[0] = event.lepFSR_eta[lep_leadindex[0]]
-                                        l2_eta[0] = event.lepFSR_eta[lep_leadindex[1]]
-                                        l1_phi[0] = event.lepFSR_phi[lep_leadindex[0]]
-                                        l2_phi[0] = event.lepFSR_phi[lep_leadindex[1]]
-                                        l1_id[0] = event.lep_id[lep_leadindex[0]]
-                                        l2_id[0] = event.lep_id[lep_leadindex[1]]
 
                                         pho1_pt[0] = event.pho_pt[pho1_index]
                                         pho1_eta[0] = event.pho_eta[pho1_index]

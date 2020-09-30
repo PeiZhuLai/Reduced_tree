@@ -151,6 +151,17 @@ pho2NIso = array('f',[0.])
 pho2PIso = array('f',[0.])
 pho2PIso_noCorr = array('f',[0.])
 
+passEleVeto = array('f',[0.])
+passIeIe = array('f',[0.])
+passHOverE = array('f',[0.])
+passChaHadIso = array('f',[0.])
+passNeuHadIso = array('f',[0.])
+passPhoIso = array('f',[0.])
+passdR_gl = array('f',[0.])
+passdR_gg = array('f',[0.])
+passH_m = array('f',[0.])
+
+
 
 # photon cut
 H_twopho = array('f',[-1.])
@@ -208,6 +219,8 @@ var_PtaOverMh = array('f',[-1.])
 var_Pta = array('f',[-1.])
 var_MhMa = array('f',[-1.])
 var_MhMZ = array('f',[-1.])
+
+ALP_calculatedPhotonIso = array('f',[-1.])
 
 
 
@@ -298,6 +311,14 @@ passedEvents.Branch("pho2PIso",pho2PIso,"pho2PIso/F")
 passedEvents.Branch("pho2PIso_noCorr",pho2PIso_noCorr,"pho2PIso_noCorr/F")
 
 
+passedEvents.Branch("passIeIe",passIeIe,"passIeIe/F")
+passedEvents.Branch("passHOverE",passHOverE,"passHOverE/F")
+passedEvents.Branch("passChaHadIso",passChaHadIso,"passChaHadIso/F")
+passedEvents.Branch("passNeuHadIso",passNeuHadIso,"passNeuHadIso/F")
+passedEvents.Branch("passPhoIso",passPhoIso,"passPhoIso/F")
+passedEvents.Branch("passdR_gl",passdR_gl,"passdR_gl/F")
+passedEvents.Branch("passdR_gg",passdR_gg,"passdR_gg/F")
+passedEvents.Branch("passH_m",passH_m,"passH_m/F")
 
 
 passedEvents.Branch("H_twopho",H_twopho,"H_twopho/F")
@@ -358,6 +379,8 @@ passedEvents.Branch("var_PtaOverMh",var_PtaOverMh,"var_PtaOverMh/F")
 passedEvents.Branch("var_Pta",var_Pta,"var_Pta/F")
 passedEvents.Branch("var_MhMa",var_MhMa,"var_MhMa/F")
 passedEvents.Branch("var_MhMZ",var_MhMZ,"var_MhMZ/F")
+
+passedEvents.Branch("ALP_calculatedPhotonIso",ALP_calculatedPhotonIso,"ALP_calculatedPhotonIso/F")
 
 
 
@@ -424,7 +447,7 @@ reader = bookMVA()
 #Loop over all the events in the input ntuple
 for ievent,event in enumerate(tchain):#, start=650000):
     if ievent > args.maxevents and args.maxevents != -1: break
-    #if ievent == 100000: break
+    #if ievent == 5000000: break
     if ievent % 10000 == 0: print 'Processing entry ' + str(ievent)
 
 
@@ -440,12 +463,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
     pho_passEleVeto = True
     pho_passIeIe = True
     pho_passHOverE = True
-    pho1_passChaHadIso = True
-    pho1_passNeuHadIso = True
+    pho_passChaHadIso = True
+    pho_passNeuHadIso = True
     passedPhoIso = True
-
-    pho2_passChaHadIso = True
-    pho2_passNeuHadIso = True
 
     mva_value = -999.0
 
@@ -541,19 +561,20 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
         # Leptons Cuts
 ################################################################################################
-    # pass lep isolation
+    # lep isolation
+    ## lep tight ID
 
     if (abs(event.lep_id[lep_leadindex[0]]) == 11):
-        if (event.lep_RelIsoNoFSR[lep_leadindex[0]] > 0.35): continue
-        if (event.lep_RelIsoNoFSR[lep_leadindex[1]] > 0.35): continue
+        #if (event.lep_RelIsoNoFSR[lep_leadindex[0]] > 0.35): continue
+        #if (event.lep_RelIsoNoFSR[lep_leadindex[1]] > 0.35): continue
 
         # pt Cut
         if (event.lepFSR_pt[lep_leadindex[0]] <= 25): continue
         if (event.lepFSR_pt[lep_leadindex[1]] <= 15): continue
 
     if (abs(event.lep_id[lep_leadindex[0]]) == 13):
-        if (event.lep_RelIsoNoFSR[lep_leadindex[0]] > 0.35): continue
-        if (event.lep_RelIsoNoFSR[lep_leadindex[1]] > 0.35): continue
+        #if (event.lep_RelIsoNoFSR[lep_leadindex[0]] > 0.35): continue
+        #if (event.lep_RelIsoNoFSR[lep_leadindex[1]] > 0.35): continue
 
         # pt Cut
         if (event.lepFSR_pt[lep_leadindex[0]] <= 20): continue
@@ -566,7 +587,10 @@ for ievent,event in enumerate(tchain):#, start=650000):
         Z_mu_lIso.Fill(Z_find.M())
 
     # lep Tight ID Cut
-    if not (( (event.lep_tightId[lep_leadindex[0]]) and (not event.lep_tightId[lep_leadindex[1]]) ) or ( (not event.lep_tightId[lep_leadindex[0]]) and (event.lep_tightId[lep_leadindex[1]]) )): continue
+
+    ### at least one lepton fail the ID
+    if not( (not (event.lep_tightId[lep_leadindex[0]] and event.lep_RelIsoNoFSR[lep_leadindex[0]] < 0.35)) or (not (event.lep_tightId[lep_leadindex[1]] and event.lep_RelIsoNoFSR[lep_leadindex[1]] < 0.35)) ): continue
+    #if (not (event.lep_tightId[lep_leadindex[1]])): continue
 
     if (abs(event.lep_id[lep_leadindex[0]]) == 11):
         Z_e_lIso_lTight.Fill(Z_find.M())
@@ -616,6 +640,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
             lep_dataMC = 1.0
         factor[0] = event.genWeight * event.pileupWeight * lep_dataMC * weight
         event_weight[0] = weight
+
+        l1_id[0] = event.lep_id[lep_leadindex[0]]
+        l2_id[0] = event.lep_id[lep_leadindex[1]]
     ################################################################################################
         Z_Ceta[0] = -99.0
         H_Ceta[0] = -99.0
@@ -647,6 +674,15 @@ for ievent,event in enumerate(tchain):#, start=650000):
         pho2NIso[0] = -99.0
         pho2PIso[0] = -99.0
         pho2PIso_noCorr[0] = -99.0
+
+        passIeIe[0] = -99.0
+        passHOverE[0] = -99.0
+        passChaHadIso[0] = -99.0
+        passNeuHadIso[0] = -99.0
+        passPhoIso[0] = -99.0
+        passdR_gl[0] = -99.0
+        passdR_gg[0] = -99.0
+        passH_m[0] = -99.0
 
         Z_HOE[0] = -99.0
         H_HOE[0] = -99.0
@@ -694,6 +730,8 @@ for ievent,event in enumerate(tchain):#, start=650000):
         var_MhMa[0] = -99.0
         var_MhMZ[0] = -99.0
 
+        ALP_calculatedPhotonIso[0] = -99.0
+
 
 
         Z_dR[0] = -99.0
@@ -714,8 +752,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
         l2_eta[0] = -99.0
         l1_phi[0] = -99.0
         l2_phi[0] = -99.0
-        l1_id[0] = -99
-        l2_id[0] = -99
 
         pho1_pt[0] = -99.0
         pho1_eta[0] = -99.0
@@ -783,34 +819,34 @@ for ievent,event in enumerate(tchain):#, start=650000):
             # photon 1
             # barrel
             if (abs(event.pho_eta[pho1_index]) < 1.4442):
-                if (event.pho_sigmaIetaIeta[pho1_index] > 0.00996): pho_passIeIe = False
+                if (event.pho_full5x5_sigmaIetaIeta[pho1_index] > 0.00996): pho_passIeIe = False
                 if (event.pho_hadronicOverEm[pho1_index] > 0.02148): pho_passHOverE = False
-                if (event.pho_chargedHadronIso[pho1_index] > 0.65 ): pho1_passChaHadIso = False
-                if (event.pho_neutralHadronIso[pho1_index] > (0.317 + event.pho_pt[pho1_index]*0.01512 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.00002259)): pho1_passNeuHadIso = False
+                if (event.pho_chargedHadronIso[pho1_index] > 0.65 ): pho_passChaHadIso = False
+                if (event.pho_neutralHadronIso[pho1_index] > (0.317 + event.pho_pt[pho1_index]*0.01512 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.00002259)): pho_passNeuHadIso = False
                 if (pho1_phoIso > (2.044 + event.pho_pt[pho1_index]*0.004017)): passedPhoIso = False
 
             # endcap
             else:
-                if (event.pho_sigmaIetaIeta[pho1_index] > 0.0271): pho_passIeIe = False
+                if (event.pho_full5x5_sigmaIetaIeta[pho1_index] > 0.0271): pho_passIeIe = False
                 if (event.pho_hadronicOverEm[pho1_index] > 0.0321): pho_passHOverE = False
-                if (event.pho_chargedHadronIso[pho1_index] > 0.517 ): pho1_passChaHadIso = False
-                if (event.pho_neutralHadronIso[pho1_index] > (2.716 + event.pho_pt[pho1_index]*0.0117 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.000023)): pho1_passNeuHadIso = False
+                if (event.pho_chargedHadronIso[pho1_index] > 0.517 ): pho_passChaHadIso = False
+                if (event.pho_neutralHadronIso[pho1_index] > (2.716 + event.pho_pt[pho1_index]*0.0117 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.000023)): pho_passNeuHadIso = False
                 if (pho1_phoIso > (3.032 + event.pho_pt[pho1_index]*0.0037)): passedPhoIso = False
             # photon 2
             # barrel
             if (abs(event.pho_eta[pho2_index]) < 1.4442):
                 if (event.pho_full5x5_sigmaIetaIeta[pho2_index] > 0.00996): pho_passIeIe = False
                 if (event.pho_hadronicOverEm[pho2_index] > 0.02148): pho_passHOverE = False
-                if (event.pho_chargedHadronIso[pho2_index] > 0.65 ): pho2_passChaHadIso = False
-                if (event.pho_neutralHadronIso[pho2_index] > (0.317 + event.pho_pt[pho1_index]*0.01512 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.00002259)): pho2_passNeuHadIso = False
+                if (event.pho_chargedHadronIso[pho2_index] > 0.65 ): pho_passChaHadIso = False
+                if (event.pho_neutralHadronIso[pho2_index] > (0.317 + event.pho_pt[pho1_index]*0.01512 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.00002259)): pho_passNeuHadIso = False
                 if (pho2_phoIso > (2.044 + event.pho_pt[pho1_index]*0.004017)): passedPhoIso = False
 
             # endcap
             else:
                 if (event.pho_full5x5_sigmaIetaIeta[pho2_index] > 0.0271): pho_passIeIe = False
                 if (event.pho_hadronicOverEm[pho2_index] > 0.0321): pho_passHOverE = False
-                if (event.pho_chargedHadronIso[pho2_index] > 0.517 ): pho2_passChaHadIso = False
-                if (event.pho_neutralHadronIso[pho2_index] > (2.716 + event.pho_pt[pho1_index]*0.0117 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.000023)): pho2_passNeuHadIso = False
+                if (event.pho_chargedHadronIso[pho2_index] > 0.517 ): pho_passChaHadIso = False
+                if (event.pho_neutralHadronIso[pho2_index] > (2.716 + event.pho_pt[pho1_index]*0.0117 + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*0.000023)): pho_passNeuHadIso = False
                 if (pho2_phoIso > (3.032 + event.pho_pt[pho1_index]*0.0037)): passedPhoIso = False
 
 
@@ -890,88 +926,150 @@ for ievent,event in enumerate(tchain):#, start=650000):
                 ################################################################ End MVA ################################################################
 
 
+                dR_g1l1[0] = dR_l1g1
+                dR_g1l2[0] = dR_l1g2
+                dR_g2l1[0] = dR_l2g1
+                dR_g2l2[0] = dR_l2g2
+
+                dR_pho[0] = dR_g1g2
+
+                pho1eta[0] = event.pho_eta[pho1_index]
+                pho1Pt[0] = event.pho_pt[pho1_index]
+                pho1R9[0] = event.pho_R9[pho1_index]
+                pho1IetaIeta[0] = event.pho_sigmaIetaIeta[pho1_index]
+                pho1IetaIeta55[0] = event.pho_full5x5_sigmaIetaIeta[pho1_index]
+                pho1HOE[0] = event.pho_hadronicOverEm[pho1_index]
+                pho1CIso[0] = event.pho_chargedHadronIso[pho1_index]
+                pho1NIso[0] = event.pho_neutralHadronIso[pho1_index]
+                pho1PIso[0] = pho1_phoIso
+                pho1PIso_noCorr[0] = event.pho_photonIso[pho1_index]
+
+
+                pho2eta[0] = event.pho_eta[pho2_index]
+                pho2Pt[0] = event.pho_pt[pho2_index]
+                pho2R9[0] = event.pho_R9[pho2_index]
+                pho2IetaIeta[0] = event.pho_sigmaIetaIeta[pho2_index]
+                pho2IetaIeta55[0] = event.pho_full5x5_sigmaIetaIeta[pho2_index]
+                pho2HOE[0] = event.pho_hadronicOverEm[pho2_index]
+                pho2CIso[0] = event.pho_chargedHadronIso[pho2_index]
+                pho2NIso[0] = event.pho_neutralHadronIso[pho2_index]
+                pho2PIso[0] = pho2_phoIso
+                pho2PIso_noCorr[0] = event.pho_photonIso[pho2_index]
+
+                var_dR_Za[0] = deltaR(Z_find.Eta(), Z_find.Phi(), ALP_find.Eta(), ALP_find.Phi())
+                var_dR_g1g2[0] = dR_g1g2
+                var_dR_g1Z[0] = deltaR(pho1_find.Eta(), pho1_find.Phi(), Z_find.Eta(), Z_find.Phi())
+                var_dEta_g1Z[0] = pho1_find.Eta() - Z_find.Eta()
+                var_dPhi_g1Z[0] = pho1_find.Phi() - Z_find.Phi()
+                var_PtaOverMa[0] = ALP_find.Pt()/ALP_find.M()
+                var_PtaOverMh[0] = ALP_find.Pt()/H_find.M()
+                var_Pta[0] = ALP_find.Pt()
+                var_MhMa[0] = ALP_find.M()+H_find.M()
+                var_MhMZ[0] = Z_find.M()+H_find.M()
+
+                ################# calculate ALP's photon isolation #################
+                checkDuplicate = ''
+                ALP_calculatedPhotonIso_tmp = 0.0
+                isReco = False
+                for i in range(event.pho_PF_Id.size()):
+                    if str(event.pho_PF_Id[i]) in checkDuplicate: continue
+                    checkDuplicate = checkDuplicate + ' ' + str(event.pho_PF_Id[i])
+                    dR_AP = deltaR(ALP_find.Eta(), ALP_find.Phi(), event.pho_PF_eta[i], event.pho_PF_phi[i])
+
+                    # check if pfPhoton == recoPhoton
+                    for pho in range(N_pho):
+                        dR_Pg = deltaR(event.pho_eta[pho], event.pho_phi[pho], event.pho_PF_eta[i], event.pho_PF_phi[i])
+                        if dR_Pg < 0.08: isReco = True
+
+                    if isReco: continue
+
+                    if dR_AP <= 0.3:
+                        ALP_calculatedPhotonIso_tmp += event.pho_PF_pt[i]
+
+                #print checkDuplicate
+                ALP_calculatedPhotonIso[0] = ALP_calculatedPhotonIso_tmp
+                ################# END calculate ALP's photon isolation #################
+
+                l1_pt[0] = event.lepFSR_pt[lep_leadindex[0]]
+                l2_pt[0] = event.lepFSR_pt[lep_leadindex[1]]
+                l1_eta[0] = event.lepFSR_eta[lep_leadindex[0]]
+                l2_eta[0] = event.lepFSR_eta[lep_leadindex[1]]
+                l1_phi[0] = event.lepFSR_phi[lep_leadindex[0]]
+                l2_phi[0] = event.lepFSR_phi[lep_leadindex[1]]
+
+                ################# define cut flow #################
+                cutFlow = {}
+
+                cutdR_gl = (dR_l1g1 > 0.4) and (dR_l1g2 > 0.4) and (dR_l2g1 > 0.4) and (dR_l2g2 > 0.4)
+                cutdR_gg = dR_g1g2 < 0.15
+                cutH_m = (H_find.M()>100) and (H_find.M()<180)
+
+                cutFlow['cut1'] = pho_passChaHadIso
+                cutFlow['cut2'] = pho_passNeuHadIso
+                cutFlow['cut3'] = cutdR_gl
+                cutFlow['cut4'] = cutdR_gg
+                cutFlow['cut5'] = pho_passHOverE
+                cutFlow['cut6'] = pho_passIeIe
+                cutFlow['cut7'] = passedPhoIso
+                cutFlow['cut8'] = cutH_m
+
+                passIeIe[0] = pho_passIeIe
+                passHOverE[0] = pho_passHOverE
+                passChaHadIso[0] = pho_passChaHadIso
+                passNeuHadIso[0] = pho_passNeuHadIso
+                passPhoIso[0] = passedPhoIso
+                passdR_gl[0] = cutdR_gl
+                passdR_gg[0] = cutdR_gg
+                passH_m[0] = cutH_m
+
+                ###################################################
+
                 if cutBased:
 
-                    if (pho1_passChaHadIso and (not pho2_passChaHadIso)) or ((not pho1_passChaHadIso) and pho2_passChaHadIso):
+                    if cutFlow['cut1']:
                         Z_CIso[0] = Z_find.M()
                         H_CIso[0] = H_find.M()
                         ALP_CIso[0] = ALP_find.M()
 
-                        if (pho1_passNeuHadIso and (not pho2_passNeuHadIso)) or ((not pho1_passNeuHadIso) and pho2_passNeuHadIso):
+                        if cutFlow['cut2']:
                             Z_NIso[0] = Z_find.M()
                             H_NIso[0] = H_find.M()
                             ALP_NIso[0] = ALP_find.M()
 
-                            dR_g1l1[0] = dR_l1g1
-                            dR_g1l2[0] = dR_l1g2
-                            dR_g2l1[0] = dR_l2g1
-                            dR_g2l2[0] = dR_l2g2
-
-                            if (dR_l1g1 > 0.4) and (dR_l1g2 > 0.4) and (dR_l2g1 > 0.4) and (dR_l2g2 > 0.4):
+                            if cutFlow['cut3']:
 
                                 Z_dR[0] = Z_find.M()
                                 H_dR[0] = H_find.M()
                                 ALP_dR[0] = ALP_find.M()
 
-                                dR_pho[0] = dR_g1g2
-
-                                if dR_g1g2 < 0.15:
+                                if cutFlow['cut4']:
                                     Z_dR_pho[0] = Z_find.M()
                                     H_dR_pho[0] = H_find.M()
                                     ALP_dR_pho[0] = ALP_find.M()
 
-                                    pho1eta[0] = event.pho_eta[pho1_index]
-                                    pho1Pt[0] = event.pho_pt[pho1_index]
-                                    pho1R9[0] = event.pho_R9[pho1_index]
-                                    pho1IetaIeta[0] = event.pho_sigmaIetaIeta[pho1_index]
-                                    pho1IetaIeta55[0] = event.pho_full5x5_sigmaIetaIeta[pho1_index]
-                                    pho1HOE[0] = event.pho_hadronicOverEm[pho1_index]
-                                    pho1CIso[0] = event.pho_chargedHadronIso[pho1_index]
-                                    pho1NIso[0] = event.pho_neutralHadronIso[pho1_index]
-                                    pho1PIso[0] = pho1_phoIso
-                                    pho1PIso_noCorr[0] = event.pho_photonIso[pho1_index]
+                                    if cutFlow['cut5']:
+                                        Z_HOE[0] = Z_find.M()
+                                        H_HOE[0] = H_find.M()
+                                        ALP_HOE[0] = ALP_find.M()
 
+                                        if cutFlow['cut6']:
+                                            Z_IeIe[0] = Z_find.M()
+                                            H_IeIe[0] = H_find.M()
+                                            ALP_IeIe[0] = ALP_find.M()
 
-                                    pho2eta[0] = event.pho_eta[pho2_index]
-                                    pho2Pt[0] = event.pho_pt[pho2_index]
-                                    pho2R9[0] = event.pho_R9[pho2_index]
-                                    pho2IetaIeta[0] = event.pho_sigmaIetaIeta[pho2_index]
-                                    pho2IetaIeta55[0] = event.pho_full5x5_sigmaIetaIeta[pho2_index]
-                                    pho2HOE[0] = event.pho_hadronicOverEm[pho2_index]
-                                    pho2CIso[0] = event.pho_chargedHadronIso[pho2_index]
-                                    pho2NIso[0] = event.pho_neutralHadronIso[pho2_index]
-                                    pho2PIso[0] = pho2_phoIso
-                                    pho2PIso_noCorr[0] = event.pho_photonIso[pho2_index]
-
-                                    if pho_passIeIe:
-                                        Z_IeIe[0] = Z_find.M()
-                                        H_IeIe[0] = H_find.M()
-                                        ALP_IeIe[0] = ALP_find.M()
-
-                                        if pho_passHOverE:
-                                            Z_HOE[0] = Z_find.M()
-                                            H_HOE[0] = H_find.M()
-                                            ALP_HOE[0] = ALP_find.M()
-
-                                            if passedPhoIso:
+                                            if cutFlow['cut7']:
                                                 Z_PIso[0] = Z_find.M()
                                                 H_PIso[0] = H_find.M()
                                                 ALP_PIso[0] = ALP_find.M()
 
-                                                if (H_find.M()>100) and (H_find.M()<180) :
+                                                if cutFlow['cut8'] :
                                                     Z_dR_pho_Cmh[0] = Z_find.M()
                                                     H_dR_pho_Cmh[0] = H_find.M()
                                                     ALP_dR_pho_Cmh[0] = ALP_find.M()
 
                                                     # Fill Tree
-                                                    l1_pt[0] = event.lepFSR_pt[lep_leadindex[0]]
-                                                    l2_pt[0] = event.lepFSR_pt[lep_leadindex[1]]
-                                                    l1_eta[0] = event.lepFSR_eta[lep_leadindex[0]]
-                                                    l2_eta[0] = event.lepFSR_eta[lep_leadindex[1]]
-                                                    l1_phi[0] = event.lepFSR_phi[lep_leadindex[0]]
-                                                    l2_phi[0] = event.lepFSR_phi[lep_leadindex[1]]
-                                                    l1_id[0] = event.lep_id[lep_leadindex[0]]
-                                                    l2_id[0] = event.lep_id[lep_leadindex[1]]
+
+
 
                                                     pho1_pt[0] = event.pho_pt[pho1_index]
                                                     pho1_eta[0] = event.pho_eta[pho1_index]
@@ -990,18 +1088,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
                                                     #pho2_matche_MomId[0] = event.pho_matchedR03_MomId[pho2_index]
                                                     #pho2_matche_MomMomId[0] = event.pho_matchedR03_MomMomId[pho2_index]
                                                     #pho2_matchedR[0] = event.pho_matchedR[pho2_index]
-
-                                                    var_dR_Za[0] = deltaR(Z_find.Eta(), Z_find.Phi(), ALP_find.Eta(), ALP_find.Phi())
-                                                    var_dR_g1g2[0] = dR_g1g2
-                                                    var_dR_g1Z[0] = deltaR(pho1_find.Eta(), pho1_find.Phi(), Z_find.Eta(), Z_find.Phi())
-                                                    var_dEta_g1Z[0] = pho1_find.Eta() - Z_find.Eta()
-                                                    var_dPhi_g1Z[0] = pho1_find.Phi() - Z_find.Phi()
-                                                    var_PtaOverMa[0] = ALP_find.Pt()/ALP_find.M()
-                                                    var_PtaOverMh[0] = ALP_find.Pt()/H_find.M()
-                                                    var_Pta[0] = ALP_find.Pt()
-                                                    var_MhMa[0] = ALP_find.M()+H_find.M()
-                                                    var_MhMZ[0] = Z_find.M()+H_find.M()
-
 
                                                     Z_m[0] = Z_find.M()
                                                     H_m[0] = H_find.M()
@@ -1066,14 +1152,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
                                         ALP_dR_pho_Cmh[0] = ALP_find.M()
 
                                         # Fill Tree
-                                        l1_pt[0] = event.lepFSR_pt[lep_leadindex[0]]
-                                        l2_pt[0] = event.lepFSR_pt[lep_leadindex[1]]
-                                        l1_eta[0] = event.lepFSR_eta[lep_leadindex[0]]
-                                        l2_eta[0] = event.lepFSR_eta[lep_leadindex[1]]
-                                        l1_phi[0] = event.lepFSR_phi[lep_leadindex[0]]
-                                        l2_phi[0] = event.lepFSR_phi[lep_leadindex[1]]
-                                        l1_id[0] = event.lep_id[lep_leadindex[0]]
-                                        l2_id[0] = event.lep_id[lep_leadindex[1]]
 
                                         pho1_pt[0] = event.pho_pt[pho1_index]
                                         pho1_eta[0] = event.pho_eta[pho1_index]

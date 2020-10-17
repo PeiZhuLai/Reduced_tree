@@ -407,7 +407,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     pho2_pt[0] = pho2.Pt()
     pho2_eta[0] = pho2.Eta()
-    pho2_phi[0] = pho1.Phi()
+    pho2_phi[0] = pho2.Phi()
 
 
     Z_m[0] = Z.M()

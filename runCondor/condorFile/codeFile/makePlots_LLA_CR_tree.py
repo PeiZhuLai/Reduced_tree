@@ -15,7 +15,7 @@ args = parser.parse_args()
 import numpy as np
 import ROOT
 import os
-import math
+
 ###########################
 from deltaR import *
 from array import array
@@ -28,15 +28,10 @@ import pickle
 import SystematicUnc_ALP as Sys
 
 ########## photon SFs
-bins_eta = [-2.5,-2.0,-1.566,-1.4442, -0.8, 0.0, 0.8, 1.4442, 1.566, 2.0, 2.5]
-bins_pt = [10,15,20,35,50]
-
-f_SFs_16 = '/publicfs/cms/user/wangzebing/ALP/Plot/SFs/egammaEffi_2016.root'
 if args.year == '2016':
-    f_SFs = '/publicfs/cms/user/wangzebing/ALP/Plot/SFs/egammaEffi_2016.root'
-
+    f_SFs = '/publicfs/cms/user/wangzebing/ALP/Plot/SFs/egammaEffi_2016.txt'
     BDT_filename="/publicfs/cms/user/wangzebing/ALP/Analysis_code/MVA/weight/nodR/model_ALP_massindependent_2016.pkl"
-    mvaCut = 0.8675
+    mvaCut = 0.9381
 
     chCut_EB = 0.202
     chCut_EE = 0.034
@@ -44,21 +39,10 @@ if args.year == '2016':
     neuCut_EE = [0.586, 0.0163, 0.000014]
     hoeCut_EB = 0.0269
     hoeCut_EE = 0.0213
-
-    sigieieCut_EB = 0.00994
-    sigieieCut_EE = 0.03000
-    phoCut_EB = [2.362, 0.0047]
-    phoCut_EE = [2.617, 0.0034]
-
-    #sigieieCut_EB = 0.00994
-    #sigieieCut_EE = 0.03000
-    #phoCut_EB = [2.362, 0.0047]
-    #phoCut_EE = [2.617, 0.0034]
 elif args.year == '2017':
-    f_SFs = '/publicfs/cms/user/wangzebing/ALP/Plot/SFs/egammaEffi_2017.root'
-
+    f_SFs = '/publicfs/cms/user/wangzebing/ALP/Plot/SFs/egammaEffi_2017.txt'
     BDT_filename="/publicfs/cms/user/wangzebing/ALP/Analysis_code/MVA/weight/nodR/model_ALP_massindependent_2017.pkl"
-    mvaCut = 0.8365
+    mvaCut = 0.8571
 
     chCut_EB = 0.65
     chCut_EE = 0.517
@@ -66,23 +50,10 @@ elif args.year == '2017':
     neuCut_EE = [2.716, 0.0117, 0.000023]
     hoeCut_EB = 0.02148
     hoeCut_EE = 0.0321
-
-    #tight
-    sigieieCut_EB = 0.00996
-    sigieieCut_EE = 0.0271
-    phoCut_EB = [2.044, 0.004017]
-    phoCut_EE = [3.032, 0.0037]
-
-    #loose
-    #sigieieCut_EB = 0.0106
-    #sigieieCut_EE = 0.0272
-    #phoCut_EB = [2.876, 0.004017]
-    #phoCut_EE = [4.162, 0.0037]
 elif args.year == '2018':
-    f_SFs = '/publicfs/cms/user/wangzebing/ALP/Plot/SFs/egammaEffi_2018.root'
-
+    f_SFs = '/publicfs/cms/user/wangzebing/ALP/Plot/SFs/egammaEffi_2018.txt'
     BDT_filename="/publicfs/cms/user/wangzebing/ALP/Analysis_code/MVA/weight/nodR/model_ALP_massindependent_2018.pkl"
-    mvaCut = 0.8923
+    mvaCut = 0.9204
 
     chCut_EB = 0.65
     chCut_EE = 0.517
@@ -90,11 +61,6 @@ elif args.year == '2018':
     neuCut_EE = [2.716, 0.0117, 0.000023]
     hoeCut_EB = 0.02148
     hoeCut_EE = 0.0321
-
-    sigieieCut_EB = 0.00996
-    sigieieCut_EE = 0.0271
-    phoCut_EB = [2.044, 0.004017]
-    phoCut_EE = [3.032, 0.0037]
 else:
     print "do not include at 2016/2017/2018"
     exit(0)
@@ -102,7 +68,6 @@ else:
 # load the model from disk
 model = pickle.load(open(BDT_filename, 'rb'))
 
-'''
 f = open(f_SFs)
 lines = f.readlines()
 pt_l = []
@@ -117,40 +82,7 @@ for line in lines:
     pt_l.append(float(line.split()[2]))
     pt_r.append(float(line.split()[3]))
     SFs.append(float(line.split()[4])/float(line.split()[6]))
-'''
-SFs = np.zeros((len(bins_eta)-1,len(bins_pt)-1))
-SFs_statData = np.zeros((len(bins_eta)-1,len(bins_pt)-1))
-SFs_statMC = np.zeros((len(bins_eta)-1,len(bins_pt)-1))
-SFs_altBkgModel = np.zeros((len(bins_eta)-1,len(bins_pt)-1))
-SFs_altSignalModel = np.zeros((len(bins_eta)-1,len(bins_pt)-1))
-SFs_altMCEff = np.zeros((len(bins_eta)-1,len(bins_pt)-1))
-SFs_altTagSelection = np.zeros((len(bins_eta)-1,len(bins_pt)-1))
 
-files_SFs = ROOT.TFile(f_SFs)
-his_SFs = files_SFs.Get('EGamma_SF2D')
-his_statData = files_SFs.Get('statData')
-his_statMC = files_SFs.Get('statMC')
-his_altBkgModel = files_SFs.Get('altBkgModel')
-his_altSignalModel = files_SFs.Get('altSignalModel')
-his_altMCEff = files_SFs.Get('altMCEff')
-his_altTagSelection = files_SFs.Get('altTagSelection')
-
-SFs_altMCEff_16 = np.zeros((len(bins_eta)-1,len(bins_pt)-1))
-files_SFs_16 = ROOT.TFile(f_SFs_16)
-his_altMCEff_16 = files_SFs_16.Get('altMCEff')
-
-for i in range(len(bins_eta)-1):
-    for j in range(len(bins_pt)-1):
-        #print str(i)+' '+str(j)+': '+str(his_SFs.GetBinContent(i+1,j+1))
-        SFs[i][j] = his_SFs.GetBinContent(i+1,j+1)
-        SFs_statData[i][j] = his_statData.GetBinContent(i+1,j+1)
-        SFs_statMC[i][j] = his_statMC.GetBinContent(i+1,j+1)
-        SFs_altBkgModel[i][j] = his_altBkgModel.GetBinContent(i+1,j+1)
-        SFs_altSignalModel[i][j] = his_altSignalModel.GetBinContent(i+1,j+1)
-        SFs_altMCEff[i][j] = his_altMCEff.GetBinContent(i+1,j+1)
-        SFs_altTagSelection[i][j] = his_altTagSelection.GetBinContent(i+1,j+1)
-
-        SFs_altMCEff_16[i][j] = his_altMCEff_16.GetBinContent(i+1,j+1)
 
 
 
@@ -270,8 +202,6 @@ factor = array('f',[0.])
 event_weight = array('f',[0.])
 event_genWeight = array('f',[-1.])
 event_pileupWeight = array('f',[-1.])
-event_pileupWeightUp = array('f',[-1.])
-event_pileupWeightDn = array('f',[-1.])
 event_dataMCWeight = array('f',[-1.])
 
 Z_m = array('f',[0.])
@@ -283,28 +213,20 @@ H_pt = array('f',[0.])
 l1_pt = array('f',[0.])
 l1_eta = array('f',[0.])
 l1_phi = array('f',[0.])
-l1_mass = array('f',[0.])
 l1_id = array('i',[0])
-l1_dataMC = array('f',[0.])
-l1_dataMCErr = array('f',[0.])
 l1_scaleup = array('f',[0.])
 l1_scaledn = array('f',[0.])
 l1_smearup = array('f',[0.])
 l1_smeardn = array('f',[0.])
 
-
-
 l2_pt = array('f',[0.])
 l2_eta = array('f',[0.])
 l2_phi = array('f',[0.])
-l2_mass = array('f',[0.])
 l2_id = array('i',[0])
-l2_dataMCErr = array('f',[0.])
 l2_scaleup = array('f',[0.])
 l2_scaledn = array('f',[0.])
 l2_smearup = array('f',[0.])
 l2_smeardn = array('f',[0.])
-l2_dataMC = array('f',[0.])
 
 # photon var
 pho1eta = array('f',[0.])
@@ -319,8 +241,6 @@ pho1NIso = array('f',[0.])
 pho1PIso = array('f',[0.])
 pho1PIso_noCorr = array('f',[0.])
 pho1SFs = array('f',[0.])
-pho1SFs_sys = array('f',[0.])
-pho1SFs_sys_replaced = array('f',[0.])
 pho1scaleup = array('f',[0.])
 pho1scaledn = array('f',[0.])
 pho1smearup = array('f',[0.])
@@ -339,8 +259,6 @@ pho2NIso = array('f',[0.])
 pho2PIso = array('f',[0.])
 pho2PIso_noCorr = array('f',[0.])
 pho2SFs = array('f',[0.])
-pho2SFs_sys = array('f',[0.])
-pho2SFs_sys_replaced = array('f',[0.])
 pho2scaleup = array('f',[0.])
 pho2scaledn = array('f',[0.])
 pho2smearup = array('f',[0.])
@@ -381,10 +299,7 @@ passH_m = array('f',[0.])
 passBDT = array('f',[0.])
 Val_BDT = array('f',[0.])
 
-pho1passCutBasedIDTight = array('f',[-90.])
-pho2passCutBasedIDTight = array('f',[-90.])
-pho1photonCutBasedIDMedium = array('f',[-90.])
-pho2photonCutBasedIDMedium = array('f',[-90.])
+
 ################################################################################################
 
 passedEvents = ROOT.TTree("passedEvents","passedEvents")
@@ -397,8 +312,6 @@ passedEvents.Branch("factor",factor,"factor/F")
 passedEvents.Branch("event_weight",event_weight,"event_weight/F")
 passedEvents.Branch("event_genWeight",event_genWeight,"event_genWeight/F")
 passedEvents.Branch("event_pileupWeight",event_pileupWeight,"event_pileupWeight/F")
-passedEvents.Branch("event_pileupWeightUp",event_pileupWeightUp,"event_pileupWeightUp/F")
-passedEvents.Branch("event_pileupWeightDn",event_pileupWeightDn,"event_pileupWeightDn/F")
 passedEvents.Branch("event_dataMCWeight",event_dataMCWeight,"event_dataMCWeight/F")
 
 passedEvents.Branch("Z_m",Z_m,"Z_m/F")
@@ -410,10 +323,7 @@ passedEvents.Branch("H_pt",H_pt,"H_pt/F")
 passedEvents.Branch("l1_pt",l1_pt,"l1_pt/F")
 passedEvents.Branch("l1_eta",l1_eta,"l1_eta/F")
 passedEvents.Branch("l1_phi",l1_phi,"l1_phi/F")
-passedEvents.Branch("l1_mass",l1_mass,"l1_mass/F")
 passedEvents.Branch("l1_id",l1_id,"l1_id/I")
-passedEvents.Branch("l1_dataMC",l1_dataMC,"l1_dataMC/F")
-passedEvents.Branch("l1_dataMCErr",l1_dataMCErr,"l1_dataMCErr/F")
 passedEvents.Branch("l1_scaleup",l1_scaleup,"l1_scaleup/F")
 passedEvents.Branch("l1_scaledn",l1_scaledn,"l1_scaledn/F")
 passedEvents.Branch("l1_smearup",l1_smearup,"l1_smearup/F")
@@ -422,15 +332,11 @@ passedEvents.Branch("l1_smeardn",l1_smeardn,"l1_smeardn/F")
 passedEvents.Branch("l2_pt",l2_pt,"l2_pt/F")
 passedEvents.Branch("l2_eta",l2_eta,"l2_eta/F")
 passedEvents.Branch("l2_phi",l2_phi,"l2_phi/F")
-passedEvents.Branch("l2_mass",l2_mass,"l2_mass/F")
 passedEvents.Branch("l2_id",l2_id,"l2_id/I")
-passedEvents.Branch("l2_dataMC",l2_dataMC,"l2_dataMC/F")
-passedEvents.Branch("l2_dataMCErr",l2_dataMCErr,"l2_dataMCErr/F")
 passedEvents.Branch("l2_scaleup",l2_scaleup,"l2_scaleup/F")
 passedEvents.Branch("l2_scaledn",l2_scaledn,"l2_scaledn/F")
 passedEvents.Branch("l2_smearup",l2_smearup,"l2_smearup/F")
 passedEvents.Branch("l2_smeardn",l2_smeardn,"l2_smeardn/F")
-
 
 
 passedEvents.Branch("pho1eta",pho1eta,"pho1eta/F")
@@ -445,8 +351,6 @@ passedEvents.Branch("pho1NIso",pho1NIso,"pho1NIso/F")
 passedEvents.Branch("pho1PIso",pho1PIso,"pho1PIso/F")
 passedEvents.Branch("pho1PIso_noCorr",pho1PIso_noCorr,"pho1PIso_noCorr/F")
 passedEvents.Branch("pho1SFs",pho1SFs,"pho1SFs/F")
-passedEvents.Branch("pho1SFs_sys",pho1SFs_sys,"pho1SFs_sys/F")
-passedEvents.Branch("pho1SFs_sys_replaced",pho1SFs_sys_replaced,"pho1SFs_sys_replaced/F")
 passedEvents.Branch("pho1scaleup",pho1scaleup,"pho1scaleup/F")
 passedEvents.Branch("pho1scaledn",pho1scaledn,"pho1scaledn/F")
 passedEvents.Branch("pho1smearup",pho1smearup,"pho1smearup/F")
@@ -465,8 +369,6 @@ passedEvents.Branch("pho2NIso",pho2NIso,"pho2NIso/F")
 passedEvents.Branch("pho2PIso",pho2PIso,"pho2PIso/F")
 passedEvents.Branch("pho2PIso_noCorr",pho2PIso_noCorr,"pho2PIso_noCorr/F")
 passedEvents.Branch("pho2SFs",pho2SFs,"pho2SFs/F")
-passedEvents.Branch("pho2SFs_sys",pho2SFs_sys,"pho2SFs_sys/F")
-passedEvents.Branch("pho2SFs_sys_replaced",pho2SFs_sys_replaced,"pho2SFs_sys_replaced/F")
 passedEvents.Branch("pho2scaleup",pho2scaleup,"pho2scaleup/F")
 passedEvents.Branch("pho2scaledn",pho2scaledn,"pho2scaledn/F")
 passedEvents.Branch("pho2smearup",pho2smearup,"pho2smearup/F")
@@ -505,10 +407,6 @@ passedEvents.Branch("passH_m",passH_m,"passH_m/F")
 passedEvents.Branch("passBDT",passBDT,"passBDT/F")
 passedEvents.Branch("Val_BDT",Val_BDT,"Val_BDT/F")
 
-passedEvents.Branch("pho1passCutBasedIDTight",pho1passCutBasedIDTight,"pho1passCutBasedIDTight/F")
-passedEvents.Branch("pho2passCutBasedIDTight",pho2passCutBasedIDTight,"pho2passCutBasedIDTight/F")
-passedEvents.Branch("pho1photonCutBasedIDMedium",pho1photonCutBasedIDMedium,"pho1photonCutBasedIDMedium/F")
-passedEvents.Branch("pho2photonCutBasedIDMedium",pho2photonCutBasedIDMedium,"pho2photonCutBasedIDMedium/F")
 ################################################################################################
 
 #reader = bookMVA()
@@ -516,7 +414,7 @@ passedEvents.Branch("pho2photonCutBasedIDMedium",pho2photonCutBasedIDMedium,"pho
 #Loop over all the events in the input ntuple
 for ievent,event in enumerate(tchain):#, start=650000):
     if ievent > args.maxevents and args.maxevents != -1: break
-    #if ievent == 5000000: break
+    if ievent == 500000: break
     if ievent % 10000 == 0: print 'Processing entry ' + str(ievent)
 
 
@@ -683,17 +581,15 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
 
     for i in range(N_pho):
-        if (event.pho_hasPixelSeed[i] == 1): continue
-        if (event.pho_pt[i]<10) : continue
+        if (event.pho_hasPixelSeed[i] == 0): continue
         if (event.pho_pt[i] > pho1_maxPt):
             pho1_maxPt = event.pho_pt[i]
             pho1_index = i
             foundpho1 = True
 
     for j in range(N_pho):
-        if (event.pho_hasPixelSeed[j] == 1): continue
+        if (event.pho_hasPixelSeed[j] == 0): continue
         if j == pho1_index: continue
-        if (event.pho_pt[j]<10) : continue
         if (event.pho_pt[j] > pho2_maxPt):
             pho2_maxPt = event.pho_pt[j]
             pho2_index = j
@@ -743,38 +639,57 @@ for ievent,event in enumerate(tchain):#, start=650000):
             # photon 1
             # barrel
             if (abs(event.pho_eta[pho1_index]) < 1.4442):
-                if (event.pho_full5x5_sigmaIetaIeta[pho1_index] > sigieieCut_EB): pho_passIeIe = False
+                if (event.pho_full5x5_sigmaIetaIeta[pho1_index] > 0.00996): pho_passIeIe = False
                 if (event.pho_hadronicOverEm[pho1_index] > hoeCut_EB): pho_passHOverE = False
                 if (event.pho_chargedHadronIso[pho1_index] > chCut_EB ): pho_passChaHadIso = False
                 if (event.pho_neutralHadronIso[pho1_index] > (neuCut_EB[0] + event.pho_pt[pho1_index]*neuCut_EB[1] + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*neuCut_EB[2])): pho_passNeuHadIso = False
-                if (event.pho_photonIso[pho1_index] > (phoCut_EB[0] + event.pho_pt[pho1_index]*phoCut_EB[1])): passedPhoIso = False
+                if (event.pho_photonIso[pho1_index] > (2.044 + event.pho_pt[pho1_index]*0.004017)): passedPhoIso = False
 
             # endcap
             else:
-                if (event.pho_full5x5_sigmaIetaIeta[pho1_index] > sigieieCut_EE): pho_passIeIe = False
+                if (event.pho_full5x5_sigmaIetaIeta[pho1_index] > 0.0271): pho_passIeIe = False
                 if (event.pho_hadronicOverEm[pho1_index] > hoeCut_EE): pho_passHOverE = False
                 if (event.pho_chargedHadronIso[pho1_index] > chCut_EE ): pho_passChaHadIso = False
                 if (event.pho_neutralHadronIso[pho1_index] > (neuCut_EE[0] + event.pho_pt[pho1_index]*neuCut_EE[1] + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*neuCut_EE[2])): pho_passNeuHadIso = False
-                if (event.pho_photonIso[pho1_index] > (phoCut_EE[0] + event.pho_pt[pho1_index]*phoCut_EE[1])): passedPhoIso = False
+                if (event.pho_photonIso[pho1_index] > (3.032 + event.pho_pt[pho1_index]*0.0037)): passedPhoIso = False
             # photon 2
             # barrel
             if (abs(event.pho_eta[pho2_index]) < 1.4442):
-                if (event.pho_full5x5_sigmaIetaIeta[pho2_index] > sigieieCut_EB): pho_passIeIe = False
+                if (event.pho_full5x5_sigmaIetaIeta[pho2_index] > 0.00996): pho_passIeIe = False
                 if (event.pho_hadronicOverEm[pho2_index] > hoeCut_EB): pho_passHOverE = False
                 if (event.pho_chargedHadronIso[pho2_index] > chCut_EB ): pho_passChaHadIso = False
                 if (event.pho_neutralHadronIso[pho2_index] > (neuCut_EB[0] + event.pho_pt[pho1_index]*neuCut_EB[1] + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*neuCut_EB[2])): pho_passNeuHadIso = False
-                if (event.pho_photonIso[pho2_index] > (phoCut_EB[0] + event.pho_pt[pho1_index]*phoCut_EB[1])): passedPhoIso = False
+                if (event.pho_photonIso[pho2_index] > (2.044 + event.pho_pt[pho1_index]*0.004017)): passedPhoIso = False
 
             # endcap
             else:
-                if (event.pho_full5x5_sigmaIetaIeta[pho2_index] > sigieieCut_EE): pho_passIeIe = False
+                if (event.pho_full5x5_sigmaIetaIeta[pho2_index] > 0.0271): pho_passIeIe = False
                 if (event.pho_hadronicOverEm[pho2_index] > hoeCut_EE): pho_passHOverE = False
                 if (event.pho_chargedHadronIso[pho2_index] > chCut_EE ): pho_passChaHadIso = False
                 if (event.pho_neutralHadronIso[pho2_index] > (neuCut_EE[0] + event.pho_pt[pho1_index]*neuCut_EE[1] + event.pho_pt[pho1_index]*event.pho_pt[pho1_index]*neuCut_EE[2])): pho_passNeuHadIso = False
-                if (event.pho_photonIso[pho2_index] > (phoCut_EE[0] + event.pho_pt[pho1_index]*phoCut_EE[1])): passedPhoIso = False
+                if (event.pho_photonIso[pho2_index] > (3.032 + event.pho_pt[pho1_index]*0.0037)): passedPhoIso = False
 
             #H_Ceta.Fill(H_find.M())
 
+            dR_l1g1 = deltaR(l1_find.Eta(), l1_find.Phi(), pho1_find.Eta(), pho1_find.Phi())
+            dR_l1g2 = deltaR(l1_find.Eta(), l1_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
+            dR_l2g1 = deltaR(l2_find.Eta(), l2_find.Phi(), pho1_find.Eta(), pho1_find.Phi())
+            dR_l2g2 = deltaR(l2_find.Eta(), l2_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
+
+            dR_g1g2 = deltaR(pho1_find.Eta(), pho1_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
+            dR_g1Z = deltaR(pho1_find.Eta(), pho1_find.Phi(), Z_find.Eta(), Z_find.Phi())
+
+            cutdR_gl = (dR_l1g1 > 0.4) and (dR_l1g2 > 0.4) and (dR_l2g1 > 0.4) and (dR_l2g2 > 0.4)
+            cutdR_gg = dR_g1g2 > 0.02
+            cutH_m = (H_find.M()>118) and (H_find.M()<130)
+
+            if  pho_passHOverE: continue
+            if  pho_passChaHadIso: continue
+            if  pho_passNeuHadIso: continue
+            if not cutdR_gl: continue
+            if not cutH_m:continue
+            if pho1_find.Pt() > 45: continue
+            if pho2_find.Pt() > 45: continue
 
             Run[0] = event.Run
             LumiSect[0] = event.LumiSect
@@ -787,8 +702,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
             event_weight[0] = weight
             event_genWeight[0] = event.genWeight
             event_pileupWeight[0] = event.pileupWeight
-            event_pileupWeightUp[0] = event.pileupWeightUp
-            event_pileupWeightDn[0] = event.pileupWeightDn
             event_dataMCWeight[0] = lep_dataMC
 
             Z_m[0] = Z_find.M()
@@ -804,30 +717,17 @@ for ievent,event in enumerate(tchain):#, start=650000):
             l2_eta[0] = event.lepFSR_eta[lep_leadindex[1]]
             l1_phi[0] = event.lepFSR_phi[lep_leadindex[0]]
             l2_phi[0] = event.lepFSR_phi[lep_leadindex[1]]
-            l1_mass[0] = event.lepFSR_mass[lep_leadindex[0]]
-            l2_mass[0] = event.lepFSR_mass[lep_leadindex[1]]
-            l1_dataMC[0] = event.lep_dataMC[lep_leadindex[0]]
-            l2_dataMC[0] = event.lep_dataMC[lep_leadindex[1]]
 
-            l1_dataMCErr[0] = event.lep_dataMCErr[lep_leadindex[0]]
-            #l1_scaleup[0] = event.lep_scaleup[lep_leadindex[0]]
-            #l1_scaledn[0] = event.lep_scaledn[lep_leadindex[0]]
-            #l1_smearup[0] = event.lep_smearup[lep_leadindex[0]]
-            #l1_smeardn[0] = event.lep_smeardn[lep_leadindex[0]]
-            l2_dataMCErr[0] = event.lep_dataMCErr[lep_leadindex[1]]
-            #l2_scaleup[0] = event.lep_scaleup[lep_leadindex[1]]
-            #l2_scaledn[0] = event.lep_scaledn[lep_leadindex[1]]
-            #l2_smearup[0] = event.lep_smearup[lep_leadindex[1]]
-            #l2_smeardn[0] = event.lep_smeardn[lep_leadindex[1]]
+            l1_scaleup[0] = event.lep_scaleup[lep_leadindex[0]]
+            l1_scaledn[0] = event.lep_scaledn[lep_leadindex[0]]
+            l1_smearup[0] = event.lep_smearup[lep_leadindex[0]]
+            l1_smeardn[0] = event.lep_smeardn[lep_leadindex[0]]
+            l2_scaleup[0] = event.lep_scaleup[lep_leadindex[1]]
+            l2_scaledn[0] = event.lep_scaledn[lep_leadindex[1]]
+            l2_smearup[0] = event.lep_smearup[lep_leadindex[1]]
+            l2_smeardn[0] = event.lep_smeardn[lep_leadindex[1]]
+
             ################################## Photon variables ##############################################################
-
-            dR_l1g1 = deltaR(l1_find.Eta(), l1_find.Phi(), pho1_find.Eta(), pho1_find.Phi())
-            dR_l1g2 = deltaR(l1_find.Eta(), l1_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
-            dR_l2g1 = deltaR(l2_find.Eta(), l2_find.Phi(), pho1_find.Eta(), pho1_find.Phi())
-            dR_l2g2 = deltaR(l2_find.Eta(), l2_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
-
-            dR_g1g2 = deltaR(pho1_find.Eta(), pho1_find.Phi(), pho2_find.Eta(), pho2_find.Phi())
-            dR_g1Z = deltaR(pho1_find.Eta(), pho1_find.Phi(), Z_find.Eta(), Z_find.Phi())
 
             dR_g1l1[0] = dR_l1g1
             dR_g1l2[0] = dR_l1g2
@@ -847,10 +747,10 @@ for ievent,event in enumerate(tchain):#, start=650000):
             pho1NIso[0] = event.pho_neutralHadronIso[pho1_index]
             pho1PIso[0] = pho1_phoIso
             pho1PIso_noCorr[0] = event.pho_photonIso[pho1_index]
-            #pho1scaleup[0] = event.pho_scaleup[pho1_index]
-            #pho1scaledn[0] = event.pho_scaledn[pho1_index]
-            #pho1smearup[0] = event.pho_smearup[pho1_index]
-            #pho1smeardn[0] = event.pho_smeardn[pho1_index]
+            pho1scaleup[0] = event.pho_scaleup[pho1_index]
+            pho1scaledn[0] = event.pho_scaledn[pho1_index]
+            pho1smearup[0] = event.pho_smearup[pho1_index]
+            pho1smeardn[0] = event.pho_smeardn[pho1_index]
             pho1ShowerShapeSys[0] = Sys.showerShapeUncVal(event.pho_eta[pho1_index], event.pho_R9[pho1_index])[1]
 
             pho2Pt[0] = event.pho_pt[pho2_index]
@@ -864,10 +764,10 @@ for ievent,event in enumerate(tchain):#, start=650000):
             pho2NIso[0] = event.pho_neutralHadronIso[pho2_index]
             pho2PIso[0] = pho2_phoIso
             pho2PIso_noCorr[0] = event.pho_photonIso[pho2_index]
-            #pho2scaleup[0] = event.pho_scaleup[pho2_index]
-            #pho2scaledn[0] = event.pho_scaledn[pho2_index]
-            #pho2smearup[0] = event.pho_smearup[pho2_index]
-            #pho2smeardn[0] = event.pho_smeardn[pho2_index]
+            pho2scaleup[0] = event.pho_scaleup[pho2_index]
+            pho2scaledn[0] = event.pho_scaledn[pho2_index]
+            pho2smearup[0] = event.pho_smearup[pho2_index]
+            pho2smeardn[0] = event.pho_smeardn[pho2_index]
             pho2ShowerShapeSys[0] = Sys.showerShapeUncVal(event.pho_eta[pho2_index], event.pho_R9[pho2_index])[1]
 
             var_dR_Za[0] = deltaR(Z_find.Eta(), Z_find.Phi(), ALP_find.Eta(), ALP_find.Phi())
@@ -884,13 +784,8 @@ for ievent,event in enumerate(tchain):#, start=650000):
             ################# photon SFs
 
             pho1_SFs = 1.0
-            pho1_SFs_sys = 0.0
-            pho1_SFs_sys_replaced = 0.0
             pho2_SFs = 1.0
-            pho2_SFs_sys = 0.0
-            pho2_SFs_sys_replaced = 0.0
             if isMC:
-                '''
                 for i in range(len(SFs)):
                     if (event.pho_pt[pho1_index] > pt_l[i] and event.pho_pt[pho1_index] < pt_r[i]) and (event.pho_eta[pho1_index] > eta_l[i] and event.pho_eta[pho1_index] < eta_r[i]):
                         pho1_SFs = SFs[i]
@@ -900,37 +795,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
                     if (event.pho_pt[pho2_index] > pt_l[i] and event.pho_pt[pho2_index] < pt_r[i]) and (event.pho_eta[pho2_index] > eta_l[i] and event.pho_eta[pho2_index] < eta_r[i]):
                         pho2_SFs = SFs[i]
                         break
-                '''
-                for i in range(len(bins_eta)-1):
-                    for j in range(len(bins_pt)-1):
-                        if pho1_find.Eta() > bins_eta[i] and pho1_find.Eta() < bins_eta[i+1]:
-                            if pho1_find.Pt() > bins_pt[j] and pho1_find.Pt() < bins_pt[j+1]:
-                                pho1_SFs = SFs[i][j]
-                                pho1_SFs_sys = math.sqrt(SFs_statData[i][j]*SFs_statData[i][j]+SFs_statMC[i][j]*SFs_statMC[i][j]+SFs_altBkgModel[i][j]*SFs_altBkgModel[i][j]+SFs_altSignalModel[i][j]*SFs_altSignalModel[i][j]+SFs_altMCEff[i][j]*SFs_altMCEff[i][j]+SFs_altTagSelection[i][j]*SFs_altTagSelection[i][j])
-                                if (args.year == '2017' and (i==3 or i==6) and j==0) or (args.year == '2018' and (((i in  [0, 1, 8, 9]) and j==0) or ((i in [0, 9]) and j==1))):
-                                    pho1_SFs_sys_replaced = math.sqrt(SFs_statData[i][j]*SFs_statData[i][j]+SFs_statMC[i][j]*SFs_statMC[i][j]+SFs_altBkgModel[i][j]*SFs_altBkgModel[i][j]+SFs_altSignalModel[i][j]*SFs_altSignalModel[i][j]+SFs_altMCEff_16[i][j]*SFs_altMCEff_16[i][j]+SFs_altTagSelection[i][j]*SFs_altTagSelection[i][j])
-                                else:
-                                    pho1_SFs_sys_replaced = math.sqrt(SFs_statData[i][j]*SFs_statData[i][j]+SFs_statMC[i][j]*SFs_statMC[i][j]+SFs_altBkgModel[i][j]*SFs_altBkgModel[i][j]+SFs_altSignalModel[i][j]*SFs_altSignalModel[i][j]+SFs_altMCEff[i][j]*SFs_altMCEff[i][j]+SFs_altTagSelection[i][j]*SFs_altTagSelection[i][j])
-                                break
-
-                for i in range(len(bins_eta)-1):
-                    for j in range(len(bins_pt)-1):
-                        if pho2_find.Eta() > bins_eta[i] and pho2_find.Eta() < bins_eta[i+1]:
-                            if pho2_find.Pt() > bins_pt[j] and pho2_find.Pt() < bins_pt[j+1]:
-                                pho2_SFs = SFs[i][j]
-                                pho2_SFs_sys = math.sqrt(SFs_statData[i][j]*SFs_statData[i][j]+SFs_statMC[i][j]*SFs_statMC[i][j]+SFs_altBkgModel[i][j]*SFs_altBkgModel[i][j]+SFs_altSignalModel[i][j]*SFs_altSignalModel[i][j]+SFs_altMCEff[i][j]*SFs_altMCEff[i][j]+SFs_altTagSelection[i][j]*SFs_altTagSelection[i][j])
-                                if (args.year == '2017' and (i==3 or i==6) and j==0) or (args.year == '2018' and (((i in  [0, 1, 8, 9]) and j==0) or ((i in [0, 9]) and j==1))):
-                                    pho2_SFs_sys_replaced = math.sqrt(SFs_statData[i][j]*SFs_statData[i][j]+SFs_statMC[i][j]*SFs_statMC[i][j]+SFs_altBkgModel[i][j]*SFs_altBkgModel[i][j]+SFs_altSignalModel[i][j]*SFs_altSignalModel[i][j]+SFs_altMCEff_16[i][j]*SFs_altMCEff_16[i][j]+SFs_altTagSelection[i][j]*SFs_altTagSelection[i][j])
-                                else:
-                                    pho2_SFs_sys_replaced = math.sqrt(SFs_statData[i][j]*SFs_statData[i][j]+SFs_statMC[i][j]*SFs_statMC[i][j]+SFs_altBkgModel[i][j]*SFs_altBkgModel[i][j]+SFs_altSignalModel[i][j]*SFs_altSignalModel[i][j]+SFs_altMCEff[i][j]*SFs_altMCEff[i][j]+SFs_altTagSelection[i][j]*SFs_altTagSelection[i][j])
-                                break
 
             pho1SFs[0] = pho1_SFs
-            pho1SFs_sys[0] = pho1_SFs_sys
-            pho1SFs_sys_replaced[0] = pho1_SFs_sys_replaced
             pho2SFs[0] = pho2_SFs
-            pho2SFs_sys[0] = pho2_SFs_sys
-            pho2SFs_sys_replaced[0] = pho2_SFs_sys_replaced
 
             ################# calculate ALP's photon isolation #################
             checkDuplicate = ''
@@ -962,7 +829,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
             cutFlow = {}
 
             cutdR_gl = (dR_l1g1 > 0.4) and (dR_l1g2 > 0.4) and (dR_l2g1 > 0.4) and (dR_l2g2 > 0.4)
-
             cutdR_gg = dR_g1g2 > 0.02
             cutH_m = (H_find.M()>118) and (H_find.M()<130)
 
@@ -985,21 +851,10 @@ for ievent,event in enumerate(tchain):#, start=650000):
             passdR_gg[0] = cutdR_gg
             passH_m[0] = cutH_m
 
-            pho1passCutBasedIDTight[0] = event.photonCutBasedIDTight[pho1_index]
-            pho2passCutBasedIDTight[0] = event.photonCutBasedIDTight[pho2_index]
-            pho1photonCutBasedIDMedium[0] = event.photonCutBasedIDMedium[pho1_index]
-            pho2photonCutBasedIDMedium[0] = event.photonCutBasedIDMedium[pho2_index]
-
-            passBDT[0] = -99.
-            Val_BDT[0] = -99.
-            if pho_passChaHadIso and pho_passNeuHadIso and cutdR_gl and pho_passHOverE:
-                #MVA_list = [event.pho_full5x5_sigmaIetaIeta[pho1_index], event.pho_photonIso[pho1_index], event.pho_full5x5_sigmaIetaIeta[pho2_index], event.pho_photonIso[pho2_index], ALP_calculatedPhotonIso_tmp, ALP_find.Pt()/ALP_find.M(), ALP_find.Pt()/H_find.M(), Z_find.M()+H_find.M()]
-                MVA_list = [event.pho_pt[pho1_index], event.pho_eta[pho1_index], event.pho_phi[pho1_index], event.pho_R9[pho1_index], event.pho_full5x5_sigmaIetaIeta[pho1_index] ,event.pho_pt[pho2_index], event.pho_eta[pho2_index], event.pho_phi[pho2_index], event.pho_R9[pho2_index], event.pho_full5x5_sigmaIetaIeta[pho2_index],ALP_calculatedPhotonIso_tmp, dR_g1Z, ALP_find.Pt(), Z_find.M()+H_find.M(), H_find.Pt() ]
-                MVA_value = model.predict_proba(MVA_list)[:, 1]
-                passBDT[0] = MVA_value>mvaCut
-                Val_BDT[0] = MVA_value[0]
-                #print MVA_value[0]
-
+            MVA_list = [event.pho_pt[pho1_index], event.pho_eta[pho1_index], event.pho_phi[pho1_index], event.pho_R9[pho1_index], event.pho_full5x5_sigmaIetaIeta[pho1_index] ,event.pho_pt[pho2_index], event.pho_eta[pho2_index], event.pho_phi[pho2_index], event.pho_R9[pho2_index], event.pho_full5x5_sigmaIetaIeta[pho2_index],ALP_calculatedPhotonIso_tmp, dR_g1Z, ALP_find.Pt(), Z_find.M()+H_find.M(), H_find.Pt() ]
+            MVA_value = model.predict_proba(MVA_list)[:, 1]
+            passBDT[0] = MVA_value>mvaCut
+            Val_BDT[0] = MVA_value
             #######################################################################################################
 
             passedEvents.Fill()

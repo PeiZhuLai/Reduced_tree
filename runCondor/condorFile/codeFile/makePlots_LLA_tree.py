@@ -291,6 +291,7 @@ l1_scaleup = array('f',[0.])
 l1_scaledn = array('f',[0.])
 l1_smearup = array('f',[0.])
 l1_smeardn = array('f',[0.])
+l1_EPostCorr = array('f',[0.])
 
 
 
@@ -305,6 +306,7 @@ l2_scaledn = array('f',[0.])
 l2_smearup = array('f',[0.])
 l2_smeardn = array('f',[0.])
 l2_dataMC = array('f',[0.])
+l2_EPostCorr = array('f',[0.])
 
 # photon var
 pho1eta = array('f',[0.])
@@ -319,12 +321,18 @@ pho1NIso = array('f',[0.])
 pho1PIso = array('f',[0.])
 pho1PIso_noCorr = array('f',[0.])
 pho1SFs = array('f',[0.])
+pho1SFs_dR0P1 = array('f',[0.])
+pho1SFs_dR0P15 = array('f',[0.])
+pho1SFs_dR0P2 = array('f',[0.])
+pho1SFs_dR0P25 = array('f',[0.])
+pho1SFs_dR0P3 = array('f',[0.])
 pho1SFs_sys = array('f',[0.])
 pho1SFs_sys_replaced = array('f',[0.])
 pho1scaleup = array('f',[0.])
 pho1scaledn = array('f',[0.])
 pho1smearup = array('f',[0.])
 pho1smeardn = array('f',[0.])
+pho1EPostCorr = array('f',[0.])
 pho1ShowerShapeSys = array('f',[0.])
 
 pho2eta = array('f',[0.])
@@ -339,12 +347,18 @@ pho2NIso = array('f',[0.])
 pho2PIso = array('f',[0.])
 pho2PIso_noCorr = array('f',[0.])
 pho2SFs = array('f',[0.])
+pho2SFs_dR0P1 = array('f',[0.])
+pho2SFs_dR0P15 = array('f',[0.])
+pho2SFs_dR0P2 = array('f',[0.])
+pho2SFs_dR0P25 = array('f',[0.])
+pho2SFs_dR0P3 = array('f',[0.])
 pho2SFs_sys = array('f',[0.])
 pho2SFs_sys_replaced = array('f',[0.])
 pho2scaleup = array('f',[0.])
 pho2scaledn = array('f',[0.])
 pho2smearup = array('f',[0.])
 pho2smeardn = array('f',[0.])
+pho2EPostCorr = array('f',[0.])
 pho2ShowerShapeSys = array('f',[0.])
 
 dR_g1l1 = array('f',[-1.])
@@ -418,6 +432,8 @@ passedEvents.Branch("l1_scaleup",l1_scaleup,"l1_scaleup/F")
 passedEvents.Branch("l1_scaledn",l1_scaledn,"l1_scaledn/F")
 passedEvents.Branch("l1_smearup",l1_smearup,"l1_smearup/F")
 passedEvents.Branch("l1_smeardn",l1_smeardn,"l1_smeardn/F")
+passedEvents.Branch("l1_EPostCorr",l1_EPostCorr,"l1_EPostCorr/F")
+
 
 passedEvents.Branch("l2_pt",l2_pt,"l2_pt/F")
 passedEvents.Branch("l2_eta",l2_eta,"l2_eta/F")
@@ -430,7 +446,7 @@ passedEvents.Branch("l2_scaleup",l2_scaleup,"l2_scaleup/F")
 passedEvents.Branch("l2_scaledn",l2_scaledn,"l2_scaledn/F")
 passedEvents.Branch("l2_smearup",l2_smearup,"l2_smearup/F")
 passedEvents.Branch("l2_smeardn",l2_smeardn,"l2_smeardn/F")
-
+passedEvents.Branch("l2_EPostCorr",l2_EPostCorr,"l2_EPostCorr/F")
 
 
 passedEvents.Branch("pho1eta",pho1eta,"pho1eta/F")
@@ -445,12 +461,18 @@ passedEvents.Branch("pho1NIso",pho1NIso,"pho1NIso/F")
 passedEvents.Branch("pho1PIso",pho1PIso,"pho1PIso/F")
 passedEvents.Branch("pho1PIso_noCorr",pho1PIso_noCorr,"pho1PIso_noCorr/F")
 passedEvents.Branch("pho1SFs",pho1SFs,"pho1SFs/F")
+passedEvents.Branch("pho1SFs_dR0P1",pho1SFs_dR0P1,"pho1SFs_dR0P1/F")
+passedEvents.Branch("pho1SFs_dR0P15",pho1SFs_dR0P15,"pho1SFs_dR0P15/F")
+passedEvents.Branch("pho1SFs_dR0P2",pho1SFs_dR0P2,"pho1SFs_dR0P2/F")
+passedEvents.Branch("pho1SFs_dR0P25",pho1SFs_dR0P25,"pho1SFs_dR0P25/F")
+passedEvents.Branch("pho1SFs_dR0P3",pho1SFs_dR0P3,"pho1SFs_dR0P3/F")
 passedEvents.Branch("pho1SFs_sys",pho1SFs_sys,"pho1SFs_sys/F")
 passedEvents.Branch("pho1SFs_sys_replaced",pho1SFs_sys_replaced,"pho1SFs_sys_replaced/F")
 passedEvents.Branch("pho1scaleup",pho1scaleup,"pho1scaleup/F")
 passedEvents.Branch("pho1scaledn",pho1scaledn,"pho1scaledn/F")
 passedEvents.Branch("pho1smearup",pho1smearup,"pho1smearup/F")
 passedEvents.Branch("pho1smeardn",pho1smeardn,"pho1smeardn/F")
+passedEvents.Branch("pho1EPostCorr",pho1EPostCorr,"pho1EPostCorr/F")
 passedEvents.Branch("pho1ShowerShapeSys",pho1ShowerShapeSys,"pho1ShowerShapeSys/F")
 
 passedEvents.Branch("pho2eta",pho2eta,"pho2eta/F")
@@ -465,12 +487,18 @@ passedEvents.Branch("pho2NIso",pho2NIso,"pho2NIso/F")
 passedEvents.Branch("pho2PIso",pho2PIso,"pho2PIso/F")
 passedEvents.Branch("pho2PIso_noCorr",pho2PIso_noCorr,"pho2PIso_noCorr/F")
 passedEvents.Branch("pho2SFs",pho2SFs,"pho2SFs/F")
+passedEvents.Branch("pho2SFs_dR0P1",pho2SFs_dR0P1,"pho2SFs_dR0P1/F")
+passedEvents.Branch("pho2SFs_dR0P15",pho2SFs_dR0P15,"pho2SFs_dR0P15/F")
+passedEvents.Branch("pho2SFs_dR0P2",pho2SFs_dR0P2,"pho2SFs_dR0P2/F")
+passedEvents.Branch("pho2SFs_dR0P25",pho2SFs_dR0P25,"pho2SFs_dR0P25/F")
+passedEvents.Branch("pho2SFs_dR0P3",pho2SFs_dR0P3,"pho2SFs_dR0P3/F")
 passedEvents.Branch("pho2SFs_sys",pho2SFs_sys,"pho2SFs_sys/F")
 passedEvents.Branch("pho2SFs_sys_replaced",pho2SFs_sys_replaced,"pho2SFs_sys_replaced/F")
 passedEvents.Branch("pho2scaleup",pho2scaleup,"pho2scaleup/F")
 passedEvents.Branch("pho2scaledn",pho2scaledn,"pho2scaledn/F")
 passedEvents.Branch("pho2smearup",pho2smearup,"pho2smearup/F")
 passedEvents.Branch("pho2smeardn",pho2smeardn,"pho2smeardn/F")
+passedEvents.Branch("pho2EPostCorr",pho2EPostCorr,"pho2EPostCorr/F")
 passedEvents.Branch("pho2ShowerShapeSys",pho2ShowerShapeSys,"pho2ShowerShapeSys/F")
 
 passedEvents.Branch("dR_g1l1",dR_g1l1,"dR_g1l1/F")
@@ -681,7 +709,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
     npho.Fill(N_pho)
     if (N_pho < 2): continue
 
-
     for i in range(N_pho):
         if (event.pho_hasPixelSeed[i] == 1): continue
         if (event.pho_pt[i]<10) : continue
@@ -810,15 +837,18 @@ for ievent,event in enumerate(tchain):#, start=650000):
             l2_dataMC[0] = event.lep_dataMC[lep_leadindex[1]]
 
             l1_dataMCErr[0] = event.lep_dataMCErr[lep_leadindex[0]]
-            #l1_scaleup[0] = event.lep_scaleup[lep_leadindex[0]]
-            #l1_scaledn[0] = event.lep_scaledn[lep_leadindex[0]]
-            #l1_smearup[0] = event.lep_smearup[lep_leadindex[0]]
-            #l1_smeardn[0] = event.lep_smeardn[lep_leadindex[0]]
+            l1_scaleup[0] = event.lep_scaleup[lep_leadindex[0]]
+            l1_scaledn[0] = event.lep_scaledn[lep_leadindex[0]]
+            l1_smearup[0] = event.lep_smearup[lep_leadindex[0]]
+            l1_smeardn[0] = event.lep_smeardn[lep_leadindex[0]]
+            l1_EPostCorr[0] = event.lep_ecalTrkEnergyPostCorr[lep_leadindex[0]]
             l2_dataMCErr[0] = event.lep_dataMCErr[lep_leadindex[1]]
-            #l2_scaleup[0] = event.lep_scaleup[lep_leadindex[1]]
-            #l2_scaledn[0] = event.lep_scaledn[lep_leadindex[1]]
-            #l2_smearup[0] = event.lep_smearup[lep_leadindex[1]]
-            #l2_smeardn[0] = event.lep_smeardn[lep_leadindex[1]]
+            l2_scaleup[0] = event.lep_scaleup[lep_leadindex[1]]
+            l2_scaledn[0] = event.lep_scaledn[lep_leadindex[1]]
+            l2_smearup[0] = event.lep_smearup[lep_leadindex[1]]
+            l2_smeardn[0] = event.lep_smeardn[lep_leadindex[1]]
+            l2_EPostCorr[0] = event.lep_ecalTrkEnergyPostCorr[lep_leadindex[1]]
+            
             ################################## Photon variables ##############################################################
 
             dR_l1g1 = deltaR(l1_find.Eta(), l1_find.Phi(), pho1_find.Eta(), pho1_find.Phi())
@@ -847,10 +877,11 @@ for ievent,event in enumerate(tchain):#, start=650000):
             pho1NIso[0] = event.pho_neutralHadronIso[pho1_index]
             pho1PIso[0] = pho1_phoIso
             pho1PIso_noCorr[0] = event.pho_photonIso[pho1_index]
-            #pho1scaleup[0] = event.pho_scaleup[pho1_index]
-            #pho1scaledn[0] = event.pho_scaledn[pho1_index]
-            #pho1smearup[0] = event.pho_smearup[pho1_index]
-            #pho1smeardn[0] = event.pho_smeardn[pho1_index]
+            pho1scaleup[0] = event.pho_scaleup[pho1_index]
+            pho1scaledn[0] = event.pho_scaledn[pho1_index]
+            pho1smearup[0] = event.pho_smearup[pho1_index]
+            pho1smeardn[0] = event.pho_smeardn[pho1_index]
+            pho1EPostCorr[0] = event.pho_ecalEnergyPostCorr[pho1_index]
             pho1ShowerShapeSys[0] = Sys.showerShapeUncVal(event.pho_eta[pho1_index], event.pho_R9[pho1_index])[1]
 
             pho2Pt[0] = event.pho_pt[pho2_index]
@@ -864,10 +895,11 @@ for ievent,event in enumerate(tchain):#, start=650000):
             pho2NIso[0] = event.pho_neutralHadronIso[pho2_index]
             pho2PIso[0] = pho2_phoIso
             pho2PIso_noCorr[0] = event.pho_photonIso[pho2_index]
-            #pho2scaleup[0] = event.pho_scaleup[pho2_index]
-            #pho2scaledn[0] = event.pho_scaledn[pho2_index]
-            #pho2smearup[0] = event.pho_smearup[pho2_index]
-            #pho2smeardn[0] = event.pho_smeardn[pho2_index]
+            pho2scaleup[0] = event.pho_scaleup[pho2_index]
+            pho2scaledn[0] = event.pho_scaledn[pho2_index]
+            pho2smearup[0] = event.pho_smearup[pho2_index]
+            pho2smeardn[0] = event.pho_smeardn[pho2_index]
+            pho2EPostCorr[0] = event.pho_ecalEnergyPostCorr[pho2_index]
             pho2ShowerShapeSys[0] = Sys.showerShapeUncVal(event.pho_eta[pho2_index], event.pho_R9[pho2_index])[1]
 
             var_dR_Za[0] = deltaR(Z_find.Eta(), Z_find.Phi(), ALP_find.Eta(), ALP_find.Phi())
@@ -932,6 +964,61 @@ for ievent,event in enumerate(tchain):#, start=650000):
             pho2SFs_sys[0] = pho2_SFs_sys
             pho2SFs_sys_replaced[0] = pho2_SFs_sys_replaced
 
+            pt_mid = (event.pho_pt[pho1_index] + event.pho_pt[pho2_index])/2.0
+            eta_mid = event.pho_eta[pho1_index]
+
+            for i in range(len(bins_eta)-1):
+                    for j in range(len(bins_pt)-1):
+                        if eta_mid > bins_eta[i] and eta_mid < bins_eta[i+1]:
+                            if pt_mid > bins_pt[j] and pt_mid < bins_pt[j+1]:
+                                SFs_mid = SFs[i][j]
+
+                                if (args.year == '2017' and (i==3 or i==6) and j==0) or (args.year == '2018' and (((i in  [0, 1, 8, 9]) and j==0) or ((i in [0, 9]) and j==1))):
+                                    pho_SFs_sys_mid = math.sqrt(SFs_statData[i][j]*SFs_statData[i][j]+SFs_statMC[i][j]*SFs_statMC[i][j]+SFs_altBkgModel[i][j]*SFs_altBkgModel[i][j]+SFs_altSignalModel[i][j]*SFs_altSignalModel[i][j]+SFs_altMCEff_16[i][j]*SFs_altMCEff_16[i][j]+SFs_altTagSelection[i][j]*SFs_altTagSelection[i][j])
+                                else:
+                                    pho_SFs_sys_mid = math.sqrt(SFs_statData[i][j]*SFs_statData[i][j]+SFs_statMC[i][j]*SFs_statMC[i][j]+SFs_altBkgModel[i][j]*SFs_altBkgModel[i][j]+SFs_altSignalModel[i][j]*SFs_altSignalModel[i][j]+SFs_altMCEff[i][j]*SFs_altMCEff[i][j]+SFs_altTagSelection[i][j]*SFs_altTagSelection[i][j])
+                                break
+
+            #SFs_mid = his_SFs.GetBinContent(his_SFs.FindBin(pt_mid, eta_mid))
+
+            if dR_g1g2 < 0.1:
+                pho1SFs_dR0P1[0] = SFs_mid
+                pho2SFs_dR0P1[0] = SFs_mid
+            else:
+                pho1SFs_dR0P1[0] = pho1_SFs
+                pho2SFs_dR0P1[0] = pho2_SFs
+
+            if dR_g1g2 < 0.15:
+                pho1SFs_dR0P15[0] = SFs_mid
+                pho2SFs_dR0P15[0] = SFs_mid
+                pho1SFs_sys_replaced[0] = pho_SFs_sys_mid
+                pho2SFs_sys_replaced[0] = pho_SFs_sys_mid
+            else:
+                pho1SFs_dR0P15[0] = pho1_SFs
+                pho2SFs_dR0P15[0] = pho2_SFs
+
+            if dR_g1g2 < 0.2:
+                pho1SFs_dR0P2[0] = SFs_mid
+                pho2SFs_dR0P2[0] = SFs_mid
+            else:
+                pho1SFs_dR0P2[0] = pho1_SFs
+                pho2SFs_dR0P2[0] = pho2_SFs
+
+            if dR_g1g2 < 0.25:
+                pho1SFs_dR0P25[0] = SFs_mid
+                pho2SFs_dR0P25[0] = SFs_mid
+            else:
+                pho1SFs_dR0P25[0] = pho1_SFs
+                pho2SFs_dR0P25[0] = pho2_SFs
+
+            if dR_g1g2 < 0.3:
+                pho1SFs_dR0P3[0] = SFs_mid
+                pho2SFs_dR0P3[0] = SFs_mid
+            else:
+                pho1SFs_dR0P3[0] = pho1_SFs
+                pho2SFs_dR0P3[0] = pho2_SFs
+
+
             ################# calculate ALP's photon isolation #################
             checkDuplicate = ''
             ALP_calculatedPhotonIso_tmp = 0.0
@@ -992,6 +1079,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
             passBDT[0] = -99.
             Val_BDT[0] = -99.
+            '''
             if pho_passChaHadIso and pho_passNeuHadIso and cutdR_gl and pho_passHOverE:
                 #MVA_list = [event.pho_full5x5_sigmaIetaIeta[pho1_index], event.pho_photonIso[pho1_index], event.pho_full5x5_sigmaIetaIeta[pho2_index], event.pho_photonIso[pho2_index], ALP_calculatedPhotonIso_tmp, ALP_find.Pt()/ALP_find.M(), ALP_find.Pt()/H_find.M(), Z_find.M()+H_find.M()]
                 MVA_list = [event.pho_pt[pho1_index], event.pho_eta[pho1_index], event.pho_phi[pho1_index], event.pho_R9[pho1_index], event.pho_full5x5_sigmaIetaIeta[pho1_index] ,event.pho_pt[pho2_index], event.pho_eta[pho2_index], event.pho_phi[pho2_index], event.pho_R9[pho2_index], event.pho_full5x5_sigmaIetaIeta[pho2_index],ALP_calculatedPhotonIso_tmp, dR_g1Z, ALP_find.Pt(), Z_find.M()+H_find.M(), H_find.Pt() ]
@@ -999,7 +1087,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
                 passBDT[0] = MVA_value>mvaCut
                 Val_BDT[0] = MVA_value[0]
                 #print MVA_value[0]
-
+            '''
             #######################################################################################################
 
             passedEvents.Fill()

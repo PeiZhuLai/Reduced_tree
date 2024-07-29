@@ -1,5 +1,5 @@
 # Reduced-tree
-These codes are used to check CRAB jobs, resubmit missing jobs and run your own codes which uses T2 root file as input. In this code we are using the condor to manage our jobs. Please fallow the following steps.
+These codes are used to check CRAB jobs, resubmit missing jobs and run your own codes which uses T2 root file as input. In this code we are using the condor to manage our jobs. Please follow the following steps.
 
 ## Prepare
 ```

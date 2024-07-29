@@ -1,6 +1,8 @@
 # Reduced-tree
 These codes are used to check CRAB jobs, resubmit missing jobs and run your own codes which uses T2 root file as input. In this code we are using the condor to manage our jobs. Please follow the following steps.
 
+git clone -b master https://github.com/PeiZhuLai/Reduced-tree.git
+
 ## Prepare
 ```
 voms-proxy-init --rfc --voms cms

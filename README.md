@@ -8,13 +8,13 @@ Please use ' crab status -d resultsAna_Data_2018/crab_SingleMuon_Run2018A-UL2018
 ## Prepare
 ```
 voms-proxy-init --rfc --voms cms
-cp /tmp/x509up_u117617 /afs/cern.ch/user/z/zewang/
-export X509_USER_PROXY=/afs/cern.ch/user/z/zewang/x509up_u117617
+cp /tmp/x509up_u175325 /afs/cern.ch/user/p/pelai/
+export X509_USER_PROXY=/afs/cern.ch/user/p/pelai/x509up_u175325
 ```
 WARNING!
 You need to change:
-1. /tmp/x509up_u117617 to your proxy file, which is produced by the first commond.
-2. /afs/cern.ch/user/z/zewang/ to your own path.
+1. /tmp/x509up_u175325 to your proxy file, which is produced by the first commond.
+2. /afs/cern.ch/user/p/pelai/ to your own path.
 
 ## Check CRAB jobs
 In the dirctory /CheckCRAB/

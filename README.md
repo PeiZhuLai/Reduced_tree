@@ -3,6 +3,8 @@ These codes are used to check CRAB jobs, resubmit missing jobs and run your own 
 
 git clone -b master https://github.com/PeiZhuLai/Reduced-tree.git
 
+Please use ' crab status -d resultsAna_Data_2018/crab_SingleMuon_Run2018A-UL2018_MiniAODv2-v3 ' to check how the submission process proceeds.
+
 ## Prepare
 ```
 voms-proxy-init --rfc --voms cms

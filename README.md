@@ -3,6 +3,8 @@ These codes are used to check CRAB jobs, resubmit missing jobs and run your own 
 
 git clone -b ALP_dipho_UL git@github.com:PeiZhuLai/Reduced-tree.git
 
+git clone -b ALP_dipho_UL https://github.com/PeiZhuLai/Reduced-tree.git
+
 ## Prepare
 ```
 voms-proxy-init --rfc --voms cms

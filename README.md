@@ -40,3 +40,9 @@ python makeCondorfile.py -d root://cms-xrd-global.cern.ch//store/user/zewang/201
 ```
 -d is the basic path of your T2 Ntuple files. -n is how many files per condor job, you can change this number as youwant.
 
+Example
+
+```
+cd /publicfs/cms/user/wangzebing/ALP/NTuples/UL
+```
+

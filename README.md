@@ -38,9 +38,20 @@ cd runCondor/
 3. Run /runCondor/makeCondorfile.py
 ```
 cd /runCondor/
+
 python makeCondorfile.py -d root://cms-xrd-global.cern.ch//store/user/zewang/2018data/UFHZZAnalysisRun2/HZG_Data16/DoubleEG/ -n 50
+
 ```
 -d is the basic path of your T2 Ntuple files. -n is how many files per condor job, you can change this number as youwant.
+
+## Run Events Selections
+
+python makePlots_LLA_tree.py -i /publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/data -n 50
+
+python makePlots_LLA_tree.py -i /publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/mc -n 1
+
+python makePlots_LLA_tree.py -i /publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/sig_v2 -n 1
+
 
 Example
 

@@ -46,12 +46,37 @@ python makeCondorfile.py -d root://cms-xrd-global.cern.ch//store/user/zewang/201
 
 ## Run Events Selections
 
-python makePlots_LLA_tree.py -i /publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/data -n 50
+install anaconda from "https://repo.anaconda.com/archive/"
+Download it, upload to IHEP server, and bash the file.
+```
+python makePlots_LLA_tree.py -i /publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/data
 
-python makePlots_LLA_tree.py -i /publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/mc -n 1
+ntuple_DoubleMuon_Run2018A_0000.root  ntuple_EGamma_Run2018D_0000.root      ntuple_SingleMuon_Run2018A_0001.root
+ntuple_DoubleMuon_Run2018B_0000.root  ntuple_EGamma_Run2018D_0001.root      ntuple_SingleMuon_Run2018A_0002.root
+ntuple_DoubleMuon_Run2018C_0000.root  ntuple_EGamma_Run2018D_0002.root      ntuple_SingleMuon_Run2018B_0000.root
+ntuple_DoubleMuon_Run2018D_0000.root  ntuple_EGamma_Run2018D_0003.root      ntuple_SingleMuon_Run2018B_0001.root
+ntuple_DoubleMuon_Run2018D_0001.root  ntuple_EGamma_Run2018D_0004.root      ntuple_SingleMuon_Run2018C_0000.root
+ntuple_EGamma_Run2018A_0000.root      ntuple_EGamma_Run2018D_0005.root      ntuple_SingleMuon_Run2018C_0001.root
+ntuple_EGamma_Run2018A_0001.root      ntuple_EGamma_Run2018D_0006.root      ntuple_SingleMuon_Run2018D_0000.root
+ntuple_EGamma_Run2018A_0002.root      ntuple_EGamma_Run2018D_0007.root      ntuple_SingleMuon_Run2018D_0001.root
+ntuple_EGamma_Run2018A_0003.root      ntuple_MuonEG_Run2018A_0000.root      ntuple_SingleMuon_Run2018D_0002.root
+ntuple_EGamma_Run2018B_0000.root      ntuple_MuonEG_Run2018B_0000.root      ntuple_SingleMuon_Run2018D_0003.root
+ntuple_EGamma_Run2018B_0001.root      ntuple_MuonEG_Run2018C_0000.root      ntuple_SingleMuon_Run2018D_0004.root
+ntuple_EGamma_Run2018C_0000.root      ntuple_MuonEG_Run2018D_0000.root      ntuple_SingleMuon_Run2018D_0005.root
+ntuple_EGamma_Run2018C_0001.root      ntuple_SingleMuon_Run2018A_0000.root  t2
+```
+```
+python makePlots_LLA_tree.py -i /publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/mc
 
-python makePlots_LLA_tree.py -i /publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/sig_v2 -n 1
+ntuple_DYJetsToLL_0000.root  ntuple_DYJetsToLL_0001.root  ntuple_DYJetsToLL_0002.root  t2
+```
 
+```
+python makePlots_LLA_tree.py -i /publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/sig_v2
+
+ntuple_M10.root  ntuple_M1.root   ntuple_M25.root  ntuple_M30.root  ntuple_M4.root  ntuple_M6.root  ntuple_M8.root  t2
+ntuple_M15.root  ntuple_M20.root  ntuple_M2.root   ntuple_M3.root   ntuple_M5.root  ntuple_M7.root  ntuple_M9.root  train
+```
 
 Example
 

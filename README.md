@@ -49,6 +49,12 @@ python makeCondorfile.py -d root://cms-xrd-global.cern.ch//store/user/zewang/201
 install anaconda from "https://repo.anaconda.com/archive/"
 Download it, upload to IHEP server, and bash the file.
 ```
+conda install conda-forge::root
+```
+```
+conda 
+```
+```
 python makePlots_LLA_tree.py -i /publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/data
 
 ntuple_DoubleMuon_Run2018A_0000.root  ntuple_EGamma_Run2018D_0000.root      ntuple_SingleMuon_Run2018A_0001.root

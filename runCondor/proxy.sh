@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cp /tmp/x509up_u117617 /afs/cern.ch/user/z/zewang/
-export X509_USER_PROXY=/afs/cern.ch/user/z/zewang/x509up_u117617
+cp /tmp/x509up_u175325 /afs/cern.ch/user/p/pelai/
+export X509_USER_PROXY=/afs/cern.ch/user/p/pelai/x509up_u175325

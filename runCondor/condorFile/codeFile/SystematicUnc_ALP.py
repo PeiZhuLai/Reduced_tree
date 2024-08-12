@@ -16,7 +16,7 @@ def showerShapeUncVal(eta, R9):
     elif abs(eta)>=bins_eta_dn[3] and abs(eta)<bins_eta_up[3]:
         tag1 = "EE2"
     else:
-        print "showerShapeBins eta error"
+        print ("showerShapeBins eta error")
         exit(0)
 
     if R9>=bins_R9_dn[0] and R9<bins_R9_up[0]:
@@ -24,7 +24,7 @@ def showerShapeUncVal(eta, R9):
     elif R9>=bins_R9_dn[1] and R9<bins_R9_up[1]:
         tag2 = "highR9"
     else:
-        print "showerShapeBins R9 error"
+        print ("showerShapeBins R9 error")
         exit(0)
 
     tag = tag1 + "_" + tag2

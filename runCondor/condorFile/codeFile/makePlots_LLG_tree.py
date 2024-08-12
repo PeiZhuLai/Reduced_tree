@@ -375,9 +375,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     # pass trigger
 ################################################################################################
-    h_n.Fill(event.passedTrig)
-    if (not event.passedTrig): continue
-    h_n_trig.Fill(event.passedTrig)
+    # h_n.Fill(event.passedTrig)
+    # if (not event.passedTrig): continue
+    # h_n_trig.Fill(event.passedTrig)
 
     # find all Z candidates
 ################################################################################################

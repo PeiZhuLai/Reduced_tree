@@ -2,14 +2,14 @@
 
 import argparse
 parser = argparse.ArgumentParser(description="A simple ttree plotter")
-parser.add_argument("-i", "--inputfiles", dest="inputfiles", default=["Sync_1031_2018_ttH_v2.root"], nargs='*', help="List of input ggNtuplizer files")
-parser.add_argument("-o", "--outputfile", dest="outputfile", default="plots.root", help="Output file containing plots")
+parser.add_argument("-i", "--inputfiles", dest="inputfiles", default=["/publicfs/cms/user/wangzebing/ALP/NTuples/UL/18/data/ntuple_DoubleMuon_Run2018A_0000.root"], nargs='*', help="List of input ggNtuplizer files")
+parser.add_argument("-o", "--outputfile", dest="outputfile", default="Data_2018_plots.root", help="Output file containing plots")
 parser.add_argument("-m", "--maxevents", dest="maxevents", type=int, default=-1, help="Maximum number events to loop over")
 parser.add_argument("-t", "--ttree", dest="ttree", default="Ana/passedEvents", help="TTree Name")
 parser.add_argument("-xs", "--cross_section", dest="cross_section", default="1.0", help="the cross section of samples")
 parser.add_argument("-L", "--Lumi", dest="Lumi", default="35.9", help="the luminosities to normalized")
 parser.add_argument("-N", "--NEvent", dest="NEvent", default="0", help="number of events")
-parser.add_argument("-y", "--Year", dest="year", default="2017", help="which year's datasetes")
+parser.add_argument("-y", "--Year", dest="year", default="2018", help="which year's datasetes")
 args = parser.parse_args()
 
 import numpy as np
@@ -21,8 +21,11 @@ from deltaR import *
 from array import array
 #from calculateMVA import bookMVA, calMVA
 
-from xgboost import XGBClassifier
-import pickle
+# from xgboost import XGBClassifier
+# import pickle
+# import sklearn
+# from sklern.preprocessing import LabelEncoder
+
 # Read in model saved from previous running of BDT
 
 import SystematicUnc_ALP as Sys
@@ -96,11 +99,13 @@ elif args.year == '2018':
     phoCut_EB = [2.044, 0.004017]
     phoCut_EE = [3.032, 0.0037]
 else:
-    print "do not include at 2016/2017/2018"
+    print ("do not include at 2016/2017/2018")
     exit(0)
 
 # load the model from disk
-model = pickle.load(open(BDT_filename, 'rb'))
+# model = pickle.load(open(BDT_filename, 'rb', encoding='utf-8'))
+# with open(BDT_filename, 'rb') as file:
+#     model = pickle.load(file, encoding='latin1')
 
 '''
 f = open(f_SFs)
@@ -152,8 +157,6 @@ for i in range(len(bins_eta)-1):
 
         SFs_altMCEff_16[i][j] = his_altMCEff_16.GetBinContent(i+1,j+1)
 
-
-
 ###########################
 if os.path.isfile('~/.rootlogon.C'): ROOT.gROOT.Macro(os.path.expanduser('~/.rootlogon.C'))
 ROOT.gROOT.SetBatch()
@@ -168,7 +171,7 @@ sw.Start()
 # Input ggNtuple
 tchain = ROOT.TChain(args.ttree)
 for filename in args.inputfiles: tchain.Add(filename)
-print 'Total number of events: ' + str(tchain.GetEntries())
+print ('Total number of events: ' + str(tchain.GetEntries()))
 
 # Event weights
 isMC = True
@@ -190,7 +193,6 @@ for filename in args.inputfiles:
     n_his = files.Ana.Get('sumWeights')
     nEvents = nEvents + n_his.GetBinContent(1)
 
-
 if isMC:
     cross_section = float(args.cross_section)
     lumi = float(args.Lumi)
@@ -203,10 +205,8 @@ else:
     cross_section = 1.0
     weight = 1.0
 
-
-
-print 'events weight: '+str(weight)
-print 'events : '+str(tchain.GetEntries())
+print ('events weight: '+str(weight))
+print ('events : '+str(tchain.GetEntries()))
 
 
 # Output file and any histograms we want
@@ -223,8 +223,6 @@ h_cross_section.SetBinContent(1,cross_section)
 h_n = ROOT.TH1D('nEvents_ntuple', 'nEvents_ntuple', 2, 0, 2)
 h_n_trig = ROOT.TH1D('nEvents_trig', 'nEvents_trig', 2, 0, 2)
 
-
-
 npho = ROOT.TH1D('npho', 'npho', 10, 0., 10)
 nlep = ROOT.TH1D('nlep', 'nlep', 10, 0., 10)
 
@@ -240,14 +238,9 @@ Z_e_lIso_lTight = ROOT.TH1D('Z_e_lIso_lTight', 'Z_e_lIso_lTight', 100, 0, 500)
 Z_mu_lIso_lTight = ROOT.TH1D('Z_mu_lIso_lTight', 'Z_mu_lIso_lTight', 100, 0, 500)
 
 Z_50 = ROOT.TH1D('Z_50', 'Z_50', 100, 0, 500)
-
 ################################################################################################
 
 ################################################################################################
-
-
-
-
 h_n.SetStats(1)
 h_n_trig.SetStats(1)
 
@@ -259,7 +252,6 @@ Z_e_lIso_lTight.SetStats(1)
 Z_mu_lIso_lTight.SetStats(1)
 
 Z_50.SetStats(1)
-
 ################################################################################################
 
 # photon cut tree
@@ -279,7 +271,6 @@ H_m = array('f',[0.])
 ALP_m = array('f',[0.])
 H_pt = array('f',[0.])
 
-
 l1_pt = array('f',[0.])
 l1_eta = array('f',[0.])
 l1_phi = array('f',[0.])
@@ -292,8 +283,6 @@ l1_scaledn = array('f',[0.])
 l1_smearup = array('f',[0.])
 l1_smeardn = array('f',[0.])
 l1_EPostCorr = array('f',[0.])
-
-
 
 l2_pt = array('f',[0.])
 l2_eta = array('f',[0.])
@@ -545,7 +534,7 @@ passedEvents.Branch("pho2photonCutBasedIDMedium",pho2photonCutBasedIDMedium,"pho
 for ievent,event in enumerate(tchain):#, start=650000):
     if ievent > args.maxevents and args.maxevents != -1: break
     #if ievent == 5000000: break
-    if ievent % 10000 == 0: print 'Processing entry ' + str(ievent)
+    if ievent % 10000 == 0: print ('Processing entry ' + str(ievent))
 
 
     # Loop over all the electrons in an event
@@ -585,9 +574,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
     # pass trigger
 ################################################################################################
-    h_n.Fill(event.passedTrig)
-    if (not event.passedTrig): continue
-    h_n_trig.Fill(event.passedTrig)
+    # h_n.Fill(event.passedTrig)
+    # if (not event.passedTrig): continue
+    # h_n_trig.Fill(event.passedTrig)
 
     # find all Z candidates
 ################################################################################################
@@ -640,9 +629,6 @@ for ievent,event in enumerate(tchain):#, start=650000):
         lep_leadindex.append(Z_lepindex2[Z_index])
         lep_leadindex.append(Z_lepindex1[Z_index])
 ################################################################################################
-
-
-
     l1_find = ROOT.TLorentzVector()
     l2_find = ROOT.TLorentzVector()
     Z_find = ROOT.TLorentzVector()
@@ -727,10 +713,7 @@ for ievent,event in enumerate(tchain):#, start=650000):
             foundpho2 = True
 
     if (foundpho1 and foundpho2):
-
-
-    ################################################################################################
-
+        ################################################################################################
         pho1_find = ROOT.TLorentzVector()
         pho2_find = ROOT.TLorentzVector()
 
@@ -742,16 +725,16 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
         ALP_find = ROOT.TLorentzVector()
         ALP_find = (pho1_find + pho2_find)
-    #######################################################################################################
+        #######################################################################################################
 
         # Higgs Candidates
-    #######################################################################################################
+        #######################################################################################################
         H_find = ROOT.TLorentzVector()
         H_find = (Z_find + ALP_find)
-    #######################################################################################################
+        #######################################################################################################
 
         # Photon Cuts
-    #######################################################################################################
+        #######################################################################################################
 
         if (((abs(event.pho_eta[pho1_index]) > 1.566) and (abs(event.pho_eta[pho1_index]) < 2.5)) or (abs(event.pho_eta[pho1_index]) < 1.4442)) and (((abs(event.pho_eta[pho2_index]) > 1.566) and (abs(event.pho_eta[pho2_index]) < 2.5)) or (abs(event.pho_eta[pho2_index]) < 1.4442)):
             #if (((abs(event.pho_eta[pho2_index]) >1.4442) and (abs(event.pho_eta[pho2_index]) < 1.566)) or (abs(event.pho_eta[pho2_index]) >2.5)): continue
@@ -1094,17 +1077,9 @@ for ievent,event in enumerate(tchain):#, start=650000):
 
 
 
-
-
-
-
-
-
-
-
 file_out.Write()
 file_out.Close()
 
 sw.Stop()
-print 'Real time: ' + str(round(sw.RealTime() / 60.0,2)) + ' minutes'
-print 'CPU time:  ' + str(round(sw.CpuTime() / 60.0,2)) + ' minutes'
+print ('Real time: ' + str(round(sw.RealTime() / 60.0,2)) + ' minutes')
+print ('CPU time:  ' + str(round(sw.CpuTime() / 60.0,2)) + ' minutes')

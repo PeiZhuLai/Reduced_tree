@@ -1,7 +1,7 @@
 # Reduced-tree
 These codes are used to check CRAB jobs, resubmit missing jobs and run your own codes which uses T2 root file as input. In this code we are using the condor to manage our jobs. Please follow the following steps.
 
-git clone -b master https://github.com/PeiZhuLai/Reduced-tree.git
+git clone -b master https://github.com/PeiZhuLai/Reduced_tree.git
 
 Please use ' crab status -d resultsAna_Data_2018/crab_SingleMuon_Run2018A-UL2018_MiniAODv2-v3 ' to check how the submission process proceeds.
 
